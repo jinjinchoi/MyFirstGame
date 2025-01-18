@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "CaveExploration/CaveExploration.h"
+#include "Components/CapsuleComponent.h"
 
 
 ACaveCharacterBase::ACaveCharacterBase()
@@ -27,6 +28,7 @@ UAbilitySystemComponent* ACaveCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+
 FVector ACaveCharacterBase::GetWeaponSocketLocation_Implementation()
 {
 	if (IsValid(Weapon))
@@ -45,12 +47,22 @@ UAnimMontage* ACaveCharacterBase::GetHitReactMontage_Implementation()
 	
 }
 
+UAnimMontage* ACaveCharacterBase::GetDeathMontage_Implementation()
+{
+	if (DeathMontages.Num() == 0) return nullptr;
+
+	return DeathMontages[FMath::RandRange(0, DeathMontages.Num() - 1)];
+}
+
+bool ACaveCharacterBase::IsDead_Implementation() const
+{
+	return bIsDead;
+}
+
 
 void ACaveCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 	
 }
 
@@ -58,6 +70,24 @@ void ACaveCharacterBase::InitAbilityActorInfo()
 {
 }
 
+void ACaveCharacterBase::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
+{
+}
+
+void ACaveCharacterBase::DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bIsDead = NewCount > 0;
+	if (!bIsDead) return;
+	
+	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	Weapon->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	Weapon->SetSimulatePhysics(true);
+	
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
 
 
 void ACaveCharacterBase::InitializeDefaultAttributes() const

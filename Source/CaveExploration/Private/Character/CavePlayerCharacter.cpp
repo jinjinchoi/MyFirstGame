@@ -4,6 +4,7 @@
 #include "Character//CavePlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "CaveGameplayTags.h"
 #include "Camera/CameraComponent.h"
 #include "Player/CavePlayerState.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -76,6 +77,27 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 			CaveHUD->InitOverlay(CavePlayerController, CavePlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+	
+	FCaveGameplayTags GameplayTags = FCaveGameplayTags::Get();
+
+	
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Abilities_Common_HitReact)
+		.AddUObject(this, &ACavePlayerCharacter::HitReactTagChange);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Abilities_Common_Death)
+		.AddUObject(this, &ACavePlayerCharacter::DeathReactTagChange);
+	
 	InitializeDefaultAttributes();
+	
+}
+
+void ACavePlayerCharacter::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+}
+
+void ACavePlayerCharacter::DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::DeathReactTagChange(CallbackTag, NewCount);
 	
 }

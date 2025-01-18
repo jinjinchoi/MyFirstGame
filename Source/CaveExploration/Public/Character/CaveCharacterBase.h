@@ -6,8 +6,10 @@
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "CaveCharacterBase.generated.h"
 
+struct FGameplayTag;
 class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
@@ -28,6 +30,8 @@ public:
 	/* Combat Interface */
 	virtual FVector GetWeaponSocketLocation_Implementation() override;
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	virtual UAnimMontage* GetDeathMontage_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
 	/* end Combat Interface */
 	
 	
@@ -39,9 +43,17 @@ protected:
 	/* Engine */
 
 	virtual void InitAbilityActorInfo();
+	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
+	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bIsDead = false;
 
 #pragma region Attributes
 	
@@ -84,6 +96,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Combat)
 	TArray<UAnimMontage*> HitReactMontages;
+
+	UPROPERTY(EditDefaultsOnly, Category = Combat)
+	TArray<UAnimMontage*> DeathMontages;
 	
 	
 };

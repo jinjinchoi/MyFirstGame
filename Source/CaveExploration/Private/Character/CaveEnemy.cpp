@@ -23,6 +23,8 @@ ACaveEnemy::ACaveEnemy()
 	
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 int32 ACaveEnemy::GetCharacterLevel_Implementation() const
@@ -67,6 +69,9 @@ void ACaveEnemy::BeginPlay()
 	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Abilities_Common_HitReact, EGameplayTagEventType::NewOrRemoved)
 		.AddUObject(this, &ACaveEnemy::HitReactTagChange);
 
+	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Abilities_Common_Death, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ACaveEnemy::DeathReactTagChange);
+
 }
 
 void ACaveEnemy::InitAbilityActorInfo()
@@ -89,5 +94,18 @@ void ACaveEnemy::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCoun
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+}
+
+void ACaveEnemy::DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::DeathReactTagChange(CallbackTag, NewCount);
+	SetLifeSpan(LifeSpan);
+	
+	AutoPossessAI = EAutoPossessAI::Disabled;
+	
+	if (AController* AIController = GetController())
+	{
+		AIController->UnPossess();
+	}
 	
 }

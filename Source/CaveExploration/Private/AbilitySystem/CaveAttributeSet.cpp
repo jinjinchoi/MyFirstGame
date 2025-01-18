@@ -130,7 +130,12 @@ void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		const bool bFatal = NewHealth <= 0.f;
 		if (bFatal)
 		{
-			
+			if (Props.TargetCharacter->Implements<UCombatInterface>())
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FCaveGameplayTags::Get().Abilities_Common_Death);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
 		}
 		else
 		{

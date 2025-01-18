@@ -67,6 +67,7 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 #pragma endregion
 
+	
 #pragma region Damage Type
 	
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -83,6 +84,7 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	
 #pragma endregion
 
+	
 #pragma region Debuff
 
 	GameplayTags.Debuff_Type_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -109,23 +111,28 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 #pragma endregion
 
+	
 #pragma region Abilities
 	
-	GameplayTags.Abilities_None= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Abilities_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.None"));
 
-	GameplayTags.Abilities_Common_Attack= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Abilities_Common_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.Attack"));
 
-	GameplayTags.Abilities_Common_Summon= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Abilities_Common_Summon = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.Summon"));
 
-	GameplayTags.Abilities_Common_Down= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Abilities_Common_Down = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.Down"));
 	
-	GameplayTags.Abilities_Common_HitReact= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Abilities_Common_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.HitReact"));
 
+	GameplayTags.Abilities_Common_Death = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Common.Death"));
+
+	
 	GameplayTags.Abilities_Status_Locked = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Status.Locked"));
 	
@@ -138,6 +145,7 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Status.Equipped"));
 
+	
 	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Type.None"));
 
@@ -147,6 +155,7 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Type.Passive"));
 
+	
 	GameplayTags.Abilities_Fire_FireSlash = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Fire.FireSlash"));
 
@@ -155,6 +164,7 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 #pragma endregion
 
+	
 #pragma region  Montage and socket
 
 	GameplayTags.CombatSocket_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -234,6 +244,7 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 #pragma endregion
 
+	
 #pragma region BolckTag
 	
 	GameplayTags.Player_Block_InputPressed = UGameplayTagsManager::Get().AddNativeGameplayTag(

@@ -77,6 +77,7 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Common_Summon;
 	FGameplayTag Abilities_Common_Down;
 	FGameplayTag Abilities_Common_HitReact;
+	FGameplayTag Abilities_Common_Death;
 
 	FGameplayTag Abilities_Status_Locked;
 	FGameplayTag Abilities_Status_Eligible;

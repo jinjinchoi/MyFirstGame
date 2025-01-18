@@ -9,7 +9,6 @@
 #include "UI/WidgetController/CaveWidgetController.h"
 #include "CaveEnemy.generated.h"
 
-struct FGameplayTag;
 class UWidgetComponent;
 /**
  * 
@@ -42,9 +41,11 @@ protected:
 	/* Cave Character Base */
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
+	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
+	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	/* end Cave Character Base */
 	
-	void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
+	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Information")
 	int32 EnemyLevel = 1;
@@ -58,6 +59,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	float BaseWalkSpeed = 250.f;
 
-	UPROPERTY(BlueprintReadOnly, Category="Combat")
-	bool bHitReacting = false;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	float LifeSpan = 5.f;
+	
 };
