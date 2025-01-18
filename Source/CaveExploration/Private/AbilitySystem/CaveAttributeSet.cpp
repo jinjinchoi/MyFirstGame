@@ -4,11 +4,13 @@
 #include "AbilitySystem/CaveAttributeSet.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "CaveFunctionLibrary.h"
 #include "CaveGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "Player/CavePlayerController.h"
 
 UCaveAttributeSet::UCaveAttributeSet()
 {
@@ -145,6 +147,24 @@ void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 				TagContainer.AddTag(FCaveGameplayTags::Get().Abilities_Common_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
+		}
+		const bool bCriticalHit = UCaveFunctionLibrary::IsCriticalHit(Props.EffectContextHandle);
+		const FGameplayTag& DamageType = UCaveFunctionLibrary::GetDamageType(Props.EffectContextHandle);
+		
+		ShowFloatDamage(Props, LocalIncomingDamage, bCriticalHit, DamageType);
+		
+	}
+}
+
+void UCaveAttributeSet::ShowFloatDamage(const FEffectProperties& Props, const float Damage, const bool bIsCriticalHit, const FGameplayTag& DamageType)
+{
+	if (Props.SourceCharacter == Props.TargetCharacter) return;
+
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		if (ACavePlayerController* PC = Cast<ACavePlayerController>(It->Get()))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bIsCriticalHit, DamageType);
 		}
 	}
 }

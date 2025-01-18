@@ -9,10 +9,25 @@
 #include "GameplayTagContainer.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "Input/CaveInputComponent.h"
+#include "GameFramework/Character.h"
+#include "UI/Widget/DamageTextWidgetComponent.h"
 
 ACavePlayerController::ACavePlayerController()
 {
 	bReplicates = true;
+}
+
+void ACavePlayerController::ShowDamageNumber_Implementation(const float DamageAmount, ACharacter* TargetCharacter, const bool bIsCriticalHit, const FGameplayTag& DamageType)
+{
+	if (IsValid(TargetCharacter) && DamageTextComponentClass)
+	{
+		UDamageTextWidgetComponent* DamageTextComponent = NewObject<UDamageTextWidgetComponent>(TargetCharacter, DamageTextComponentClass);
+		DamageTextComponent->RegisterComponent();
+		DamageTextComponent->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		DamageTextComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		DamageTextComponent->SetDamageText(DamageAmount, bIsCriticalHit, DamageType);
+		
+	}
 }
 
 void ACavePlayerController::BeginPlay()

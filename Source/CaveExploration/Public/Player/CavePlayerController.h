@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "CavePlayerController.generated.h"
 
+class UDamageTextWidgetComponent;
 class UCaveAbilitySystemComponent;
 struct FGameplayTag;
 class UCaveInputConfig;
@@ -24,6 +25,9 @@ class CAVEEXPLORATION_API ACavePlayerController : public APlayerController
 public:
 	ACavePlayerController();
 
+	UFUNCTION(Client, Reliable)
+	void ShowDamageNumber(const float DamageAmount, ACharacter* TargetCharacter, const bool bIsCriticalHit, const FGameplayTag& DamageType);
+	
 protected:
 	/* Engine */
 	virtual void BeginPlay() override;
@@ -52,6 +56,7 @@ private:
 
 	UCaveAbilitySystemComponent* GetASC();
 
-	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextWidgetComponent> DamageTextComponentClass;
 	
 };

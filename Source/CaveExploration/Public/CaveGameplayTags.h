@@ -44,7 +44,6 @@ struct FCaveGameplayTags
 	
 #pragma endregion
 
-//TODO :: 지금 열러있는거 Cpp에서 할당해주어야 함
 	
 #pragma region Damage Type
 
@@ -53,8 +52,10 @@ struct FCaveGameplayTags
 	FGameplayTag Damage_Ice;
 	FGameplayTag Damage_Physical;
 
+
 #pragma endregion
 
+	
 #pragma region Debuff
 
 	FGameplayTag Debuff_Type_Burn;
@@ -69,6 +70,7 @@ struct FCaveGameplayTags
 
 #pragma endregion
 
+	
 #pragma region Abilities
 
 	FGameplayTag Abilities_None;
@@ -93,6 +95,7 @@ struct FCaveGameplayTags
 
 #pragma endregion
 
+	
 #pragma region Montage And Socket
 
 	FGameplayTag CombatSocket_1;
@@ -107,6 +110,7 @@ struct FCaveGameplayTags
 
 #pragma endregion	
 
+	
 #pragma region Maps
 	
 	TMap<FGameplayTag /* DamageType */, FGameplayTag /* Resistance */> DamageTypesToResistance; 

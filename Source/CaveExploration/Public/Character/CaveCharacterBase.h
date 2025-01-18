@@ -55,7 +55,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	bool bIsDead = false;
 
-#pragma region Attributes
+
+	
+#pragma region Attribute And Ability
 	
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
@@ -75,14 +77,10 @@ protected:
 	virtual void InitializeDefaultAttributes() const;
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClass, const float Level) const;
 	
-#pragma endregion
-
-#pragma  region Abilities
-	
 	void AddCharacterAbilities();
 
+#pragma endregion
 
-#pragma endregion	
 
 private:
 	UPROPERTY(EditAnywhere, Category=Abilities)

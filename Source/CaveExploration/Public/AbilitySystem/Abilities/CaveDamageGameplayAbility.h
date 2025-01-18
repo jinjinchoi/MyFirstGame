@@ -29,7 +29,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
-	UPROPERTY(EditDefaultsOnly, Category="Damage")
+	UPROPERTY(EditDefaultsOnly, Category="Damage", meta = (Categories = "Damage"))
 	FGameplayTag DamageType;
 
 	UPROPERTY(EditDefaultsOnly, Category="Damage")

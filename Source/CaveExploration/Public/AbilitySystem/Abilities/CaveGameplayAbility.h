@@ -15,7 +15,7 @@ class CAVEEXPLORATION_API UCaveGameplayAbility : public UGameplayAbility
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, Category=Input)
+	UPROPERTY(EditDefaultsOnly, Category=Input, meta=(Categories = "InputTag"))
 	FGameplayTag StartupInputTag;
 	
 	virtual FGameplayTagContainer* GetCooldownTags() const override;

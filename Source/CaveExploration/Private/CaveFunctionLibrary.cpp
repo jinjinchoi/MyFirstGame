@@ -116,7 +116,10 @@ FGameplayTag UCaveFunctionLibrary::GetDamageType(const FGameplayEffectContextHan
 {
 	if (const FCaveGameplayEffectContext* CaveContext = static_cast<const FCaveGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
-		return *CaveContext->GetDamageType();
+		if (CaveContext->GetDamageType().IsValid())
+		{
+			return *CaveContext->GetDamageType();
+		}
 	}
 
 	return FGameplayTag();
@@ -210,6 +213,11 @@ FGameplayEffectContextHandle UCaveFunctionLibrary::ApplyDamageEffect(const FDama
 	if (DamageEffectParams.bIsKnockback)
 	{
 		SetKnockbackDirection(ContextHandle, DamageEffectParams.KnockbackDirection);
+	}
+
+	if (DamageEffectParams.DamageType.IsValid())
+	{
+		SetDamageType(ContextHandle, DamageEffectParams.DamageType);
 	}
 
 	const FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(DamageEffectParams.DamageGameplayEffectClass, DamageEffectParams.AbilityLevel, ContextHandle);

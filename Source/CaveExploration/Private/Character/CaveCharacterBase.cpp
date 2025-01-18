@@ -23,6 +23,13 @@ ACaveCharacterBase::ACaveCharacterBase()
 	
 }
 
+
+void ACaveCharacterBase::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
 UAbilitySystemComponent* ACaveCharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
@@ -60,12 +67,6 @@ bool ACaveCharacterBase::IsDead_Implementation() const
 }
 
 
-void ACaveCharacterBase::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
 void ACaveCharacterBase::InitAbilityActorInfo()
 {
 }
@@ -87,7 +88,9 @@ void ACaveCharacterBase::DeathReactTagChange(const FGameplayTag CallbackTag, int
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	
 }
+
 
 
 void ACaveCharacterBase::InitializeDefaultAttributes() const
