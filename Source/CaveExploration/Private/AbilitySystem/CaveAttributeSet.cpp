@@ -4,9 +4,11 @@
 #include "AbilitySystem/CaveAttributeSet.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "CaveGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 
 UCaveAttributeSet::UCaveAttributeSet()
 {
@@ -110,11 +112,37 @@ void UCaveAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
 	{
-		
+		HandleIncomingDamage(Props);
 	}
 	
 }
 
+void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
+{
+	const float LocalIncomingDamage = GetIncomingDamage();
+	SetIncomingDamage(0.f);
+
+	if (LocalIncomingDamage > 0.f)
+	{
+		const float NewHealth = GetHealth() - LocalIncomingDamage;
+		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+
+		const bool bFatal = NewHealth <= 0.f;
+		if (bFatal)
+		{
+			
+		}
+		else
+		{
+			if (Props.TargetCharacter->Implements<UCombatInterface>())
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FCaveGameplayTags::Get().Abilities_Common_HitReact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+		}
+	}
+}
 
 
 void UCaveAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength)

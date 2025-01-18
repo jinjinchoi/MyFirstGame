@@ -117,11 +117,15 @@ public:
 #pragma endregion
 
 #pragma region AbilitySystem Startup
+	
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
 	static UCharacterClassInfoDataAsset* GetCharacterClassInfo(const UObject* WorldContextObject);
 	
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttribute(const UObject* WorldContextObject, const ECharacterClass& CharacterClass, const float Level, UAbilitySystemComponent* ASC);
+
+	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
+	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC);
 
 #pragma endregion
 };

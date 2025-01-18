@@ -9,6 +9,7 @@
 #include "UI/WidgetController/CaveWidgetController.h"
 #include "CaveEnemy.generated.h"
 
+struct FGameplayTag;
 class UWidgetComponent;
 /**
  * 
@@ -33,8 +34,6 @@ public:
 	FOnAttributeChangedDelegate OnMaxHealthChangedDelegate;
 	/* end Overlay Widget Controller */
 
-
-
 protected:
 	/* Engine */
 	virtual void BeginPlay() override;
@@ -45,6 +44,8 @@ protected:
 	virtual void InitializeDefaultAttributes() const override;
 	/* end Cave Character Base */
 	
+	void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Information")
 	int32 EnemyLevel = 1;
 
@@ -53,5 +54,10 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
-	
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	float BaseWalkSpeed = 250.f;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
 };

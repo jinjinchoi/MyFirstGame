@@ -37,16 +37,28 @@ FVector ACaveCharacterBase::GetWeaponSocketLocation_Implementation()
 	return GetMesh()->GetSocketLocation(WeaponTipSocketName);
 }
 
+UAnimMontage* ACaveCharacterBase::GetHitReactMontage_Implementation()
+{
+	if (HitReactMontages.Num() == 0) return nullptr;
+
+	return HitReactMontages[FMath::RandRange(0, HitReactMontages.Num() - 1)];
+	
+}
+
 
 void ACaveCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	
 	
 }
 
 void ACaveCharacterBase::InitAbilityActorInfo()
 {
 }
+
+
 
 void ACaveCharacterBase::InitializeDefaultAttributes() const
 {

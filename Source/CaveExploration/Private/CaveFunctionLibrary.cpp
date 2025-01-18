@@ -348,4 +348,18 @@ void UCaveFunctionLibrary::InitializeDefaultAttribute(const UObject* WorldContex
 	
 }
 
+void UCaveFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+{
+	const UCharacterClassInfoDataAsset* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if (!CharacterClassInfo) return;
+
+	for (TSubclassOf<UGameplayAbility> AbilityClass : CharacterClassInfo->CommonAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		ASC->GiveAbility(AbilitySpec);
+	}
+
+	//TODO : 추가해야함
+}
+
 

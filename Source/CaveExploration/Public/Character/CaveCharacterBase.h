@@ -27,6 +27,7 @@ public:
 
 	/* Combat Interface */
 	virtual FVector GetWeaponSocketLocation_Implementation() override;
+	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	/* end Combat Interface */
 	
 	
@@ -38,7 +39,6 @@ protected:
 	/* Engine */
 
 	virtual void InitAbilityActorInfo();
-
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -81,6 +81,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	FName WeaponTipSocketName = FName("WeaponTipSocket");
+
+	UPROPERTY(EditDefaultsOnly, Category = Combat)
+	TArray<UAnimMontage*> HitReactMontages;
 	
 	
 };

@@ -7,6 +7,7 @@
 #include "Engine/DataAsset.h"
 #include "CharacterClassInfoDataAsset.generated.h"
 
+class UGameplayAbility;
 class UGameplayEffect;
 
 UENUM(BlueprintType)
@@ -59,6 +60,6 @@ public:
 	TSubclassOf<UGameplayEffect> VitalAttributes;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Common Class Defaults")
-	TArray<TSubclassOf<UGameplayEffect>> CommonAbilities;
+	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
 
 };

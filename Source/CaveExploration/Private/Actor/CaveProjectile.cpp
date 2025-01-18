@@ -3,6 +3,7 @@
 
 #include "Actor/CaveProjectile.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "CaveFunctionLibrary.h"
 #include "Components/SphereComponent.h"
@@ -56,6 +57,18 @@ void ACaveProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 	if (HasAuthority())
 	{
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			if (DamageEffectParams.bIsKnockback)
+			{
+				FRotator Rotation = GetActorRotation();
+				Rotation.Pitch = KnockbackPitch;
+				const FVector KnockbackDirection = Rotation.Vector();
+				DamageEffectParams.KnockbackDirection = KnockbackDirection * DamageEffectParams.KnockbackForceMafnitude;
+			}
+			DamageEffectParams.TartgetAbilitySystemComponent = TargetASC;
+			UCaveFunctionLibrary::ApplyDamageEffect(DamageEffectParams);
+		}
 		Destroy();
 	}
 	else
