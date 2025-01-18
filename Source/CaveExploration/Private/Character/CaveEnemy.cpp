@@ -1,0 +1,76 @@
+// Copyright Jonwoo-Choi
+
+
+#include "Character//CaveEnemy.h"
+
+#include "CaveFunctionLibrary.h"
+#include "AbilitySystem/CaveAbilitySystemComponent.h"
+#include "AbilitySystem/CaveAttributeSet.h"
+#include "Components/WidgetComponent.h"
+#include "UI/Widget/CaveUserWidget.h"
+
+ACaveEnemy::ACaveEnemy()
+{
+	Tags.Add(FName("Enemy"));
+	
+	AbilitySystemComponent = CreateDefaultSubobject<UCaveAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	AttributeSet = CreateDefaultSubobject<UCaveAttributeSet>("AttributeSet");
+
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
+	HealthBar->SetupAttachment(GetRootComponent());
+}
+
+int32 ACaveEnemy::GetCharacterLevel_Implementation() const
+{
+	return EnemyLevel;
+}
+
+void ACaveEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	InitAbilityActorInfo();
+
+	if (UCaveUserWidget* CaveUserWidget = Cast<UCaveUserWidget>(HealthBar->GetUserWidgetObject()))
+	{
+		CaveUserWidget->SetWidgetController(this);
+	}
+
+	if (const UCaveAttributeSet* CaveAS = Cast<UCaveAttributeSet>(AttributeSet))
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CaveAS->GetHealthAttribute()).AddLambda
+		([this](const FOnAttributeChangeData& Data)
+		{
+			OnHealthChangedDelegate.Broadcast(Data.NewValue);
+		});
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CaveAS->GetMaxHealthAttribute()).AddLambda
+		([this](const FOnAttributeChangeData& Data)
+		{
+			OnMaxHealthChangedDelegate.Broadcast(Data.NewValue);
+		});
+		
+		OnHealthChangedDelegate.Broadcast(CaveAS->GetHealth());
+		OnMaxHealthChangedDelegate.Broadcast(CaveAS->GetMaxHealth());
+	}
+
+}
+
+void ACaveEnemy::InitAbilityActorInfo()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+	if (HasAuthority())
+	{
+		InitializeDefaultAttributes();
+	}
+	
+}
+
+void ACaveEnemy::InitializeDefaultAttributes() const
+{
+	UCaveFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnemyLevel, AbilitySystemComponent);
+}

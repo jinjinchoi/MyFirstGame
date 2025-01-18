@@ -1,0 +1,38 @@
+# Unreal Engine 기본 설정
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+*.vscode/
+
+# Binaries, Intermediate 및 Saved 폴더 제외
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vscode/
+
+# 빌드 시 생성되는 파일
+*.xcodeproj
+*.xcworkspace
+*.opensdf
+*.log
+*.tmp
+*.dmp
+*.ipdb
+*.iobj
+
+# macOS 및 Windows 시스템 파일
+.DS_Store
+Thumbs.db
+
+# Unreal 프로젝트 설정 파일
+*.ini~
+*.vscode/
+
+# Content 폴더 제외
+Content/
+ 
+ 
