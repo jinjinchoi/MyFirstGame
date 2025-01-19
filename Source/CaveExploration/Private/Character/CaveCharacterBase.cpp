@@ -80,14 +80,18 @@ void ACaveCharacterBase::DeathReactTagChange(const FGameplayTag CallbackTag, int
 	bIsDead = NewCount > 0;
 	if (!bIsDead) return;
 	
+	
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
-	Weapon->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	Weapon->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	Weapon->SetCollisionObjectType(ECC_PhysicsBody);
+	Weapon->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	Weapon->SetSimulatePhysics(true);
 	
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	
 }
 

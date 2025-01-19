@@ -34,7 +34,7 @@ public:
 	FOnAttributeChangedDelegate OnMaxManaChanged;
 	/* end Cave Widget Controller */
 
-	
+protected:
 
 	
 };

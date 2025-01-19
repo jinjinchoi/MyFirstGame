@@ -156,11 +156,11 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Type.Passive"));
 
 	
-	GameplayTags.Abilities_Fire_FireSlash = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Fire.FireSlash"));
+	GameplayTags.Abilities_Spell_Fire_FireSlash = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Spell.Fire.FireSlash"));
 
-	GameplayTags.Abilities_Physical_MeleeAttack = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Physical.MeleeAttack"));
+	GameplayTags.Abilities_Spell_Physical_MeleeAttack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Spell.Physical.MeleeAttack"));
 
 #pragma endregion
 

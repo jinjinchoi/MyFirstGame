@@ -24,6 +24,20 @@ void UCaveWidgetController::BindCallbacksToDependencies()
 {
 }
 
+void UCaveWidgetController::BroadCastAbilityInfo()
+{
+	if (!GetCaveAbilitySystemComponent()->bStartupAbilitiesGiven) return;
+
+	FForEachAbilityDelegate BroadCastDelegate;
+	BroadCastDelegate.BindLambda([this](const FGameplayAbilitySpec& AbilitySpec)
+	{
+		FCaveAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(UCaveAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
+		Info.InputTag = UCaveAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+		AbilityInfoDelegate.Broadcast(Info);
+	});
+	GetCaveAbilitySystemComponent()->ForEachAbility(BroadCastDelegate);
+}
+
 ACavePlayerController* UCaveWidgetController::GetCavePlayerController()
 {
 	if (CavePlayerController == nullptr)

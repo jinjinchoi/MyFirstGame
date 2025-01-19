@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
-#include "UObject/NoExportTypes.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "CaveWidgetController.generated.h"
 
 class UCaveAttributeSet;
@@ -13,8 +13,10 @@ class ACavePlayerState;
 class ACavePlayerController;
 class UAttributeSet;
 class UAbilitySystemComponent;
+class UAbilityInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedDelegate, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoDelegate, const FCaveAbilityInfo&, Info);
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
@@ -57,7 +59,15 @@ public:
 	
 	virtual void BindCallbacksToDependencies();
 
+	void BroadCastAbilityInfo();
+
+	FAbilityInfoDelegate AbilityInfoDelegate;
+
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
+	
+	
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<APlayerController> PlayerController;
 

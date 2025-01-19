@@ -90,8 +90,8 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Type_Offensive;
 	FGameplayTag Abilities_Type_Passive;
 
-	FGameplayTag Abilities_Fire_FireSlash;
-	FGameplayTag Abilities_Physical_MeleeAttack;
+	FGameplayTag Abilities_Spell_Fire_FireSlash;
+	FGameplayTag Abilities_Spell_Physical_MeleeAttack;
 
 #pragma endregion
 

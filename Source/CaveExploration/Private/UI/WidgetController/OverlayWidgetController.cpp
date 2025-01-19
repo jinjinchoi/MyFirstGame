@@ -41,5 +41,17 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	{
 		OnMaxManaChanged.Broadcast(Data.NewValue);
 	});
-	
+
+	if (GetCaveAbilitySystemComponent())
+	{
+		if (GetCaveAbilitySystemComponent()->bStartupAbilitiesGiven)
+		{
+			BroadCastAbilityInfo();
+		}
+		else
+		{
+			GetCaveAbilitySystemComponent()->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::BroadCastAbilityInfo);
+		}
+	}
 }
+

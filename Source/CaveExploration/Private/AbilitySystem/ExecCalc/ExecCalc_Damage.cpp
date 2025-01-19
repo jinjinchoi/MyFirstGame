@@ -134,6 +134,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	// 방어력 & 방어력 관통력 계산
 	float TargetArmor = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().ArmorDef, EvaluateParams, TargetArmor);
+	TargetArmor = FMath::Max(TargetArmor, 0.f);
 	
 	float ArmorPenetration = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().ArmorPenetrationDef, EvaluateParams, ArmorPenetration);
@@ -141,7 +142,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	float EffectiveTargetArmor = TargetArmor * (100.f - ArmorPenetration) / 100.f;
 
-	Damage *= (100 - EffectiveTargetArmor * 0.25f) / 100.f;
+	float DamageReductionFactor = 1.f / (1.f + EffectiveTargetArmor * 0.01f);
+	Damage *= DamageReductionFactor;
 
 	// 치명타 공격 계산
 	float CriticalHitChance = 0.f;
@@ -156,9 +158,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	UCaveFunctionLibrary::SetIsCriticalHit(EffectContext, bCriticalHit);
 
 	Damage = bCriticalHit ? 1.5 * Damage + CriticalHitDamage : Damage;
-
 	
-	const FGameplayModifierEvaluatedData EvaluatedData(UCaveAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, 0);
+	const FGameplayModifierEvaluatedData EvaluatedData(UCaveAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
 	
 }
