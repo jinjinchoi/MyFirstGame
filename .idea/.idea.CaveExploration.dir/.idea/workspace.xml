@@ -10,6 +10,7 @@
     <list default="true" id="59e04396-5efe-46be-bea4-946524d7eaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/ExecCalc/ExecCalc_Damage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/ExecCalc/ExecCalc_Damage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/ExecCalc/ExecCalc_Damage.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/ExecCalc/ExecCalc_Damage.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +185,8 @@
       <workItem from="1737184281649" duration="6929000" />
       <workItem from="1737195481168" duration="12343000" />
       <workItem from="1737252307517" duration="3172000" />
-      <workItem from="1737259665808" duration="3728000" />
+      <workItem from="1737259665808" duration="4188000" />
+      <workItem from="1737268871056" duration="2445000" />
     </task>
     <servers />
   </component>

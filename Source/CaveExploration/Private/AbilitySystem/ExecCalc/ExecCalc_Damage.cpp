@@ -89,7 +89,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const FGameplayTagContainer* SourceTag = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTag = Spec.CapturedTargetTags.GetAggregatedTags();
 
-	const FGameplayEffectContextHandle& EffectContext = Spec.GetContext();
+	FGameplayEffectContextHandle EffectContext = Spec.GetContext();
 
 	FAggregatorEvaluateParameters EvaluateParams;
 	EvaluateParams.SourceTags = SourceTag;
@@ -97,22 +97,69 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	const FGameplayTag& DamageType = UCaveFunctionLibrary::GetDamageType(EffectContext);
 
+	// Set By Caller로 데미지 불러오기
 	float Damage = Spec.GetSetByCallerMagnitude(DamageType, false);
+
+	// 데미지 타입에 따른 추가 데미지 계산
+	if (DamageType.MatchesTagExact(GameplayTags.Damage_Fire) || DamageType.MatchesTagExact(GameplayTags.Damage_Ice))
+	{
+		float Intelligence = 0.f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().IntelligenceDef, EvaluateParams, Intelligence);
+		Intelligence = FMath::Max(Intelligence, 0.f);
+		
+		Damage += (Intelligence * 0.2);
+	}
+	if (DamageType.MatchesTagExact(GameplayTags.Damage_Physical))
+	{
+		float Strength = 0.f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().StrengthDef, EvaluateParams, Strength);
+		Strength = FMath::Max(Strength, 0.f);
+
+		Damage += (Strength * 0.2);
+	}
+	
+	// 데미지 저항 계산
 	if (Damage > 0.f)
 	{
 		const FGameplayEffectAttributeCaptureDefinition& ResistanceDef = TagsToCapturedAttributes[DamageType];
-		float Resistance = 0.f;
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(ResistanceDef, EvaluateParams, Resistance);
-		Resistance = FMath::Clamp(Resistance, 0.f, 1.f);
+		float TargetResistance = 0.f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(ResistanceDef, EvaluateParams, TargetResistance);
+		TargetResistance = FMath::Clamp(TargetResistance, 0.f, 100.f);
 
 		// TODO : 방사형 데미지 적용하려면 여기서 해야함
 		
-		Damage *= (100.f - Resistance) / 100.f;
-		
+		Damage *= (100.f - TargetResistance) / 100.f;
 	}
 
+	// 방어력 & 방어력 관통력 계산
+	float TargetArmor = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().ArmorDef, EvaluateParams, TargetArmor);
 	
+	float ArmorPenetration = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().ArmorPenetrationDef, EvaluateParams, ArmorPenetration);
+	ArmorPenetration = FMath::Clamp(ArmorPenetration, 0.f, 100.f);
 	
+	float EffectiveTargetArmor = TargetArmor * (100.f - ArmorPenetration) / 100.f;
+
+	Damage *= (100 - EffectiveTargetArmor * 0.25f) / 100.f;
+
+	// 치명타 공격 계산
+	float CriticalHitChance = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().CriticalHitChanceDef, EvaluateParams, CriticalHitChance);
+	CriticalHitChance = FMath::Clamp(CriticalHitChance, 0.f, 100.f);
+
+	float CriticalHitDamage = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().CriticalHitDamageDef, EvaluateParams, CriticalHitDamage);
+	CriticalHitDamage = FMath::Max(CriticalHitDamage, 0.f);
+
+	const bool bCriticalHit = FMath::FRandRange(1.f, 100.f) < CriticalHitChance;
+	UCaveFunctionLibrary::SetIsCriticalHit(EffectContext, bCriticalHit);
+
+	Damage = bCriticalHit ? 1.5 * Damage + CriticalHitDamage : Damage;
 
 	
+	const FGameplayModifierEvaluatedData EvaluatedData(UCaveAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, 0);
+	OutExecutionOutput.AddOutputModifier(EvaluatedData);
+	
 }
+
