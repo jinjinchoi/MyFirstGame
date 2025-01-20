@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "CaveAbilityTypes.h"
 #include "CaveGameplayTags.h"
+#include "AbilitySystem/Data/CharacterClassInfoDataAsset.h"
 #include "Engine/OverlapResult.h"
 #include "Game/CaveGameModeBase.h"
 #include "Interaction/CombatInterface.h"
@@ -319,6 +320,8 @@ TArray<FVector> UCaveFunctionLibrary::EvenlyRotatedVectors(const FVector& Forwar
 	return Vectors;
 }
 
+
+
 UCharacterClassInfoDataAsset* UCaveFunctionLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
 	const ACaveGameModeBase* CaveGameMode =  Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
@@ -368,6 +371,18 @@ void UCaveFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObjec
 	}
 
 	//TODO : 추가해야함
+}
+
+int32 UCaveFunctionLibrary::GetXPRewardForClassAndLevel(const UObject* WorldContextObject, const ECharacterClass CharacterClass, const int32 CharacterLevel)
+{
+	const UCharacterClassInfoDataAsset* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if (!CharacterClassInfo) return 0;
+
+	const FCharacterClassDefaultInfo& Info = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+	const float XPReward = Info.XPReward.GetValueAtLevel(CharacterLevel);
+
+	return static_cast<int32>(XPReward);
+	
 }
 
 

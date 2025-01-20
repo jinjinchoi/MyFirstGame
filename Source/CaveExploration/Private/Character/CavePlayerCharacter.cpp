@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "CaveGameplayTags.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
 #include "Player/CavePlayerState.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -36,6 +37,8 @@ ACavePlayerCharacter::ACavePlayerCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	CharacterClass = ECharacterClass::Player;
 }
 
 void ACavePlayerCharacter::PossessedBy(AController* NewController)
@@ -59,6 +62,81 @@ int32 ACavePlayerCharacter::GetCharacterLevel_Implementation() const
 	const ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
 	check(CavePlayerState);
 	return CavePlayerState->GetPlayerLevel();
+}
+
+int32 ACavePlayerCharacter::FindLevelForXP_Implementation(int32 InXP) const
+{
+	const ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	return CavePlayerState->LevelUpInfo->FindLevelForXP(InXP);
+}
+
+int32 ACavePlayerCharacter::GetXP_Implementation() const
+{
+	const ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	return CavePlayerState->GetXP();
+}
+
+int32 ACavePlayerCharacter::GetAttributePoints_Implementation() const
+{
+	const ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	return CavePlayerState->GetAttributePoints();
+}
+
+int32 ACavePlayerCharacter::GetSpellPoints_Implementation() const
+{
+	const ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	return CavePlayerState->GetSpellPoints();
+}
+
+int32 ACavePlayerCharacter::GetAttributePointsReward_Implementation(int32 InLevel) const
+{
+	const ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	return CavePlayerState->LevelUpInfo->LevelUpInformation[InLevel].AttributePointAward;
+}
+
+int32 ACavePlayerCharacter::GetSpellPointsReward_Implementation(int32 InLevel) const
+{
+	const ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	return CavePlayerState->LevelUpInfo->LevelUpInformation[InLevel].SpellPointAward;
+}
+
+void ACavePlayerCharacter::AddToXP_Implementation(int32 InXP)
+{
+	ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	CavePlayerState->AddTpXP(InXP);
+}
+
+void ACavePlayerCharacter::AddToPlayerLevel_Implementation(int32 InLevel)
+{
+	ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	CavePlayerState->AddToLevel(InLevel);
+}
+
+void ACavePlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
+{
+	ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	CavePlayerState->AddToSpellPoints(InSpellPoints);
+}
+
+void ACavePlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
+{
+	ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	CavePlayerState->AddToAttributePoints(InAttributePoints);
+}
+
+void ACavePlayerCharacter::LevelUp_Implementation()
+{
+	
 }
 
 void ACavePlayerCharacter::InitAbilityActorInfo()

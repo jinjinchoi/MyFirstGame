@@ -5,6 +5,8 @@
 
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "AbilitySystem/CaveAttributeSet.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
+#include "Player/CavePlayerState.h"
 
 void UOverlayWidgetController::BroadCastInitialValues()
 {
@@ -17,6 +19,9 @@ void UOverlayWidgetController::BroadCastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
+	GetCavePlayerState()->OnXPChangeDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	
+	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetCaveAttributeSet()->GetHealthAttribute()).
 	AddLambda([this](const FOnAttributeChangeData& Data)
 	{
@@ -51,6 +56,28 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		{
 			GetCaveAbilitySystemComponent()->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::BroadCastAbilityInfo);
 		}
+	}
+}
+
+void UOverlayWidgetController::OnXPChanged(int32 NewXP)
+{
+	const ULevelUpInfo* LevelUpInfo = GetCavePlayerState()->LevelUpInfo;
+
+	check(LevelUpInfo);
+
+	const int32 Level = LevelUpInfo->FindLevelForXP(NewXP);
+	const int32 MaxLevel = LevelUpInfo->LevelUpInformation.Num() - 1;
+
+	if (Level <= MaxLevel && Level > 0)
+	{
+		const int32 LevelUpRequirement = LevelUpInfo->LevelUpInformation[Level].LevelUpRequirement;
+		const int32 PreviousLevelUpRequirement = LevelUpInfo->LevelUpInformation[Level-1].LevelUpRequirement;
+
+		const int32 DeltaLevelRequirement = LevelUpRequirement - PreviousLevelUpRequirement;
+		const int32 XPForThisLevel = NewXP - PreviousLevelUpRequirement;
+
+		const float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(DeltaLevelRequirement);
+		OnXPPercentChangedDelegate.Broadcast(XPBarPercent);
 	}
 }
 

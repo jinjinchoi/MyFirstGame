@@ -7,6 +7,10 @@
 #include "GameFramework/PlayerState.h"
 #include "CavePlayerState.generated.h"
 
+class ULevelUpInfo;
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangedDelegate, int32 /*  New Stat */);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChangedDelegate, int32 /* New Level */, bool /* Is Level Up? */);
+
 class UAttributeSet;
 class UAbilitySystemComponent;
 /**
@@ -30,11 +34,28 @@ public:
 	
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<ULevelUpInfo> LevelUpInfo;
+
+	FOnLevelChangedDelegate OnLevelChangeDelegate;
+	FOnPlayerStatChangedDelegate OnXPChangeDelegate;
+	FOnPlayerStatChangedDelegate OnAttributePointsChangedDelegate;
+	FOnPlayerStatChangedDelegate OnSpellPointsChangedDelegate;
+
 	int32 GetPlayerLevel() const { return Level; }
 	int32 GetXP() const { return XP; }
 	int32 GetAttributePoints() const { return AttributePoints; }
 	int32 GetSpellPoints() const { return SpellPoints; }
 
+	void SetPlayerLevel(const int32 NewLevel);
+	void SetXP(const int32 NewXP);
+	void SetAttributePoints(const int32 NewAttributePoints);
+	void SetSpellPoints(const int32 NewSpellPoints);
+
+	void AddToLevel(const int32 InLevel);
+	void AddTpXP(const int32 InXP);
+	void AddToAttributePoints(const int32 InAttributePoints);
+	void AddToSpellPoints(const int32 InSpellPoints);
 
 private:
 	UPROPERTY()

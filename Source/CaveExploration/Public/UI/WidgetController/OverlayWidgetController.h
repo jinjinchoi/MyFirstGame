@@ -32,9 +32,13 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attribute")
 	FOnAttributeChangedDelegate OnMaxManaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attribute")
+	FOnAttributeChangedDelegate OnXPPercentChangedDelegate;
 	/* end Cave Widget Controller */
 
 protected:
 
+	void OnXPChanged(int32 NewXP);
 	
 };

@@ -10,6 +10,7 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "Interaction/PlayerInterface.h"
 #include "Player/CavePlayerController.h"
 
 UCaveAttributeSet::UCaveAttributeSet()
@@ -116,6 +117,10 @@ void UCaveAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		HandleIncomingDamage(Props);
 	}
+	if (Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
+	{
+		HandleIncomingXP(Props);
+	}
 	
 }
 
@@ -138,6 +143,7 @@ void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 				TagContainer.AddTag(FCaveGameplayTags::Get().Abilities_Common_Death);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
+			SendXPEvent(Props);
 		}
 		else
 		{
@@ -156,7 +162,59 @@ void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 	}
 }
 
-void UCaveAttributeSet::ShowFloatDamage(const FEffectProperties& Props, const float Damage, const bool bIsCriticalHit, const FGameplayTag& DamageType)
+void UCaveAttributeSet::SendXPEvent(const FEffectProperties& Props) const
+{
+	if (Props.TargetCharacter->Implements<UCombatInterface>())
+	{
+		const int32 TargetLevel = ICombatInterface::Execute_GetCharacterLevel(Props.TargetCharacter);
+		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
+		const int32 XPReward = UCaveFunctionLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter, TargetClass, TargetLevel);
+
+		const FCaveGameplayTags& GameplayTag = FCaveGameplayTags::Get();
+		
+		FGameplayEventData Payload;
+		Payload.EventTag = GameplayTag.Attribute_Meta_InComingXP;
+		Payload.EventMagnitude = XPReward;
+		
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTag.Attribute_Meta_InComingXP, Payload);
+	}
+}
+
+void UCaveAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
+{
+	const float LocalIncomingXP = GetIncomingXP();
+	SetIncomingXP(0.f);
+	if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
+	{
+		const int32 CurrentLevel = ICombatInterface::Execute_GetCharacterLevel(Props.SourceCharacter);
+		const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
+
+		const int32 NewLevel = IPlayerInterface::Execute_FindLevelForXP(Props.SourceCharacter, CurrentXP + LocalIncomingXP);
+		const int32 NumLevelUps = NewLevel - CurrentLevel;
+		if (NumLevelUps > 0)
+		{
+			int32 AttributePointsReward = 0;
+			int32 SpellPointsReward = 0;
+			int32 ChangedLevel = CurrentLevel;
+			for (int32 i = 0; i < NumLevelUps; ++i)
+			{
+				AttributePointsReward += IPlayerInterface::Execute_GetAttributePointsReward(Props.SourceCharacter, ChangedLevel);
+				SpellPointsReward += IPlayerInterface::Execute_GetSpellPointsReward(Props.SourceCharacter, ChangedLevel);
+				++ChangedLevel;
+			}
+
+			IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
+			IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
+			IPlayerInterface::Execute_AddToSpellPoints(Props.SourceCharacter, SpellPointsReward);
+
+			IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
+		}
+
+		IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
+	}
+}
+
+void UCaveAttributeSet::ShowFloatDamage(const FEffectProperties& Props, const float Damage, const bool bIsCriticalHit, const FGameplayTag& DamageType) const
 {
 	if (Props.SourceCharacter == Props.TargetCharacter) return;
 
@@ -168,6 +226,8 @@ void UCaveAttributeSet::ShowFloatDamage(const FEffectProperties& Props, const fl
 		}
 	}
 }
+
+
 
 
 void UCaveAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength)

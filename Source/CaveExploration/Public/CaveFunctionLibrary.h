@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "AbilitySystem/Data/CharacterClassInfoDataAsset.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CaveFunctionLibrary.generated.h"
 
@@ -15,9 +14,12 @@ class UAttributeWidgetController;
 class ACaveHUD;
 struct FWidgetControllerParams;
 class UOverlayWidgetController;
+enum class ECharacterClass : uint8;
+
 /**
  * 
  */
+
 UCLASS()
 class CAVEEXPLORATION_API UCaveFunctionLibrary : public UBlueprintFunctionLibrary
 {
@@ -112,11 +114,12 @@ public:
 	
 	UFUNCTION(BlueprintPure, BlueprintCallable, Category="CaveFunctionLibrary|GameplayMechanics")
 	static TArray<FVector> EvenlyRotatedVectors(const FVector& Forward, float Spread, int32 NumOfVectors);
+
 	
 
 #pragma endregion
 
-#pragma region AbilitySystem Startup
+#pragma region AbilitySystem
 	
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
 	static UCharacterClassInfoDataAsset* GetCharacterClassInfo(const UObject* WorldContextObject);
@@ -126,6 +129,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
 	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC);
+
+	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, const ECharacterClass CharacterClass, const int32 CharacterLevel);
 
 #pragma endregion
 };

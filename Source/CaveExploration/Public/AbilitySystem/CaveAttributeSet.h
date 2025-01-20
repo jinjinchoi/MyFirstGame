@@ -207,6 +207,10 @@ public:
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UCaveAttributeSet, IncomingDamage);
 
+	UPROPERTY(BlueprintReadOnly, Category = "MetaAttribute")
+	FGameplayAttributeData IncomingXP;
+	ATTRIBUTE_ACCESSORS(UCaveAttributeSet, IncomingXP);
+
 
 
 	
@@ -215,7 +219,10 @@ public:
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props);
 	void HandleIncomingDamage(const FEffectProperties& Props);
-	void ShowFloatDamage(const FEffectProperties& Props, const float Damage, const bool bIsCriticalHit, const FGameplayTag& DamageType);
+	void ShowFloatDamage(const FEffectProperties& Props, const float Damage, const bool bIsCriticalHit, const FGameplayTag& DamageType) const;
+	void HandleIncomingXP(const FEffectProperties& Props);
+	void SendXPEvent(const FEffectProperties& Props) const;
 };
+
 
 

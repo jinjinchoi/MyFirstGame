@@ -44,6 +44,11 @@ struct FCaveGameplayTags
 	
 #pragma endregion
 
+#pragma region MetaAttributes
+	
+	FGameplayTag Attribute_Meta_InComingXP;
+
+#pragma endregion
 	
 #pragma region Damage Type
 

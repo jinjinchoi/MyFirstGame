@@ -67,6 +67,15 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 #pragma endregion
 
+#pragma region Meta Attributes
+
+	GameplayTags.Attribute_Meta_InComingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attribute.Meta.IncomingXP"));
+	
+	
+#pragma endregion
+
+	
 	
 #pragma region Damage Type
 	

@@ -7,6 +7,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
+#include "AbilitySystem/Data/CharacterClassInfoDataAsset.h"
 #include "CaveCharacterBase.generated.h"
 
 struct FGameplayTag;
@@ -32,6 +33,7 @@ public:
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual UAnimMontage* GetDeathMontage_Implementation() override;
 	virtual bool IsDead_Implementation() const override;
+	virtual ECharacterClass GetCharacterClass_Implementation() const override;
 	/* end Combat Interface */
 	
 	
@@ -54,7 +56,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	bool bIsDead = false;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Information")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
 	
 #pragma region Attribute And Ability
@@ -85,6 +89,9 @@ protected:
 private:
 	UPROPERTY(EditAnywhere, Category=Abilities)
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditAnywhere, Category=Abilities)
+	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMeshComponent> Weapon;

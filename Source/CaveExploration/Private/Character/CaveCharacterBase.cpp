@@ -66,6 +66,11 @@ bool ACaveCharacterBase::IsDead_Implementation() const
 	return bIsDead;
 }
 
+ECharacterClass ACaveCharacterBase::GetCharacterClass_Implementation() const
+{
+	return CharacterClass;
+}
+
 
 void ACaveCharacterBase::InitAbilityActorInfo()
 {
@@ -123,6 +128,7 @@ void ACaveCharacterBase::AddCharacterAbilities()
 
 	UCaveAbilitySystemComponent* CaveASC = Cast<UCaveAbilitySystemComponent>(AbilitySystemComponent);
 	CaveASC->AddCharacterAbilities(StartupAbilities);
+	CaveASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
 	
 	
 }
