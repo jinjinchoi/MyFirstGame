@@ -59,14 +59,15 @@ public:
 	
 	virtual void BindCallbacksToDependencies();
 
+	UFUNCTION(BlueprintCallable)
 	void BroadCastAbilityInfo();
 
+	UPROPERTY(BlueprintAssignable)
 	FAbilityInfoDelegate AbilityInfoDelegate;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
-	
 	
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<APlayerController> PlayerController;

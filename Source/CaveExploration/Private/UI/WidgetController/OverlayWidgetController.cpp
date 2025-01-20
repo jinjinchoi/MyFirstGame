@@ -12,8 +12,7 @@ void UOverlayWidgetController::BroadCastInitialValues()
 	OnMaxHealthChanged.Broadcast(GetCaveAttributeSet()->GetMaxHealth());
 	OnManaChanged.Broadcast(GetCaveAttributeSet()->GetMana());
 	OnMaxManaChanged.Broadcast(GetCaveAttributeSet()->GetMaxMana());
-
-
+	
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()

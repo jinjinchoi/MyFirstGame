@@ -29,5 +29,10 @@ public:
 
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+
+protected:
+	/* Ability System Component */
+	virtual void OnRep_ActivateAbilities() override;
+	/* end Ability System Component */
 };
 

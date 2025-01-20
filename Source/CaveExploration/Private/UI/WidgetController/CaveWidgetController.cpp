@@ -28,6 +28,8 @@ void UCaveWidgetController::BroadCastAbilityInfo()
 {
 	if (!GetCaveAbilitySystemComponent()->bStartupAbilitiesGiven) return;
 
+	check(AbilityInfo);
+
 	FForEachAbilityDelegate BroadCastDelegate;
 	BroadCastDelegate.BindLambda([this](const FGameplayAbilitySpec& AbilitySpec)
 	{

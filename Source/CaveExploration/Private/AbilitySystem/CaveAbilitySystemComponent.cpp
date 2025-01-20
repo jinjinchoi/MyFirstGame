@@ -110,3 +110,14 @@ FGameplayTag UCaveAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 
 	return FGameplayTag();
 }
+
+void UCaveAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+
+	if (!bStartupAbilitiesGiven)
+	{
+		bStartupAbilitiesGiven = true;
+		AbilitiesGivenDelegate.Broadcast();
+	}
+}
