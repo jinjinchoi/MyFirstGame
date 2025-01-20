@@ -20,6 +20,10 @@ void UOverlayWidgetController::BroadCastInitialValues()
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	GetCavePlayerState()->OnXPChangeDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	GetCavePlayerState()->OnLevelChangeDelegate.AddLambda([this](const int32 NewLevel, const bool bIsLevelUp)
+	{
+		OnPlayerLevelChangedDelegate.Broadcast(NewLevel, bIsLevelUp);
+	});
 	
 	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetCaveAttributeSet()->GetHealthAttribute()).

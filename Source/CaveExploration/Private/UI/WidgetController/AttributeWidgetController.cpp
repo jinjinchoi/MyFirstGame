@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/CaveAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfoDataAsset.h"
+#include "Player/CavePlayerState.h"
 
 void UAttributeWidgetController::BindCallbacksToDependencies()
 {
@@ -18,6 +19,11 @@ void UAttributeWidgetController::BindCallbacksToDependencies()
 			BroadCastAttributeInfo(Info.AttributeTag);
 		});
 	}
+
+	GetCavePlayerState()->OnAttributePointsChangedDelegate.AddLambda([this](int32 NewValue)
+	{
+		AttributeChangedDelegate.Broadcast(NewValue);
+	});
 }
 
 void UAttributeWidgetController::BroadCastInitialValues()

@@ -28,6 +28,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FAttributeInfoDelegate AttributeInfoDelegate;
 
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
+	FOnPlayerStateChangeDelegate AttributeChangedDelegate;
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfoDataAsset> AttributeInfo;

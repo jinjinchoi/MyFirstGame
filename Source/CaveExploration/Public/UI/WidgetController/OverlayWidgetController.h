@@ -6,7 +6,8 @@
 #include "UI/WidgetController/CaveWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLevelChangeDelegate, int32, NewLevel, bool, bIsLevelUp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedDelegate, float, NewValue);
 
 /**
  * 
@@ -37,6 +38,9 @@ public:
 	FOnAttributeChangedDelegate OnXPPercentChangedDelegate;
 	/* end Cave Widget Controller */
 
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attribute")
+	FOnLevelChangeDelegate OnPlayerLevelChangedDelegate;
+	
 protected:
 
 	void OnXPChanged(int32 NewXP);

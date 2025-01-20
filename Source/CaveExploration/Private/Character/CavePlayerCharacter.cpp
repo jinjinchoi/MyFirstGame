@@ -12,6 +12,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/CavePlayerController.h"
 #include "UI/HUD/CaveHUD.h"
+#include "NiagaraComponent.h"
 
 ACavePlayerCharacter::ACavePlayerCharacter()
 {
@@ -30,13 +31,17 @@ ACavePlayerCharacter::ACavePlayerCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0, 400, 0);
+	GetCharacterMovement()->RotationRate = FRotator(0, 540, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	LevelUpNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("LevelUpNiagaraComponent");
+	LevelUpNiagaraComponent->SetupAttachment(GetRootComponent());
+	LevelUpNiagaraComponent->bAutoActivate = false;
 
 	CharacterClass = ECharacterClass::Player;
 }
@@ -136,7 +141,19 @@ void ACavePlayerCharacter::AddToAttributePoints_Implementation(int32 InAttribute
 
 void ACavePlayerCharacter::LevelUp_Implementation()
 {
-	
+	MulticastLevelUpParticles();
+}
+
+void ACavePlayerCharacter::MulticastLevelUpParticles_Implementation() const
+{
+	if (IsValid(LevelUpNiagaraComponent))
+	{
+		const FVector CameraLocation = FollowCamera->GetComponentLocation();
+		const FVector NiagaraSystemLocation = LevelUpNiagaraComponent->GetComponentLocation();
+		const FRotator ToCameraRotation = (CameraLocation - NiagaraSystemLocation).Rotation();
+		LevelUpNiagaraComponent->SetWorldRotation(ToCameraRotation);
+		LevelUpNiagaraComponent->Activate(true);
+	}
 }
 
 void ACavePlayerCharacter::InitAbilityActorInfo()
@@ -179,3 +196,5 @@ void ACavePlayerCharacter::DeathReactTagChange(const FGameplayTag CallbackTag, i
 	Super::DeathReactTagChange(CallbackTag, NewCount);
 	
 }
+
+

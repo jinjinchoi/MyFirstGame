@@ -124,6 +124,23 @@ void UCaveAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	
 }
 
+void UCaveAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+	if (Attribute == GetMaxHealthAttribute() && bRecoverHealth)
+	{
+		SetHealth(GetMaxHealth());
+		bRecoverHealth = false;
+	}
+
+	if (Attribute == GetMaxManaAttribute() && bRecoverMana)
+	{
+		SetMana(GetMaxMana());
+		bRecoverMana = false;
+	}
+}
+
 void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 {
 	const float LocalIncomingDamage = GetIncomingDamage();
@@ -210,6 +227,9 @@ void UCaveAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 			IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
 		}
 
+		bRecoverHealth = true;
+		bRecoverMana = true;
+		
 		IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
 	}
 }

@@ -7,6 +7,7 @@
 #include "Interaction/PlayerInterface.h"
 #include "CavePlayerCharacter.generated.h"
 
+class UNiagaraComponent;
 class USpringArmComponent;
 class UCameraComponent;
 /**
@@ -50,7 +51,14 @@ protected:
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	/* end CaveCharacterBase */
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
+
 private:
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLevelUpParticles() const;
+	
 
 # pragma region Components
 	UPROPERTY(EditDefaultsOnly)

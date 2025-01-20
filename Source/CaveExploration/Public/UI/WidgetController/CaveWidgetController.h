@@ -15,8 +15,8 @@ class UAttributeSet;
 class UAbilitySystemComponent;
 class UAbilityInfo;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedDelegate, float, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoDelegate, const FCaveAbilityInfo&, Info);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChangeDelegate, int32, NewValue);
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams

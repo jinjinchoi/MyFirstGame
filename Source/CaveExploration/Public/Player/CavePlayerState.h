@@ -9,7 +9,7 @@
 
 class ULevelUpInfo;
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangedDelegate, int32 /*  New Stat */);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChangedDelegate, int32 /* New Level */, bool /* Is Level Up? */);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChangedDelegate, const int32 /* New Level */, const bool /* Is Level Up */);
 
 class UAttributeSet;
 class UAbilitySystemComponent;

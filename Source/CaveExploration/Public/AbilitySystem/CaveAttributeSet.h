@@ -63,6 +63,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 	/* end Engine */
 
 
@@ -222,6 +223,9 @@ private:
 	void ShowFloatDamage(const FEffectProperties& Props, const float Damage, const bool bIsCriticalHit, const FGameplayTag& DamageType) const;
 	void HandleIncomingXP(const FEffectProperties& Props);
 	void SendXPEvent(const FEffectProperties& Props) const;
+
+	bool bRecoverHealth = false;
+	bool bRecoverMana = false;
 };
 
 
