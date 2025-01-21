@@ -385,4 +385,26 @@ int32 UCaveFunctionLibrary::GetXPRewardForClassAndLevel(const UObject* WorldCont
 	
 }
 
+TArray<FGameplayTag> UCaveFunctionLibrary::CallerMagnitudeTags(TSubclassOf<UGameplayEffect> InGameplayEffect)
+{
+	TArray<FGameplayTag> ResultTag;
+	
+	if (!IsValid(InGameplayEffect)) return ResultTag;
+
+	UGameplayEffect* GameplayEffect = NewObject<UGameplayEffect>(GetTransientPackage(), InGameplayEffect);
+
+	if (!GameplayEffect) return ResultTag;
+
+	// Gameplay Effect의 Modifier 들을 순회 하여 ModifierMagnitude 계산 방식이 SetByCaller 인지 확인하고 맞으면 데이터 태그를 ResultTag 배열에 추가
+	for (const FGameplayModifierInfo& ModifierInfo : GameplayEffect->Modifiers)
+	{
+		if (ModifierInfo.ModifierMagnitude.GetMagnitudeCalculationType() == EGameplayEffectMagnitudeCalculation::SetByCaller)
+		{
+			ResultTag.Add(ModifierInfo.ModifierMagnitude.GetSetByCallerFloat().DataTag);
+		}
+	}
+
+	return ResultTag;
+}
+
 

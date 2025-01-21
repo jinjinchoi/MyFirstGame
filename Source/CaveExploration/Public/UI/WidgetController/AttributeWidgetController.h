@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoDelegate, const FCaveA
 /**
  * 
  */
-UCLASS(BlueprintType, Blueprintable)
+UCLASS()
 class CAVEEXPLORATION_API UAttributeWidgetController : public UCaveWidgetController
 {
 	GENERATED_BODY()
@@ -31,6 +31,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnPlayerStateChangeDelegate AttributeChangedDelegate;
 
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfoDataAsset> AttributeInfo;
@@ -38,3 +41,5 @@ protected:
 private:
 	void BroadCastAttributeInfo(const FGameplayTag& AttributeTag) const;
 };
+
+

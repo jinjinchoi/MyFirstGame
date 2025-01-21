@@ -45,7 +45,7 @@ struct FWidgetControllerParams
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class CAVEEXPLORATION_API UCaveWidgetController : public UObject
 {
 	GENERATED_BODY()

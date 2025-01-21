@@ -3,6 +3,7 @@
 
 #include "UI/WidgetController/AttributeWidgetController.h"
 
+#include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "AbilitySystem/CaveAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfoDataAsset.h"
 #include "Player/CavePlayerState.h"
@@ -34,6 +35,8 @@ void UAttributeWidgetController::BroadCastInitialValues()
 	{
 		BroadCastAttributeInfo(Info.AttributeTag);
 	}
+
+	AttributeChangedDelegate.Broadcast(GetCavePlayerState()->GetAttributePoints());
 }
 
 void UAttributeWidgetController::BroadCastAttributeInfo(const FGameplayTag& AttributeTag) const
@@ -42,4 +45,9 @@ void UAttributeWidgetController::BroadCastAttributeInfo(const FGameplayTag& Attr
 	Info.AttributeValue = Info.AttributeGetter.GetNumericValue(AttributeSet);
 	AttributeInfoDelegate.Broadcast(Info);
 	
+}
+
+void UAttributeWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
+{
+	GetCaveAbilitySystemComponent()->UpgradeAttribute(AttributeTag);
 }

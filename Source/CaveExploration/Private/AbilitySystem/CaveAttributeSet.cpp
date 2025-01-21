@@ -225,10 +225,11 @@ void UCaveAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 			IPlayerInterface::Execute_AddToSpellPoints(Props.SourceCharacter, SpellPointsReward);
 
 			IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
+			
+			bRecoverHealth = true;
+			bRecoverMana = true;
 		}
 
-		bRecoverHealth = true;
-		bRecoverMana = true;
 		
 		IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
 	}

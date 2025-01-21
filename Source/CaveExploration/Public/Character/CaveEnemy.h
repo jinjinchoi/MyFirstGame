@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "CaveCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
-#include "UI/WidgetController/CaveWidgetController.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "CaveEnemy.generated.h"
 
 class UWidgetComponent;

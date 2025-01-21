@@ -12,7 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedDelegate, float, 
 /**
  * 
  */
-UCLASS(BlueprintType, Blueprintable)
+UCLASS()
 class CAVEEXPLORATION_API UOverlayWidgetController : public UCaveWidgetController
 {
 	GENERATED_BODY()

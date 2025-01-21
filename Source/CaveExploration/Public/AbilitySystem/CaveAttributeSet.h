@@ -211,9 +211,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "MetaAttribute")
 	FGameplayAttributeData IncomingXP;
 	ATTRIBUTE_ACCESSORS(UCaveAttributeSet, IncomingXP);
-
-
-
 	
 #pragma endregion
 	

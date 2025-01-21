@@ -7,6 +7,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CaveFunctionLibrary.generated.h"
 
+class UCharacterClassInfoDataAsset;
+class UGameplayEffect;
 class UAbilitySystemComponent;
 struct FDamageEffectParams;
 struct FGameplayEffectContextHandle;
@@ -119,6 +121,7 @@ public:
 
 #pragma endregion
 
+	
 #pragma region AbilitySystem
 	
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
@@ -132,6 +135,17 @@ public:
 
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, const ECharacterClass CharacterClass, const int32 CharacterLevel);
 
+#pragma endregion
+
+	
+#pragma region  Utility
+	
+	/**
+	 *  특정 Gameplay Effect 에서 SetByCaller 방식으로 설정된 Modifier들의 DataTag를 반환하는 함수
+	 */
+	UFUNCTION(BlueprintPure, Category="CaveFunctionLibrary|GameplayUtility")
+	static TArray<FGameplayTag> CallerMagnitudeTags(TSubclassOf<UGameplayEffect> InGameplayEffect);
+	
 #pragma endregion
 };
 
