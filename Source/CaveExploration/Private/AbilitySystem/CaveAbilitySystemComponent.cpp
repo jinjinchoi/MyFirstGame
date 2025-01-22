@@ -4,6 +4,7 @@
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "CaveGameplayTags.h"
 #include "AbilitySystem/Abilities/CaveGameplayAbility.h"
 #include "Interaction/PlayerInterface.h"
 
@@ -15,6 +16,7 @@ void UCaveAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 		if (const UCaveGameplayAbility* CaveAbility = Cast<UCaveGameplayAbility>(AbilitySpec.Ability))
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(CaveAbility->StartupInputTag);
+			AbilitySpec.DynamicAbilityTags.AddTag(FCaveGameplayTags::Get().Abilities_Status_Equipped);
 			GiveAbility(AbilitySpec);
 		}
 	}
@@ -146,6 +148,20 @@ FGameplayTag UCaveAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 
 	return FGameplayTag();
 }
+
+FGameplayTag UCaveAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (const FGameplayTag& Tag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities.Status"))))
+		{
+			return Tag;
+		}
+	}
+	
+	return FGameplayTag();
+}
+
 
 void UCaveAbilitySystemComponent::OnRep_ActivateAbilities()
 {

@@ -9,17 +9,18 @@
   <component name="ChangeListManager">
     <list default="true" id="59e04396-5efe-46be-bea4-946524d7eaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAbilitySystemComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAbilitySystemComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAttributeSet.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/CaveFunctionLibrary.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/CaveFunctionLibrary.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/AttributeWidgetController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/AttributeWidgetController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/CaveGameplayTags.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/CaveGameplayTags.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/HUD/CaveHUD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/HUD/CaveHUD.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/CaveWidgetController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/CaveWidgetController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/SpellMenuWidgetController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/SpellMenuWidgetController.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/CaveAbilitySystemComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/CaveAbilitySystemComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/CaveAttributeSet.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/CaveAttributeSet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/Data/AbilityInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/Data/AbilityInfo.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/CaveFunctionLibrary.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/CaveFunctionLibrary.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/Character/CaveEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/Character/CaveEnemy.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/AttributeWidgetController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/AttributeWidgetController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/CaveWidgetController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/CaveWidgetController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/OverlayWidgetController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/OverlayWidgetController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/CaveGameplayTags.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/CaveGameplayTags.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/HUD/CaveHUD.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/HUD/CaveHUD.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,87 +38,7 @@
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://3" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/memory" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Intermediate/Build/Win64/UnrealEditor/Inc/GameplayTags/UHT/GameplayTagsManager.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/AttributeSet.cpp" root0="SKIP_HIGHLIGHTING" />
@@ -144,13 +65,12 @@
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Engine/Private/PlayerState.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Engine/Private/UnrealEngine.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/GameplayTags/Classes/GameplayTagContainer.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/GameplayTags/Private/GameplayTagsManager.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Slate/Private/Framework/Application/SlateApplication.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Private/Components/WidgetComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Private/UserWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Public/Components/WidgetComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/CaveExploration/CaveExploration.Build.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Private/UI/WidgetController/AttributeWidgetController.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Public/Character/CaveEnemy.h" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -169,7 +89,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "Uproject.CaveExploration.executor": "Run",
+    "Uproject.CaveExploration.executor": "Debug",
     "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -299,7 +219,8 @@
       <workItem from="1737367041669" duration="6098000" />
       <workItem from="1737375500948" duration="2709000" />
       <workItem from="1737433783354" duration="9780000" />
-      <workItem from="1737457720900" duration="3336000" />
+      <workItem from="1737457720900" duration="3382000" />
+      <workItem from="1737505600685" duration="6881000" />
     </task>
     <servers />
   </component>

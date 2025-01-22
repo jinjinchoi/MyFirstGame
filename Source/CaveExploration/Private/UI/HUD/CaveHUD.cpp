@@ -6,6 +6,7 @@
 #include "UI/Widget/CaveUserWidget.h"
 #include "UI/WidgetController/AttributeWidgetController.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 
 UOverlayWidgetController* ACaveHUD::GetOverlayWidgetController(const FWidgetControllerParams& Params)
 {
@@ -31,6 +32,18 @@ UAttributeWidgetController* ACaveHUD::GetAttributeWidgetController(const FWidget
 
 
 	return AttributeWidgetController;
+}
+
+USpellMenuWidgetController* ACaveHUD::GetSpellMenuController(const FWidgetControllerParams& Params)
+{
+	if (SpellMenuWidgetController == nullptr)
+	{
+		SpellMenuWidgetController = NewObject<USpellMenuWidgetController>(this, SpellMenuWidgetControllerClass);
+		SpellMenuWidgetController->SetWidgetControllerParams(Params);
+		SpellMenuWidgetController->BindCallbacksToDependencies();
+	}
+
+	return SpellMenuWidgetController;
 }
 
 void ACaveHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)

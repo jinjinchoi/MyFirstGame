@@ -67,6 +67,7 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 #pragma endregion
 
+	
 #pragma region Meta Attributes
 
 	GameplayTags.Attribute_Meta_InComingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -75,8 +76,7 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	
 #pragma endregion
 
-	
-	
+
 #pragma region Damage Type
 	
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -170,6 +170,15 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Abilities_Spell_Physical_MeleeAttack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Spell.Physical.MeleeAttack"));
+
+	GameplayTags.Abilities_Spell_Physical_Thrust = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Spell.Physical.Thrust"));
+
+	GameplayTags.Abilities_Spell_Physical_Strike = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Spell.Physical.Strike"));
+
+	GameplayTags.Abilities_Spell_Ice_FrozenShard = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Spell.Ice.FrozenShard"));
 
 #pragma endregion
 

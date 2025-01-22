@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CaveFunctionLibrary.generated.h"
 
+class USpellMenuWidgetController;
 class UCharacterClassInfoDataAsset;
 class UGameplayEffect;
 class UAbilitySystemComponent;
@@ -38,6 +39,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="CaveFunctionLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static  UAttributeWidgetController* GetAttributeWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category="CaveFunctionLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static USpellMenuWidgetController* GetSpellMenuController(const UObject* WorldContextObject);
 
 #pragma endregion
 

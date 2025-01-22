@@ -63,6 +63,18 @@ UAttributeWidgetController* UCaveFunctionLibrary::GetAttributeWidgetController(c
 	return nullptr;
 }
 
+USpellMenuWidgetController* UCaveFunctionLibrary::GetSpellMenuController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParam;
+	ACaveHUD* CaveHUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParam, CaveHUD))
+	{
+		return CaveHUD->GetSpellMenuController(WCParam);
+	}
+
+	return nullptr;
+}
+
 bool UCaveFunctionLibrary::IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FCaveGameplayEffectContext* CaveContext = static_cast<const FCaveGameplayEffectContext*>(EffectContextHandle.Get()))

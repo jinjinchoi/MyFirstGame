@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "CaveHUD.generated.h"
 
+class USpellMenuWidgetController;
 class UAttributeWidgetController;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -23,6 +24,7 @@ class CAVEEXPLORATION_API ACaveHUD : public AHUD
 public:
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& Params);
 	UAttributeWidgetController* GetAttributeWidgetController(const FWidgetControllerParams& Params);
+	USpellMenuWidgetController* GetSpellMenuController(const FWidgetControllerParams& Params);
 
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 
@@ -44,5 +46,11 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UAttributeWidgetController> AttributeWidgetControllerClas;
+
+	UPROPERTY()
+	TObjectPtr<USpellMenuWidgetController> SpellMenuWidgetController;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<USpellMenuWidgetController> SpellMenuWidgetControllerClass;
 	
 };

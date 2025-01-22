@@ -42,7 +42,7 @@ struct FCaveAbilityInfo
 	FGameplayTag InputTag = FGameplayTag();
 
 	UPROPERTY(BlueprintReadOnly)
-	FGameplayTag StatusTAg = FGameplayTag();
+	FGameplayTag StatusTag = FGameplayTag();
 };
 
 /**

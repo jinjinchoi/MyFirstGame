@@ -35,6 +35,7 @@ void UCaveWidgetController::BroadCastAbilityInfo()
 	{
 		FCaveAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(UCaveAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
 		Info.InputTag = UCaveAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+		Info.StatusTag = UCaveAbilitySystemComponent::GetStatusFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(Info);
 	});
 	GetCaveAbilitySystemComponent()->ForEachAbility(BroadCastDelegate);

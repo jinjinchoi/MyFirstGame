@@ -44,11 +44,13 @@ struct FCaveGameplayTags
 	
 #pragma endregion
 
+	
 #pragma region MetaAttributes
 	
 	FGameplayTag Attribute_Meta_InComingXP;
 
 #pragma endregion
+
 	
 #pragma region Damage Type
 
@@ -97,6 +99,9 @@ struct FCaveGameplayTags
 
 	FGameplayTag Abilities_Spell_Fire_FireSlash;
 	FGameplayTag Abilities_Spell_Physical_MeleeAttack;
+	FGameplayTag Abilities_Spell_Physical_Thrust;
+	FGameplayTag Abilities_Spell_Physical_Strike;
+	FGameplayTag Abilities_Spell_Ice_FrozenShard;
 
 #pragma endregion
 
