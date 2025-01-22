@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "CaveGameModeBase.generated.h"
 
+class UAbilityInfo;
 class UCharacterClassInfoDataAsset;
 /**
  * 
@@ -18,5 +19,8 @@ class CAVEEXPLORATION_API ACaveGameModeBase : public AGameModeBase
 public:
 	UPROPERTY(EditDefaultsOnly, Category="Character Class Defaults")
 	TObjectPtr<UCharacterClassInfoDataAsset> CharacterClassInfo;
+
+	UPROPERTY(EditDefaultsOnly, Category="Ability Info")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
 	
 };

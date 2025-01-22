@@ -7,9 +7,13 @@
 #include "AbilitySystemComponent.h"
 
 
+float UCaveDamageGameplayAbility::GetDamage(const float AbilityLevel) const
+{
+	return Damage.GetValueAtLevel(AbilityLevel);
+}
 
 FDamageEffectParams UCaveDamageGameplayAbility::MakeDamageEffectParams(AActor* TargetActor,
-	bool bOverrideKnockbackDirection, FVector KnockbackDirectionOverride, bool bOverridePitch, float PitchOverride) const
+                                                                       bool bOverrideKnockbackDirection, FVector KnockbackDirectionOverride, bool bOverridePitch, float PitchOverride) const
 {
 	FDamageEffectParams Params;
 

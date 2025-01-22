@@ -29,5 +29,8 @@ public:
 
 	UPROPERTY(Transient)
 	FGameplayTagContainer TempCooldownTags;
-	
+
+	float GetManaCost(const float AbilityLevel = 1.f) const;
+	float GetCoolDown(const float AbilityLevel = 1.f) const;
+	virtual float GetDamage(const float AbilityLevel = 1.f) const;
 };

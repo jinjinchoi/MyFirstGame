@@ -7,6 +7,9 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CaveFunctionLibrary.generated.h"
 
+class UCaveGameplayAbility;
+struct FCaveAbilityInfo;
+class UAbilityInfo;
 class USpellMenuWidgetController;
 class UCharacterClassInfoDataAsset;
 class UGameplayEffect;
@@ -42,6 +45,10 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="CaveFunctionLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static USpellMenuWidgetController* GetSpellMenuController(const UObject* WorldContextObject);
+
+	static FString GetAbilityDescription(const UObject* WorldContextObject, const FGameplayTag& AbilityTag, int32 AbilityLevel, const FCaveAbilityInfo& AbilityInfo);
+	static FText FormatAbilityDescription(const UCaveGameplayAbility* Ability, const int32 AbilityLevel, const FCaveAbilityInfo& AbilityInfo);
+	
 
 #pragma endregion
 
@@ -130,6 +137,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
 	static UCharacterClassInfoDataAsset* GetCharacterClassInfo(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
+	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
 	
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttribute(const UObject* WorldContextObject, const ECharacterClass& CharacterClass, const float Level, UAbilitySystemComponent* ASC);

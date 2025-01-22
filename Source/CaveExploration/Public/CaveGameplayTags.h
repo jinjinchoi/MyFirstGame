@@ -88,6 +88,7 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Common_HitReact;
 	FGameplayTag Abilities_Common_Death;
 
+	FGameplayTag Abilities_Status;
 	FGameplayTag Abilities_Status_Locked;
 	FGameplayTag Abilities_Status_Eligible;
 	FGameplayTag Abilities_Status_Unlocked;

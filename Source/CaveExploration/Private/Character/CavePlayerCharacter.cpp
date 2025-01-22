@@ -13,6 +13,7 @@
 #include "Player/CavePlayerController.h"
 #include "UI/HUD/CaveHUD.h"
 #include "NiagaraComponent.h"
+#include "AbilitySystem/CaveAbilitySystemComponent.h"
 
 ACavePlayerCharacter::ACavePlayerCharacter()
 {
@@ -123,6 +124,11 @@ void ACavePlayerCharacter::AddToPlayerLevel_Implementation(int32 InLevel)
 	ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
 	check(CavePlayerState);
 	CavePlayerState->AddToLevel(InLevel);
+
+	if (UCaveAbilitySystemComponent* CaveASC = Cast<UCaveAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		CaveASC->UpdateAbilityStatuses(CavePlayerState->GetPlayerLevel());
+	}
 }
 
 void ACavePlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)

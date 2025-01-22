@@ -7,6 +7,8 @@
 #include "AbilitySystemComponent.h"
 #include "CaveAbilityTypes.h"
 #include "CaveGameplayTags.h"
+#include "NiagaraValidationRule.h"
+#include "AbilitySystem/Abilities/CaveGameplayAbility.h"
 #include "AbilitySystem/Data/CharacterClassInfoDataAsset.h"
 #include "Engine/OverlapResult.h"
 #include "Game/CaveGameModeBase.h"
@@ -73,6 +75,51 @@ USpellMenuWidgetController* UCaveFunctionLibrary::GetSpellMenuController(const U
 	}
 
 	return nullptr;
+}
+
+FString UCaveFunctionLibrary::GetAbilityDescription(const UObject* WorldContextObject, const FGameplayTag& AbilityTag, int32 AbilityLevel, const FCaveAbilityInfo& AbilityInfo)
+{
+	if (!AbilityInfo.AbilityTag.IsValid()) return FString();
+	if (AbilityLevel <= 0) AbilityLevel = 1;
+	
+	UCaveGameplayAbility* Ability = Cast<UCaveGameplayAbility>(AbilityInfo.AbilityClass.GetDefaultObject());
+	
+	FText FormatedText = FormatAbilityDescription(Ability, AbilityLevel, AbilityInfo);
+	
+	return FString::Printf(
+		TEXT(
+		// 스킬명 및 레벨
+		"<Title>%s</>\n"
+		"<Level>Lv.%d</>\n"
+
+		// 스킬 설명
+		"\n"
+		"%s\n"
+		"\n"
+
+		// 마나 및 쿨다운 정보
+		"마나: <Mana>%.1f</>\n"
+		"쿨타임: <Cooldown>%.1f</>초\n"
+		),
+		*AbilityInfo.AbilityName,
+		AbilityLevel,
+		*FormatedText.ToString(),
+		Ability->GetManaCost(AbilityLevel),
+		Ability->GetCoolDown(AbilityLevel)
+	);
+}
+
+FText UCaveFunctionLibrary::FormatAbilityDescription(const UCaveGameplayAbility* Ability, const int32 AbilityLevel, const FCaveAbilityInfo& AbilityInfo)
+{
+	
+	FText AbilityDescription = AbilityInfo.Description;
+	AbilityDescription = FText::FormatNamed(
+		AbilityDescription,
+		TEXT("_Damage"),
+		FText::AsNumber(Ability->GetDamage(AbilityLevel))
+	);
+
+	return AbilityDescription;
 }
 
 bool UCaveFunctionLibrary::IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
@@ -340,6 +387,19 @@ UCharacterClassInfoDataAsset* UCaveFunctionLibrary::GetCharacterClassInfo(const 
 	if (CaveGameMode)
 	{
 		return CaveGameMode->CharacterClassInfo;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+UAbilityInfo* UCaveFunctionLibrary::GetAbilityInfo(const UObject* WorldContextObject)
+{
+	const ACaveGameModeBase* CaveGameMode =  Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (CaveGameMode)
+	{
+		return CaveGameMode->AbilityInfo;
 	}
 	else
 	{

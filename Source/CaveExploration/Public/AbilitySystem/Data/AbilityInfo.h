@@ -27,14 +27,14 @@ struct FCaveAbilityInfo
 	int32 LevelRequirement = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<const UTexture2D> Icon = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FString AbilityName = FString();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FText Description = FText();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<const UTexture2D> Icon = nullptr;
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayAbility> AbilityClass;
 

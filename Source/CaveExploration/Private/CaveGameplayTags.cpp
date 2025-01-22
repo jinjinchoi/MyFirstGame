@@ -142,6 +142,9 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Common.Death"));
 
 	
+	GameplayTags.Abilities_Status = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Abilities.Status"));
+	
 	GameplayTags.Abilities_Status_Locked = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Status.Locked"));
 	

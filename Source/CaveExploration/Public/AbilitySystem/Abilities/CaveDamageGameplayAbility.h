@@ -16,6 +16,11 @@ class CAVEEXPLORATION_API UCaveDamageGameplayAbility : public UCaveGameplayAbili
 	GENERATED_BODY()
 
 public:
+
+	/* Cave Gameplay Ability */
+	virtual float GetDamage(const float AbilityLevel) const override;
+	/* end Cave Gameplay Ability */
+
 	UFUNCTION(BlueprintPure)
 	FDamageEffectParams MakeDamageEffectParams(
 		AActor* TargetActor = nullptr,
