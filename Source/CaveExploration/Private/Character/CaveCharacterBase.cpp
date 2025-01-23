@@ -4,7 +4,9 @@
 #include "Character//CaveCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "CaveGameplayTags.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
+#include "AbilitySystem/Niagara/DebuffNiagaraComponent.h"
 #include "CaveExploration/CaveExploration.h"
 #include "Components/CapsuleComponent.h"
 
@@ -20,6 +22,10 @@ ACaveCharacterBase::ACaveCharacterBase()
 	Weapon = CreateDefaultSubobject<UStaticMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), FName("WeaponSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffComponent");
+	BurnDebuffComponent->SetupAttachment(GetRootComponent());
+	BurnDebuffComponent->DebuffTag = FCaveGameplayTags::Get().Debuff_Type_Burn;
 	
 }
 
@@ -71,6 +77,21 @@ ECharacterClass ACaveCharacterBase::GetCharacterClass_Implementation() const
 	return CharacterClass;
 }
 
+USoundBase* ACaveCharacterBase::GetHitImpactSound_Implementation()
+{
+	return HitImpactSound;
+}
+
+FOnASCRegistered ACaveCharacterBase::GetOnASCRegisteredDelegate()
+{
+	return OnAscRegistered;
+}
+
+FOnDeath& ACaveCharacterBase::GetOnDeathDelegate()
+{
+	return OnDeath;
+}
+
 
 void ACaveCharacterBase::InitAbilityActorInfo()
 {
@@ -84,7 +105,8 @@ void ACaveCharacterBase::DeathReactTagChange(const FGameplayTag CallbackTag, int
 {
 	bIsDead = NewCount > 0;
 	if (!bIsDead) return;
-	
+
+	OnDeath.Broadcast(this);
 	
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -122,13 +144,12 @@ void ACaveCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& E
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
 
-void ACaveCharacterBase::AddCharacterAbilities()
+void ACaveCharacterBase::AddCharacterAbilities() const
 {
 	if (!HasAuthority()) return;
 
 	UCaveAbilitySystemComponent* CaveASC = Cast<UCaveAbilitySystemComponent>(AbilitySystemComponent);
 	CaveASC->AddCharacterAbilities(StartupAbilities);
 	CaveASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
-	
 	
 }

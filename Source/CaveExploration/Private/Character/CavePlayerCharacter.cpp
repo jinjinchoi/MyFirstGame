@@ -32,9 +32,10 @@ ACavePlayerCharacter::ACavePlayerCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0, 540, 0);
+	GetCharacterMovement()->RotationRate = BaseRotationRate;
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+	GetCharacterMovement()->MaxWalkSpeed = BaseMaxWalkSpeed;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -150,6 +151,18 @@ void ACavePlayerCharacter::LevelUp_Implementation()
 	MulticastLevelUpParticles();
 }
 
+void ACavePlayerCharacter::InPlayerComboAttack_Implementation()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 0;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 90.f, 0.f);
+}
+
+void ACavePlayerCharacter::EndPlayerComboAttack_Implementation()
+{
+	GetCharacterMovement()->MaxWalkSpeed = BaseMaxWalkSpeed;
+	GetCharacterMovement()->RotationRate = BaseRotationRate;
+}
+
 void ACavePlayerCharacter::MulticastLevelUpParticles_Implementation() const
 {
 	if (IsValid(LevelUpNiagaraComponent))
@@ -170,6 +183,7 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 
 	AbilitySystemComponent = CavePlayerState->GetAbilitySystemComponent();
 	AttributeSet = CavePlayerState->GetAttributeSet();
+	OnAscRegistered.Broadcast(AbilitySystemComponent);
 
 	if (ACavePlayerController* CavePlayerController =  Cast<ACavePlayerController>(GetController()))
 	{

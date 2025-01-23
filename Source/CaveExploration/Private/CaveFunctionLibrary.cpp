@@ -221,7 +221,7 @@ void UCaveFunctionLibrary::SetIsSuccessfulDebuff(FGameplayEffectContextHandle& E
 	}
 }
 
-void UCaveFunctionLibrary::SetIsDebuffDamage(FGameplayEffectContextHandle& EffectContextHandle, const float InDebuffDamage)
+void UCaveFunctionLibrary::SetDebuffDamage(FGameplayEffectContextHandle& EffectContextHandle, const float InDebuffDamage)
 {
 	if (FCaveGameplayEffectContext* CaveContext = static_cast<FCaveGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
@@ -234,6 +234,14 @@ void UCaveFunctionLibrary::SetDebuffDuration(FGameplayEffectContextHandle& Effec
 	if (FCaveGameplayEffectContext* CaveContext = static_cast<FCaveGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		CaveContext->SetDebuffDuration(InDebuffDuration);
+	}
+}
+
+void UCaveFunctionLibrary::SetDebuffFrequency(FGameplayEffectContextHandle& EffectContextHandle, const float InDebuffFrequency)
+{
+	if (FCaveGameplayEffectContext* CaveContext = static_cast<FCaveGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		CaveContext->SetDebuffFrequncy(InDebuffFrequency);
 	}
 }
 
@@ -273,6 +281,7 @@ FGameplayEffectContextHandle UCaveFunctionLibrary::ApplyDamageEffect(const FDama
 	if (DamageEffectParams.bIsKnockback)
 	{
 		SetKnockbackDirection(ContextHandle, DamageEffectParams.KnockbackDirection);
+		SetIsKnockback(ContextHandle, DamageEffectParams.bIsKnockback);
 	}
 
 	if (DamageEffectParams.DamageType.IsValid())

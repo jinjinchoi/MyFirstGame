@@ -47,7 +47,7 @@ protected:
 	float DebuffDamage = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="Damage")
-	float DebuffFrequncy = 0.f;
+	float DebuffFrequncy = 1.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="Damage")
 	float DebuffDuration = 5.f;

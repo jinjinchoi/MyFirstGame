@@ -14,7 +14,7 @@ struct FSelectedAbility
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FSpellGlobeSelectedDelegate, bool, bSpendPointButtonEnabled, const FString&, Description, const FString&, NextLevelDescription);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSpellGlobeReassignedDelegate, const FGameplayTag&, AbilityTag);
 /**
  * 
  */
@@ -34,6 +34,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FSpellGlobeSelectedDelegate SpellGlobeSelectedDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FSpellGlobeReassignedDelegate SpellGlobeReassignedDelegate;
 
 	UFUNCTION(BlueprintCallable)
 	void SpellGlobeSelected(const FGameplayTag& AbilityTag);

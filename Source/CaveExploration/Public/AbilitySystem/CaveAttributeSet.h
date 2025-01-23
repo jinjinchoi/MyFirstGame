@@ -202,12 +202,15 @@ public:
 #pragma endregion
 
 #pragma region Meta Attributes
-
-
+	
 	UPROPERTY(BlueprintReadOnly, Category = "MetaAttribute")
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UCaveAttributeSet, IncomingDamage);
 
+	UPROPERTY(BlueprintReadOnly, Category = "MetaAttribute")
+	FGameplayAttributeData IncomingDebuffDamage;
+	ATTRIBUTE_ACCESSORS(UCaveAttributeSet, IncomingDebuffDamage);
+	
 	UPROPERTY(BlueprintReadOnly, Category = "MetaAttribute")
 	FGameplayAttributeData IncomingXP;
 	ATTRIBUTE_ACCESSORS(UCaveAttributeSet, IncomingXP);
@@ -218,12 +221,16 @@ private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props);
 	void HandleIncomingDamage(const FEffectProperties& Props);
 	void ShowFloatDamage(const FEffectProperties& Props, const float Damage, const bool bIsCriticalHit, const FGameplayTag& DamageType) const;
-	void HandleIncomingXP(const FEffectProperties& Props);
+	void Debuff(const FEffectProperties& Props);
+	void HandleIncomingDebuffDamage(const FEffectProperties& Props);
 	void SendXPEvent(const FEffectProperties& Props) const;
+	void HandleIncomingXP(const FEffectProperties& Props);
 
 	bool bRecoverHealth = false;
 	bool bRecoverMana = false;
 };
+
+
 
 
 

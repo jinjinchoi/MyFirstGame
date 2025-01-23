@@ -54,5 +54,11 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void LevelUp();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void InPlayerComboAttack();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void EndPlayerComboAttack();
 	
 };

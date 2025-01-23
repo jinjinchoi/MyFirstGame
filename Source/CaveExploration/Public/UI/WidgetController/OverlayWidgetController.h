@@ -44,5 +44,6 @@ public:
 protected:
 
 	void OnXPChanged(int32 NewXP);
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const;
 	
 };

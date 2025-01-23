@@ -10,6 +10,7 @@
 #include "AbilitySystem/Data/CharacterClassInfoDataAsset.h"
 #include "CaveCharacterBase.generated.h"
 
+class UDebuffNiagaraComponent;
 struct FGameplayTag;
 class UGameplayAbility;
 class UGameplayEffect;
@@ -34,8 +35,13 @@ public:
 	virtual UAnimMontage* GetDeathMontage_Implementation() override;
 	virtual bool IsDead_Implementation() const override;
 	virtual ECharacterClass GetCharacterClass_Implementation() const override;
+	virtual USoundBase* GetHitImpactSound_Implementation() override;
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnDeath& GetOnDeathDelegate() override;
 	/* end Combat Interface */
-	
+
+	FOnASCRegistered OnAscRegistered;
+	FOnDeath OnDeath;
 	
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
@@ -81,7 +87,7 @@ protected:
 	virtual void InitializeDefaultAttributes() const;
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClass, const float Level) const;
 	
-	void AddCharacterAbilities();
+	void AddCharacterAbilities() const;
 
 #pragma endregion
 
@@ -104,6 +110,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Combat)
 	TArray<UAnimMontage*> DeathMontages;
+
+	UPROPERTY(EditDefaultsOnly, Category = Combat)
+	TObjectPtr<USoundBase> HitImpactSound;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 	
 	
 };

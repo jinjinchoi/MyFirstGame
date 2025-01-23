@@ -37,7 +37,7 @@ FDamageEffectParams UCaveDamageGameplayAbility::MakeDamageEffectParams(AActor* T
 	if (bIsKnockback)
 	{
 		Params.bIsKnockback = bIsKnockback;
-		Params.KnockbackDirection = KnockbackDirection;
+		Params.KnockbackForceMafnitude = KnockbackForceMafnitude;
 	}
 
 	if (IsValid(TargetActor))
@@ -50,7 +50,7 @@ FDamageEffectParams UCaveDamageGameplayAbility::MakeDamageEffectParams(AActor* T
 		const FVector ToTarget = Rotation.Vector();
 		if (!bOverrideKnockbackDirection)
 		{
-			Params.KnockbackDirection = ToTarget * KnockbackDirectionOverride;
+			Params.KnockbackDirection = ToTarget * KnockbackForceMafnitude;
 		}
 	}
 

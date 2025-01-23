@@ -148,6 +148,9 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
 	Info.StatusTag = StatusTag;
 	Info.InputTag = Slot;
 	AbilityInfoDelegate.Broadcast(Info);
+	
+	GlobeDeselect();
+	SpellGlobeReassignedDelegate.Broadcast(AbilityTag);
 }
 
 

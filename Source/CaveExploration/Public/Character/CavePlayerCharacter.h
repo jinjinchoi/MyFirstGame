@@ -42,6 +42,8 @@ public:
 	virtual void AddToSpellPoints_Implementation(int32 InSpellPoints) override;
 	virtual void AddToAttributePoints_Implementation(int32 InAttributePoints) override;
 	virtual void LevelUp_Implementation() override;
+	virtual void InPlayerComboAttack_Implementation() override;
+	virtual void EndPlayerComboAttack_Implementation() override;
 	/* end Player Interface */
 
 protected:
@@ -58,6 +60,11 @@ private:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;
+
+	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	float BaseMaxWalkSpeed = 600.f;
+
+	FRotator BaseRotationRate = FRotator(0, 540, 0);
 	
 
 # pragma region Components

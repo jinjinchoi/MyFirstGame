@@ -93,12 +93,14 @@ public:
 	FVector GetKnockbackDirection() const { return KnockbackDirection; }
 
 #pragma endregion
+	
 #pragma region Setter
 
 	void SetIsCriticalHit(const bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
 	void SetIsSuccessfulDebuff(const bool bInIsSuccessfulDebuff) { bIsSuccessfulDebuff = bInIsSuccessfulDebuff; }
 	void SetDebuffDamage(const float InDebuffDamage) { DebuffDamage = InDebuffDamage; }
 	void SetDebuffDuration(const float InDebuffDuration) { DebuffDuration = InDebuffDuration; }
+	void SetDebuffFrequncy(const float InDebuffFrequncy) { DebuffFrequncy = InDebuffFrequncy; }
 	void SetDamageType(const TSharedPtr<FGameplayTag>& InDamageType) { DamageType = InDamageType; }
 	void SetIsKnockback(const bool bInIsKockback) { bIsKnockback = bInIsKockback; }
 	void SetKnockBackDirection(const FVector& InDirection ) { KnockbackDirection = InDirection; }

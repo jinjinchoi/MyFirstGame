@@ -4,14 +4,17 @@
 #include "AbilitySystem/CaveAttributeSet.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "CaveAbilityTypes.h"
 #include "CaveFunctionLibrary.h"
 #include "CaveGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
 #include "Player/CavePlayerController.h"
+#include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
 
 UCaveAttributeSet::UCaveAttributeSet()
 {
@@ -96,6 +99,22 @@ void UCaveAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	}
 }
 
+void UCaveAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+	if (Attribute == GetMaxHealthAttribute() && bRecoverHealth)
+	{
+		SetHealth(GetMaxHealth());
+		bRecoverHealth = false;
+	}
+
+	if (Attribute == GetMaxManaAttribute() && bRecoverMana)
+	{
+		SetMana(GetMaxMana());
+		bRecoverMana = false;
+	}
+}
 
 
 void UCaveAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -104,6 +123,8 @@ void UCaveAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
+
+	if (Props.TargetCharacter->Implements<UCombatInterface>() && ICombatInterface::Execute_IsDead(Props.TargetCharacter)) return;
 	
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
@@ -121,25 +142,13 @@ void UCaveAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		HandleIncomingXP(Props);
 	}
+	if (Data.EvaluatedData.Attribute == GetIncomingDebuffDamageAttribute())
+	{
+		HandleIncomingDebuffDamage(Props);
+	}
 	
 }
 
-void UCaveAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
-{
-	Super::PostAttributeChange(Attribute, OldValue, NewValue);
-
-	if (Attribute == GetMaxHealthAttribute() && bRecoverHealth)
-	{
-		SetHealth(GetMaxHealth());
-		bRecoverHealth = false;
-	}
-
-	if (Attribute == GetMaxManaAttribute() && bRecoverMana)
-	{
-		SetMana(GetMaxMana());
-		bRecoverMana = false;
-	}
-}
 
 void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 {
@@ -170,13 +179,108 @@ void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 				TagContainer.AddTag(FCaveGameplayTags::Get().Abilities_Common_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
+
+			const bool IsKnockback = UCaveFunctionLibrary::IsKnockback(Props.EffectContextHandle);
+			if (IsKnockback)
+			{
+				const FVector& KnockbackForce = UCaveFunctionLibrary::GetKnockbackDirection(Props.EffectContextHandle);
+				Props.TargetCharacter->GetCharacterMovement()->StopMovementImmediately();
+				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
+			}
 		}
 		const bool bCriticalHit = UCaveFunctionLibrary::IsCriticalHit(Props.EffectContextHandle);
 		const FGameplayTag& DamageType = UCaveFunctionLibrary::GetDamageType(Props.EffectContextHandle);
 		
 		ShowFloatDamage(Props, LocalIncomingDamage, bCriticalHit, DamageType);
-		
+
+		if (UCaveFunctionLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
+		{
+			Debuff(Props);
+		}
 	}
+}
+
+
+void UCaveAttributeSet::Debuff(const FEffectProperties& Props)
+{
+	const FCaveGameplayTags GameplayTags = FCaveGameplayTags::Get();
+
+	FGameplayEffectContextHandle EffectContextHandle = Props.SourceASC->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(Props.SourceAvatarActor);
+
+	const FGameplayTag DamageType = UCaveFunctionLibrary::GetDamageType(Props.EffectContextHandle);
+	const float DebuffDamage = UCaveFunctionLibrary::GetDebuffDamage(Props.EffectContextHandle);
+	const float DebuffDuration = UCaveFunctionLibrary::GetDebuffDuration(Props.EffectContextHandle);
+	const float DebuffFrequency = UCaveFunctionLibrary::GetDebuffFrequncy(Props.EffectContextHandle);
+
+	FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
+	UGameplayEffect* GameplayEffect = NewObject<UGameplayEffect>(GetTransientPackage(), FName(DebuffName));
+
+	GameplayEffect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
+	GameplayEffect->Period = DebuffFrequency;
+	GameplayEffect->DurationMagnitude = FScalableFloat(DebuffDuration);
+
+	const FGameplayTag& DebuffTag = GameplayTags.DamageTypesToDebuff[DamageType];
+	
+	FInheritedTagContainer TagContainer = FInheritedTagContainer();
+	UTargetTagsGameplayEffectComponent& Component = GameplayEffect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
+	TagContainer.Added.AddTag(DebuffTag);
+
+	if (DebuffTag.MatchesTagExact(GameplayTags.Debuff_Type_Stun))
+	{
+		TagContainer.AddTag(GameplayTags.Player_Block_Released);
+		TagContainer.AddTag(GameplayTags.Player_Block_InputHeld);
+		TagContainer.AddTag(GameplayTags.Player_Block_InputPressed);
+	}
+
+	Component.SetAndApplyTargetTagChanges(TagContainer);
+
+	GameplayEffect->StackingType = EGameplayEffectStackingType::AggregateBySource;
+	GameplayEffect->StackLimitCount = 1;
+
+	const int32 Index = GameplayEffect->Modifiers.Num();
+	GameplayEffect->Modifiers.Add(FGameplayModifierInfo());
+	FGameplayModifierInfo& ModifierInfo = GameplayEffect->Modifiers[Index];
+
+	ModifierInfo.ModifierMagnitude = FScalableFloat(DebuffDamage);
+	ModifierInfo.ModifierOp = EGameplayModOp::Additive;
+	ModifierInfo.Attribute = GetIncomingDebuffDamageAttribute();
+
+	if (FGameplayEffectSpec* MutableSpec = new FGameplayEffectSpec(GameplayEffect, EffectContextHandle, 1.f))
+	{
+		FCaveGameplayEffectContext* CaveContext = static_cast<FCaveGameplayEffectContext*>(MutableSpec->GetContext().Get());
+		TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable(new FGameplayTag(DamageType));
+		CaveContext->SetDamageType(DebuffDamageType);
+
+		Props.TargetASC->ApplyGameplayEffectSpecToSelf(*MutableSpec);
+	}	
+}
+
+void UCaveAttributeSet::HandleIncomingDebuffDamage(const FEffectProperties& Props)
+{
+	const float LocalDebuffDamage = GetIncomingDebuffDamage();
+	SetIncomingDebuffDamage(0.f);
+	if (LocalDebuffDamage > 0.f)
+	{
+		const float NewHealth = GetHealth() - LocalDebuffDamage;
+		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+
+		const bool bFatal = NewHealth <= 0.f;
+		if (bFatal)
+		{
+			if (Props.TargetCharacter->Implements<UCombatInterface>())
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FCaveGameplayTags::Get().Abilities_Common_Death);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+			SendXPEvent(Props);
+		}
+		const bool bCriticalHit = UCaveFunctionLibrary::IsCriticalHit(Props.EffectContextHandle);
+		const FGameplayTag& DamageType = UCaveFunctionLibrary::GetDamageType(Props.EffectContextHandle);
+		ShowFloatDamage(Props, LocalDebuffDamage, bCriticalHit, DamageType);
+	}
+	
 }
 
 void UCaveAttributeSet::SendXPEvent(const FEffectProperties& Props) const

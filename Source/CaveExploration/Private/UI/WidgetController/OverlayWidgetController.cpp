@@ -3,6 +3,7 @@
 
 #include "UI/WidgetController/OverlayWidgetController.h"
 
+#include "CaveGameplayTags.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "AbilitySystem/CaveAttributeSet.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
@@ -52,6 +53,8 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 	if (GetCaveAbilitySystemComponent())
 	{
+		GetCaveAbilitySystemComponent()->AbilityEquippedDelegate.AddUObject(this, &UOverlayWidgetController::OnAbilityEquipped);
+		
 		if (GetCaveAbilitySystemComponent()->bStartupAbilitiesGiven)
 		{
 			BroadCastAbilityInfo();
@@ -83,5 +86,21 @@ void UOverlayWidgetController::OnXPChanged(int32 NewXP)
 		const float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(DeltaLevelRequirement);
 		OnXPPercentChangedDelegate.Broadcast(XPBarPercent);
 	}
+}
+
+void UOverlayWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const
+{
+	const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get();
+	
+	FCaveAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag = GameplayTags.Abilities_Status_Unlocked;
+	LastSlotInfo.AbilityTag = GameplayTags.Abilities_None;
+	LastSlotInfo.InputTag = PreviousSlot;
+	AbilityInfoDelegate.Broadcast(LastSlotInfo);
+
+	FCaveAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+	Info.StatusTag = StatusTag;
+	Info.InputTag = Slot;
+	AbilityInfoDelegate.Broadcast(Info);
 }
 

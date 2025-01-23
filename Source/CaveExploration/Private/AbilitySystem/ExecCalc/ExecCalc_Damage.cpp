@@ -74,10 +74,10 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 {
 	const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get();
 	
-	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> TagsToCapturedAttributes;
-	TagsToCapturedAttributes.Add(GameplayTags.Damage_Fire, AttributesStatics().FireResistanceDef);
-	TagsToCapturedAttributes.Add(GameplayTags.Damage_Ice, AttributesStatics().IceResistanceDef);
-	TagsToCapturedAttributes.Add(GameplayTags.Damage_Physical, AttributesStatics().PhysicalResistanceDef);
+	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> TagsToResistanceAttributes;
+	TagsToResistanceAttributes.Add(GameplayTags.Damage_Fire, AttributesStatics().FireResistanceDef);
+	TagsToResistanceAttributes.Add(GameplayTags.Damage_Ice, AttributesStatics().IceResistanceDef);
+	TagsToResistanceAttributes.Add(GameplayTags.Damage_Physical, AttributesStatics().PhysicalResistanceDef);
 	
 	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
@@ -96,7 +96,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluateParams.TargetTags = TargetTag;
 	
 	const FGameplayTag& DamageType = UCaveFunctionLibrary::GetDamageType(EffectContext);
-
+	
 	// Set By Caller로 데미지 불러오기
 	float Damage = Spec.GetSetByCallerMagnitude(DamageType, false);
 
@@ -118,11 +118,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		Damage += (Strength * 0.2);
 	}
 	
+	float TargetResistance = 0.f;
 	// 데미지 저항 계산
 	if (Damage > 0.f)
 	{
-		const FGameplayEffectAttributeCaptureDefinition& ResistanceDef = TagsToCapturedAttributes[DamageType];
-		float TargetResistance = 0.f;
+		const FGameplayEffectAttributeCaptureDefinition& ResistanceDef = TagsToResistanceAttributes[DamageType];
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(ResistanceDef, EvaluateParams, TargetResistance);
 		TargetResistance = FMath::Clamp(TargetResistance, 0.f, 100.f);
 
@@ -131,6 +131,25 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		Damage *= (100.f - TargetResistance) / 100.f;
 	}
 
+	// 디버프 적용
+	const float SourceDebuffChance = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Properties_Chance, false, -1);
+	const float EfficientDebuffChance = SourceDebuffChance * ( 100.f - TargetResistance ) / 100.f;
+	const bool bIsDebuff = FMath::RandRange(1, 100) < EfficientDebuffChance;
+	if (bIsDebuff)
+	{
+		const float DebuffDamage = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Properties_Damage, false, -1);
+		const float DebuffDuration = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Properties_Duration, false, -1);
+		const float DebuffFrequency = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Properties_Frequency, false, -1);
+
+		FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
+
+		UCaveFunctionLibrary::SetIsSuccessfulDebuff(ContextHandle, true);
+		UCaveFunctionLibrary::SetDebuffDamage(ContextHandle, DebuffDamage);
+		UCaveFunctionLibrary::SetDebuffDuration(ContextHandle, DebuffDuration);
+		UCaveFunctionLibrary::SetDebuffFrequency(ContextHandle, DebuffFrequency);
+		UCaveFunctionLibrary::SetDamageType(ContextHandle, DamageType);
+	}
+	
 	// 방어력 & 방어력 관통력 계산
 	float TargetArmor = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributesStatics().ArmorDef, EvaluateParams, TargetArmor);
