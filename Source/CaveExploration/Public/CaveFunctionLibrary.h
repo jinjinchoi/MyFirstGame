@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActiveGameplayEffectHandle.h"
 #include "GameplayTagContainer.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CaveFunctionLibrary.generated.h"
@@ -117,7 +118,7 @@ public:
 #pragma region  Gameplay Mechanics
 
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|GameplayMechanics")
-	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams);
+	static FActiveGameplayEffectHandle ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams);
 
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|GameplayMechanics")
 	static bool IsNotFriend(AActor* A, AActor* B);

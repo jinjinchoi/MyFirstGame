@@ -9,29 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="59e04396-5efe-46be-bea4-946524d7eaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CaveExploration.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/CaveExploration.uproject" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultGameplayTags.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGameplayTags.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/Abilities/CaveDamageGameplayAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/Abilities/CaveDamageGameplayAbility.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAttributeSet.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/ExecCalc/ExecCalc_Damage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/ExecCalc/ExecCalc_Damage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/CaveFunctionLibrary.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/CaveFunctionLibrary.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CaveCharacterBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CaveCharacterBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CaveEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CaveEnemy.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CavePlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CavePlayerCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/OverlayWidgetController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/OverlayWidgetController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/SpellMenuWidgetController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/UI/WidgetController/SpellMenuWidgetController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/Abilities/CaveDamageGameplayAbility.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/Abilities/CaveDamageGameplayAbility.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/Abilities/CaveGameplayAbility.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/Abilities/CaveGameplayAbility.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/CaveAttributeSet.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/AbilitySystem/CaveAttributeSet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/CaveAbilityTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/CaveAbilityTypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/Actor/CaveProjectile.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/Actor/CaveProjectile.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/CaveFunctionLibrary.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/CaveFunctionLibrary.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/Character/CaveCharacterBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/Character/CaveCharacterBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/Character/CavePlayerCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/Character/CavePlayerCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/Interaction/CombatInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/Interaction/CombatInterface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/Interaction/PlayerInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/Interaction/PlayerInterface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/OverlayWidgetController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/OverlayWidgetController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/SpellMenuWidgetController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/UI/WidgetController/SpellMenuWidgetController.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,41 +50,27 @@
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="cidr-memory-view://21" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://27" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/memory" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Intermediate/Build/Win64/UnrealEditor/Inc/GameplayTags/UHT/GameplayTagsManager.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/AttributeSet.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Private/Logging/StructuredLog.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Private/Math/UnrealMath.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Private/UObject/UnrealNames.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Public/Containers/Array.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Public/Containers/BitArray.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Public/GenericPlatform/GenericPlatformMemory.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Public/Math/Quat.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Public/Templates/SharedPointer.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Public/Templates/Tuple.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Core/Public/UObject/NameTypes.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/CoreUObject/Private/UObject/Class.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/CoreUObject/Private/UObject/UObjectGlobals.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectHandle.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectBase.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Engine/Classes/Components/BoxComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Engine/Classes/Components/MeshComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Engine/Classes/Engine/EngineTypes.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Engine/Classes/Engine/NetSerialization.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
@@ -135,21 +102,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Uproject.CaveExploration.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;RiderCppLiveTemplatesSettingsId&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Uproject.CaveExploration.executor": "Debug",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "RiderCppLiveTemplatesSettingsId",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="CaveExploration" type="Uproject" factoryName="rider.uproject">
       <configuration_1 setup="1">
@@ -275,7 +242,8 @@
       <workItem from="1737522769788" duration="12150000" />
       <workItem from="1737540105887" duration="10596000" />
       <workItem from="1737595099137" duration="6266000" />
-      <workItem from="1737606060466" duration="13611000" />
+      <workItem from="1737606060466" duration="14960000" />
+      <workItem from="1737628030063" duration="11194000" />
     </task>
     <servers />
   </component>

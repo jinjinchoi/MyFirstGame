@@ -9,7 +9,6 @@
 
 class UBoxComponent;
 class UProjectileMovementComponent;
-class USphereComponent;
 class UNiagaraSystem;
 
 UCLASS()

@@ -270,7 +270,7 @@ void UCaveFunctionLibrary::SetKnockbackDirection(FGameplayEffectContextHandle& E
 	}
 }
 
-FGameplayEffectContextHandle UCaveFunctionLibrary::ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams)
+FActiveGameplayEffectHandle UCaveFunctionLibrary::ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams)
 {
 	const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get();
 
@@ -297,9 +297,9 @@ FGameplayEffectContextHandle UCaveFunctionLibrary::ApplyDamageEffect(const FDama
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Debuff_Properties_Duration, DamageEffectParams.DebuffDuration);
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Debuff_Properties_Frequency, DamageEffectParams.DebuffFrequncy);
 
-	DamageEffectParams.TartgetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+	 FActiveGameplayEffectHandle ActiveGameplayEffectHandle = DamageEffectParams.TartgetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
 
-	return ContextHandle;
+	return ActiveGameplayEffectHandle;
 }
 
 bool UCaveFunctionLibrary::IsNotFriend(AActor* A, AActor* B)
