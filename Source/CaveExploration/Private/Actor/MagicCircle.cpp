@@ -7,6 +7,7 @@
 #include "Components/DecalComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
+
 AMagicCircle::AMagicCircle()
 {
 	PrimaryActorTick.bCanEverTick = false;

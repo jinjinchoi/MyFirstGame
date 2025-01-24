@@ -177,6 +177,8 @@ void ACavePlayerCharacter::HideMagicCircle_Implementation()
 	{
 		CavePlayerController->HideMagicCircle();
 	}
+
+
 }
 
 void ACavePlayerCharacter::MulticastLevelUpParticles_Implementation() const

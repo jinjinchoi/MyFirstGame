@@ -80,19 +80,16 @@ void ACavePlayerController::Move(const FInputActionValue& InputValue)
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	if (APawn* ControlledPawn  = GetPawn<APawn>())
+	if (IsValid(MagicCircle))
 	{
-		if (ACharacter* PlayerCharacter = Cast<ACharacter>(ControlledPawn))
-		{
-			if (!GetASC() || GetASC()->HasMatchingGameplayTag(FCaveGameplayTags::Get().Player_Block_InputPressed)) return;
+		MagicCircle->Move(InputAxisVector);
+	}
+	else if (APawn* ControlledPawn  = GetPawn<APawn>())
+	{
+		if (!GetASC() || GetASC()->HasMatchingGameplayTag(FCaveGameplayTags::Get().Player_Block_InputPressed)) return;
 
-			ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
-			ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
-		}
-		else if (AMagicCircle* MagicCirclePawn = Cast<AMagicCircle>(ControlledPawn))
-		{
-			MagicCirclePawn->Move(InputAxisVector);
-		}
+		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
+		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 	}
 }
 
@@ -138,7 +135,7 @@ void ACavePlayerController::ServerPossessCharacter_Implementation(APawn* NewPawn
 
 void ACavePlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
-	// TODO: 클라이언트에서 두번 호출됨. 컨트롤러 클래스 문제인지 확인하고 아니면 액터 클래스에서 오너가 없을때 자동으로 제거해줄 필요가 있음.
+	
 	if (IsValid(MagicCircle))
 	{
 		MagicCircle->Destroy();
@@ -153,39 +150,12 @@ void ACavePlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 	{
 		MagicCircle->MagicCircleDecal->SetMaterial(0, DecalMaterial);
 	}
-	
-	if (MagicCircle)
-	{
-		if (IsLocalController())
-		{
-			ServerPossessCharacter(MagicCircle);
-		}
-		else
-		{
-			Possess(MagicCircle);
-		}
-		
-	}
 }
 
 void ACavePlayerController::HideMagicCircle()
 {
-	if (IsValid(OriginalCharacter))
+	if (IsValid(MagicCircle))
 	{
-		if (IsLocalController())
-		{
-			ServerPossessCharacter(OriginalCharacter);	
-		}
-		else
-		{
-			Possess(OriginalCharacter);
-		}
-		
-		SetControlRotation(FRotator::ZeroRotator);
-		
-		if (IsValid(MagicCircle))
-		{
-			MagicCircle->Destroy();
-		}
+		MagicCircle->Destroy();
 	}
 }
