@@ -24,10 +24,10 @@ ACaveFireBlade::ACaveFireBlade()
 
 void ACaveFireBlade::Destroyed()
 {
+	GetWorld()->GetTimerManager().ClearTimer(OverlapTimerHandle);
+	
 	Super::Destroyed();
 	
-	GetWorld()->GetTimerManager().ClearTimer(OverlapTimerHandle);
-	OverlappingActors.Empty();
 }
 
 
@@ -58,24 +58,22 @@ void ACaveFireBlade::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 
 void ACaveFireBlade::ApplyGameplayEffect()
 {
-	if (HasAuthority())
+	if (!HasAuthority()) return;
+	
+	for (AActor* OtherActor : OverlappingActors)
 	{
-		for (AActor* OtherActor : OverlappingActors)
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+			if (DamageEffectParams.bIsKnockback)
 			{
-				if (DamageEffectParams.bIsKnockback)
-				{
-					FRotator Rotation = GetActorRotation();
-					const FVector KnockbackDirection = Rotation.Vector();
-					DamageEffectParams.KnockbackDirection = KnockbackDirection * DamageEffectParams.KnockbackForceMafnitude;
-				}
-				DamageEffectParams.TartgetAbilitySystemComponent = TargetASC;
-				UCaveFunctionLibrary::ApplyDamageEffect(DamageEffectParams);
-				OnHit();
+				FRotator Rotation = GetActorRotation();
+				const FVector KnockbackDirection = Rotation.Vector();
+				DamageEffectParams.KnockbackDirection = KnockbackDirection * DamageEffectParams.KnockbackForceMafnitude;
 			}
+			DamageEffectParams.TartgetAbilitySystemComponent = TargetASC;
+			UCaveFunctionLibrary::ApplyDamageEffect(DamageEffectParams);
+			OnHit();
 		}
-
 	}
 }
 

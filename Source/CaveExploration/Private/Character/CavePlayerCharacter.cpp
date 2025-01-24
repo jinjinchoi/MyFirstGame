@@ -25,7 +25,7 @@ ACavePlayerCharacter::ACavePlayerCharacter()
 	SpringArm->bUsePawnControlRotation = false;
 	SpringArm->SetUsingAbsoluteRotation(true);
 	SpringArm->bDoCollisionTest = false;
-	SpringArm->SetRelativeRotation(FRotator(-50.f, 0.f, 0.f));
+	SpringArm->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>("Follow Camera");
 	FollowCamera->SetupAttachment(SpringArm);
@@ -163,6 +163,22 @@ void ACavePlayerCharacter::EndPlayerComboAttack_Implementation()
 	GetCharacterMovement()->RotationRate = BaseRotationRate;
 }
 
+void ACavePlayerCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial)
+{
+	if (ACavePlayerController* CavePlayerController =  Cast<ACavePlayerController>(GetController()))
+	{
+		CavePlayerController->ShowMagicCircle(DecalMaterial);
+	}
+}
+
+void ACavePlayerCharacter::HideMagicCircle_Implementation()
+{
+	if (ACavePlayerController* CavePlayerController =  Cast<ACavePlayerController>(GetController()))
+	{
+		CavePlayerController->HideMagicCircle();
+	}
+}
+
 void ACavePlayerCharacter::MulticastLevelUpParticles_Implementation() const
 {
 	if (IsValid(LevelUpNiagaraComponent))
@@ -178,7 +194,8 @@ void ACavePlayerCharacter::MulticastLevelUpParticles_Implementation() const
 void ACavePlayerCharacter::InitAbilityActorInfo()
 {
 	ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
-	check(CavePlayerState);
+	if (!CavePlayerState) return;
+	
 	CavePlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(CavePlayerState, this);
 
 	AbilitySystemComponent = CavePlayerState->GetAbilitySystemComponent();

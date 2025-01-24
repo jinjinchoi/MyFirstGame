@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "CavePlayerController.generated.h"
 
+class AMagicCircle;
 class UDamageTextWidgetComponent;
 class UCaveAbilitySystemComponent;
 struct FGameplayTag;
@@ -27,6 +28,12 @@ public:
 
 	UFUNCTION(Client, Reliable)
 	void ShowDamageNumber(const float DamageAmount, ACharacter* TargetCharacter, const bool bIsCriticalHit, const FGameplayTag& DamageType);
+
+	UFUNCTION(BlueprintCallable)
+	void ShowMagicCircle(UMaterialInterface* DecalMaterial = nullptr);
+
+	UFUNCTION(BlueprintCallable)
+	void HideMagicCircle();
 	
 protected:
 	/* Engine */
@@ -58,5 +65,16 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UDamageTextWidgetComponent> DamageTextComponentClass;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMagicCircle> MagicCircleClass;
+
+	UPROPERTY()
+	TObjectPtr<AMagicCircle> MagicCircle;
+
+	UPROPERTY()
+	TObjectPtr<APawn> OriginalCharacter;
+
+	UFUNCTION(Server, Reliable)
+	void ServerPossessCharacter(APawn* NewPawn);
 };

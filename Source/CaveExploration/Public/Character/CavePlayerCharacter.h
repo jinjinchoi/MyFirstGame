@@ -44,6 +44,8 @@ public:
 	virtual void LevelUp_Implementation() override;
 	virtual void InPlayerComboAttack_Implementation() override;
 	virtual void EndPlayerComboAttack_Implementation() override;
+	virtual void ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial = nullptr) override;
+	virtual void HideMagicCircle_Implementation() override;
 	/* end Player Interface */
 
 protected:

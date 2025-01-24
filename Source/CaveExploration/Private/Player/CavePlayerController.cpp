@@ -8,6 +8,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameplayTagContainer.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
+#include "Actor/MagicCircle.h"
+#include "Components/DecalComponent.h"
 #include "Input/CaveInputComponent.h"
 #include "GameFramework/Character.h"
 #include "UI/Widget/DamageTextWidgetComponent.h"
@@ -17,18 +19,6 @@ ACavePlayerController::ACavePlayerController()
 	bReplicates = true;
 }
 
-void ACavePlayerController::ShowDamageNumber_Implementation(const float DamageAmount, ACharacter* TargetCharacter, const bool bIsCriticalHit, const FGameplayTag& DamageType)
-{
-	if (IsValid(TargetCharacter) && DamageTextComponentClass)
-	{
-		UDamageTextWidgetComponent* DamageTextComponent = NewObject<UDamageTextWidgetComponent>(TargetCharacter, DamageTextComponentClass);
-		DamageTextComponent->RegisterComponent();
-		DamageTextComponent->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-		DamageTextComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		DamageTextComponent->SetDamageText(DamageAmount, bIsCriticalHit, DamageType);
-		
-	}
-}
 
 void ACavePlayerController::BeginPlay()
 {
@@ -48,6 +38,22 @@ void ACavePlayerController::BeginPlay()
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	InputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(InputModeData);
+
+	OriginalCharacter = GetPawn();
+
+}
+
+void ACavePlayerController::ShowDamageNumber_Implementation(const float DamageAmount, ACharacter* TargetCharacter, const bool bIsCriticalHit, const FGameplayTag& DamageType)
+{
+	if (IsValid(TargetCharacter) && DamageTextComponentClass)
+	{
+		UDamageTextWidgetComponent* DamageTextComponent = NewObject<UDamageTextWidgetComponent>(TargetCharacter, DamageTextComponentClass);
+		DamageTextComponent->RegisterComponent();
+		DamageTextComponent->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		DamageTextComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		DamageTextComponent->SetDamageText(DamageAmount, bIsCriticalHit, DamageType);
+		
+	}
 }
 
 void ACavePlayerController::SetupInputComponent()
@@ -67,19 +73,26 @@ void ACavePlayerController::SetupInputComponent()
 
 void ACavePlayerController::Move(const FInputActionValue& InputValue)
 {
-	if (!GetASC() || GetASC()->HasMatchingGameplayTag(FCaveGameplayTags::Get().Player_Block_InputPressed)) return;
-	
 	const FVector2D InputAxisVector = InputValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const FVector RightDirection = FRotationMatrix(Rotation).GetUnitAxis(EAxis::Y);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	if (APawn* ControlledPawn  = GetPawn<APawn>())
 	{
-		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
-		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+		if (ACharacter* PlayerCharacter = Cast<ACharacter>(ControlledPawn))
+		{
+			if (!GetASC() || GetASC()->HasMatchingGameplayTag(FCaveGameplayTags::Get().Player_Block_InputPressed)) return;
+
+			ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
+			ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+		}
+		else if (AMagicCircle* MagicCirclePawn = Cast<AMagicCircle>(ControlledPawn))
+		{
+			MagicCirclePawn->Move(InputAxisVector);
+		}
 	}
 }
 
@@ -113,4 +126,66 @@ UCaveAbilitySystemComponent* ACavePlayerController::GetASC()
 	}
 
 	return CaveAbilitySystemComponent;
+}
+
+void ACavePlayerController::ServerPossessCharacter_Implementation(APawn* NewPawn)
+{
+	if (IsValid(NewPawn))
+	{
+		Possess(NewPawn);
+	}
+}
+
+void ACavePlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
+{
+	// TODO: 클라이언트에서 두번 호출됨. 컨트롤러 클래스 문제인지 확인하고 아니면 액터 클래스에서 오너가 없을때 자동으로 제거해줄 필요가 있음.
+	if (IsValid(MagicCircle))
+	{
+		MagicCircle->Destroy();
+	}
+	
+	const FVector MagicCircleLocation = GetPawn()->GetActorLocation();
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	
+	MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass, MagicCircleLocation, FRotator::ZeroRotator, SpawnParameters);
+	if (DecalMaterial)
+	{
+		MagicCircle->MagicCircleDecal->SetMaterial(0, DecalMaterial);
+	}
+	
+	if (MagicCircle)
+	{
+		if (IsLocalController())
+		{
+			ServerPossessCharacter(MagicCircle);
+		}
+		else
+		{
+			Possess(MagicCircle);
+		}
+		
+	}
+}
+
+void ACavePlayerController::HideMagicCircle()
+{
+	if (IsValid(OriginalCharacter))
+	{
+		if (IsLocalController())
+		{
+			ServerPossessCharacter(OriginalCharacter);	
+		}
+		else
+		{
+			Possess(OriginalCharacter);
+		}
+		
+		SetControlRotation(FRotator::ZeroRotator);
+		
+		if (IsValid(MagicCircle))
+		{
+			MagicCircle->Destroy();
+		}
+	}
 }
