@@ -53,6 +53,7 @@ protected:
 	virtual void InitAbilityActorInfo();
 	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
+	void FrozenTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -65,6 +66,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Information")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	float BaseWalkSpeed = 250.f;
 
 	
 #pragma region Attribute And Ability
@@ -116,6 +120,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+	
 	
 	
 };

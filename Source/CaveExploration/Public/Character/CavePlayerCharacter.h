@@ -46,6 +46,7 @@ public:
 	virtual void EndPlayerComboAttack_Implementation() override;
 	virtual void ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial = nullptr) override;
 	virtual void HideMagicCircle_Implementation() override;
+	virtual FVector GetMagicCircleLocation_Implementation() override;
 	/* end Player Interface */
 
 protected:
@@ -54,6 +55,7 @@ protected:
 	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	/* end CaveCharacterBase */
+	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
@@ -67,7 +69,8 @@ private:
 	float BaseMaxWalkSpeed = 600.f;
 
 	FRotator BaseRotationRate = FRotator(0, 540, 0);
-	
+
+
 
 # pragma region Components
 	UPROPERTY(EditDefaultsOnly)
@@ -78,3 +81,7 @@ private:
 
 # pragma endregion Components	
 };
+
+
+
+

@@ -4,6 +4,7 @@
 #include "Player/CavePlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "CaveFunctionLibrary.h"
 #include "CaveGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameplayTagContainer.h"
@@ -12,6 +13,7 @@
 #include "Components/DecalComponent.h"
 #include "Input/CaveInputComponent.h"
 #include "GameFramework/Character.h"
+#include "Net/UnrealNetwork.h"
 #include "UI/Widget/DamageTextWidgetComponent.h"
 
 ACavePlayerController::ACavePlayerController()
@@ -38,8 +40,6 @@ void ACavePlayerController::BeginPlay()
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	InputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(InputModeData);
-
-	OriginalCharacter = GetPawn();
 
 }
 
@@ -70,6 +70,14 @@ void ACavePlayerController::SetupInputComponent()
 		&ACavePlayerController::AbilityInputTagHeld
 	);
 }
+
+void ACavePlayerController::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACavePlayerController, MagicCircle);
+}
+
 
 void ACavePlayerController::Move(const FInputActionValue& InputValue)
 {
@@ -125,27 +133,24 @@ UCaveAbilitySystemComponent* ACavePlayerController::GetASC()
 	return CaveAbilitySystemComponent;
 }
 
-void ACavePlayerController::ServerPossessCharacter_Implementation(APawn* NewPawn)
-{
-	if (IsValid(NewPawn))
-	{
-		Possess(NewPawn);
-	}
-}
+
 
 void ACavePlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
-	
-	if (IsValid(MagicCircle))
+	if (IsValid(MagicCircle)) return;
+
+	if (HasAuthority())
 	{
-		MagicCircle->Destroy();
+		const FVector SpawnedMagicCircleLocation = GetPawn()->GetActorLocation();
+		FActorSpawnParameters SpawnParameters;
+		if (APawn* OwningPawn = GetPawn())
+		{
+			SpawnParameters.Owner = OwningPawn;
+		}
+		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass, SpawnedMagicCircleLocation, FRotator::ZeroRotator, SpawnParameters);
+		
 	}
 	
-	const FVector MagicCircleLocation = GetPawn()->GetActorLocation();
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.Owner = this;
-	
-	MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass, MagicCircleLocation, FRotator::ZeroRotator, SpawnParameters);
 	if (DecalMaterial)
 	{
 		MagicCircle->MagicCircleDecal->SetMaterial(0, DecalMaterial);
@@ -158,4 +163,35 @@ void ACavePlayerController::HideMagicCircle()
 	{
 		MagicCircle->Destroy();
 	}
+}
+
+FVector ACavePlayerController::GetValidMagicCircleLocation() const
+{
+	if (IsValid(MagicCircle))
+	{
+	
+		const FVector MagicCircleLocation = MagicCircle->GetActorLocation();
+		
+		const FVector RaisedLocation = FVector(MagicCircleLocation.X, MagicCircleLocation.Y, MagicCircleLocation.Z + 500);
+		const FVector LoweredLocation = FVector(MagicCircleLocation.X, MagicCircleLocation.Y, MagicCircleLocation.Z - 500);
+
+		FHitResult HitResult;
+		TArray<AActor*> IgnoreActors;
+		UCaveFunctionLibrary::GetLivePlayerWithinRadius(this, IgnoreActors, TArray<AActor*>(), 1500.f,  MagicCircleLocation);
+		IgnoreActors.Add(MagicCircle);
+
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActors(IgnoreActors);
+		GetWorld()->LineTraceSingleByProfile(HitResult, RaisedLocation, LoweredLocation, FName("BlockAll"), QueryParams);
+
+		FVector AdjustedLocation = MagicCircleLocation;  // 기본값 설정
+		if (HitResult.bBlockingHit)
+		{
+			AdjustedLocation.Z = HitResult.ImpactPoint.Z;
+
+			return AdjustedLocation;
+		}
+	}
+	
+	return FVector::ZeroVector;
 }

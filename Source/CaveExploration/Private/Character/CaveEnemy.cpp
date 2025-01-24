@@ -25,6 +25,7 @@ ACaveEnemy::ACaveEnemy()
 	HealthBar->SetupAttachment(GetRootComponent());
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	BaseWalkSpeed = 250.f;
 }
 
 int32 ACaveEnemy::GetCharacterLevel_Implementation() const
@@ -71,6 +72,9 @@ void ACaveEnemy::BeginPlay()
 
 	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Abilities_Common_Death, EGameplayTagEventType::NewOrRemoved)
 		.AddUObject(this, &ACaveEnemy::DeathReactTagChange);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Debuff_Type_Frozen, EGameplayTagEventType::NewOrRemoved)
+		.AddLambda(this, &ACaveEnemy::FrozenTagChanged);
 
 }
 

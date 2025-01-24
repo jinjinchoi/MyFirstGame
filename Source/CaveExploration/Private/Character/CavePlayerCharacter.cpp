@@ -14,6 +14,7 @@
 #include "UI/HUD/CaveHUD.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
+#include "Net/UnrealNetwork.h"
 
 ACavePlayerCharacter::ACavePlayerCharacter()
 {
@@ -46,6 +47,7 @@ ACavePlayerCharacter::ACavePlayerCharacter()
 	LevelUpNiagaraComponent->bAutoActivate = false;
 
 	CharacterClass = ECharacterClass::Player;
+	BaseWalkSpeed = 600.f;
 }
 
 void ACavePlayerCharacter::PossessedBy(AController* NewController)
@@ -177,7 +179,17 @@ void ACavePlayerCharacter::HideMagicCircle_Implementation()
 	{
 		CavePlayerController->HideMagicCircle();
 	}
+	
+}
 
+FVector ACavePlayerCharacter::GetMagicCircleLocation_Implementation()
+{
+	if (ACavePlayerController* CavePlayerController =  Cast<ACavePlayerController>(GetController()))
+	{
+		return CavePlayerController->GetValidMagicCircleLocation();
+	}
+
+	return FVector::ZeroVector;
 
 }
 
@@ -220,6 +232,9 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 
 	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Abilities_Common_Death)
 		.AddUObject(this, &ACavePlayerCharacter::DeathReactTagChange);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Debuff_Type_Frozen, EGameplayTagEventType::NewOrRemoved)
+		.AddLambda(this, &ACavePlayerCharacter::FrozenTagChanged);
 	
 	InitializeDefaultAttributes();
 	
@@ -235,5 +250,3 @@ void ACavePlayerCharacter::DeathReactTagChange(const FGameplayTag CallbackTag, i
 	Super::DeathReactTagChange(CallbackTag, NewCount);
 	
 }
-
-

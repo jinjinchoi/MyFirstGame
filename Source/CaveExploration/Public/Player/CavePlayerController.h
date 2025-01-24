@@ -35,10 +35,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HideMagicCircle();
 	
+	FVector GetValidMagicCircleLocation() const;
+	
 protected:
 	/* Engine */
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	/* end Engine */
 
 
@@ -69,12 +72,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMagicCircle> MagicCircleClass;
 
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	TObjectPtr<AMagicCircle> MagicCircle;
-
-	UPROPERTY()
-	TObjectPtr<APawn> OriginalCharacter;
-
-	UFUNCTION(Server, Reliable)
-	void ServerPossessCharacter(APawn* NewPawn);
+	
+	
 };

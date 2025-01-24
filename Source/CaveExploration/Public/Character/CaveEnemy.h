@@ -49,10 +49,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
-
-	UPROPERTY(BlueprintReadOnly, Category="Combat")
-	float BaseWalkSpeed = 250.f;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
 	float LifeSpan = 5.f;
 	

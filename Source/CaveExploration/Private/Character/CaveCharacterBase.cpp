@@ -9,6 +9,7 @@
 #include "AbilitySystem/Niagara/DebuffNiagaraComponent.h"
 #include "CaveExploration/CaveExploration.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 ACaveCharacterBase::ACaveCharacterBase()
@@ -152,4 +153,10 @@ void ACaveCharacterBase::AddCharacterAbilities() const
 	CaveASC->AddCharacterAbilities(StartupAbilities);
 	CaveASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
 	
+}
+
+void ACaveCharacterBase::FrozenTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	const bool bFrozen = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bFrozen ? BaseWalkSpeed / 3 : BaseWalkSpeed;
 }
