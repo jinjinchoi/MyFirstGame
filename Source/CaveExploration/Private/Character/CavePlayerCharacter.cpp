@@ -223,9 +223,17 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 			CaveHUD->InitOverlay(CavePlayerController, CavePlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	
-	FCaveGameplayTags GameplayTags = FCaveGameplayTags::Get();
 
+	ReactGameplayTagChanged();
+	InitializeDefaultAttributes();
+	
+}
+
+void ACavePlayerCharacter::ReactGameplayTagChanged()
+{
+	Super::ReactGameplayTagChanged();
+
+	const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get();
 	
 	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Abilities_Common_HitReact)
 		.AddUObject(this, &ACavePlayerCharacter::HitReactTagChange);
@@ -233,11 +241,11 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Abilities_Common_Death)
 		.AddUObject(this, &ACavePlayerCharacter::DeathReactTagChange);
 
-	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Debuff_Type_Frozen, EGameplayTagEventType::NewOrRemoved)
-		.AddLambda(this, &ACavePlayerCharacter::FrozenTagChanged);
-	
-	InitializeDefaultAttributes();
-	
+	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Debuff_Type_Frozen)
+		.AddUObject(this, &ACavePlayerCharacter::FrozenTagChanged);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Debuff_Type_Stun)
+		.AddUObject(this, &ACavePlayerCharacter::StunTagChanged);
 }
 
 void ACavePlayerCharacter::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)

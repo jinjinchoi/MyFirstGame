@@ -39,7 +39,7 @@ void ACaveEnemy::BeginPlay()
 	
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
-	
+
 	if (HasAuthority())
 	{
 		UCaveFunctionLibrary::GiveStartupAbilities(this , AbilitySystemComponent);
@@ -67,14 +67,8 @@ void ACaveEnemy::BeginPlay()
 		OnHealthChangedDelegate.Broadcast(CaveAS->GetHealth());
 		OnMaxHealthChangedDelegate.Broadcast(CaveAS->GetMaxHealth());
 	}
-	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Abilities_Common_HitReact, EGameplayTagEventType::NewOrRemoved)
-		.AddUObject(this, &ACaveEnemy::HitReactTagChange);
 
-	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Abilities_Common_Death, EGameplayTagEventType::NewOrRemoved)
-		.AddUObject(this, &ACaveEnemy::DeathReactTagChange);
-
-	AbilitySystemComponent->RegisterGameplayTagEvent(FCaveGameplayTags::Get().Debuff_Type_Frozen, EGameplayTagEventType::NewOrRemoved)
-		.AddLambda(this, &ACaveEnemy::FrozenTagChanged);
+	ReactGameplayTagChanged();
 
 }
 
@@ -95,6 +89,25 @@ void ACaveEnemy::InitializeDefaultAttributes() const
 	UCaveFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnemyLevel, AbilitySystemComponent);
 }
 
+void ACaveEnemy::ReactGameplayTagChanged()
+{
+	Super::ReactGameplayTagChanged();
+	
+	const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get();
+	
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Abilities_Common_HitReact, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ACaveEnemy::HitReactTagChange);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Abilities_Common_Death, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ACaveEnemy::DeathReactTagChange);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Debuff_Type_Frozen, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ACaveEnemy::FrozenTagChanged);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Debuff_Type_Stun, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ACaveEnemy::StunTagChanged);
+}
+
 void ACaveEnemy::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
@@ -113,4 +126,11 @@ void ACaveEnemy::DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCo
 		AIController->UnPossess();
 	}
 	
+}
+
+void ACaveEnemy::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::StunTagChanged(CallbackTag, NewCount);
+
+	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.f : BaseWalkSpeed;
 }

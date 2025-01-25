@@ -94,7 +94,7 @@ void ACavePlayerController::Move(const FInputActionValue& InputValue)
 	}
 	else if (APawn* ControlledPawn  = GetPawn<APawn>())
 	{
-		if (!GetASC() || GetASC()->HasMatchingGameplayTag(FCaveGameplayTags::Get().Player_Block_InputPressed)) return;
+		if (!GetASC() || GetASC()->HasMatchingGameplayTag(FCaveGameplayTags::Get().Player_Block_Move)) return;
 
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);

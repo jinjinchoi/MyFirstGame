@@ -40,8 +40,10 @@ protected:
 	/* Cave Character Base */
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
+	virtual void ReactGameplayTagChanged() override;
 	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 	/* end Cave Character Base */
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Information")

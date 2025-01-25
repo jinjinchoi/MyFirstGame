@@ -52,6 +52,7 @@ public:
 protected:
 	/* Cave Character Base */
 	virtual void InitAbilityActorInfo() override;
+	virtual void ReactGameplayTagChanged() override;
 	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	/* end CaveCharacterBase */

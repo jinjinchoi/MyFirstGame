@@ -141,6 +141,9 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Common_Death = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.Death"));
 
+	GameplayTags.Abilities_Common_Invincible = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Common.Invincible"));
+
 	
 	GameplayTags.Abilities_Status = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Abilities.Status"));
@@ -276,6 +279,9 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Player_Block_InputHeld = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Player.Block.InputHeld"));
+	
+	GameplayTags.Player_Block_Move = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Block.Move"));
 
 	
 #pragma endregion

@@ -10,11 +10,11 @@
 #include "CaveExploration/CaveExploration.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 
 
 ACaveCharacterBase::ACaveCharacterBase()
 {
-
 	PrimaryActorTick.bCanEverTick = false;
 
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
@@ -27,6 +27,14 @@ ACaveCharacterBase::ACaveCharacterBase()
 	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffComponent");
 	BurnDebuffComponent->SetupAttachment(GetRootComponent());
 	BurnDebuffComponent->DebuffTag = FCaveGameplayTags::Get().Debuff_Type_Burn;
+
+	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("StunDebuffComponent");
+	StunDebuffComponent->SetupAttachment(GetRootComponent());
+	StunDebuffComponent->DebuffTag = FCaveGameplayTags::Get().Debuff_Type_Stun;
+
+	FrozenDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("FrozenDebuffComponent");
+	FrozenDebuffComponent->SetupAttachment(GetRootComponent());
+	FrozenDebuffComponent->DebuffTag = FCaveGameplayTags::Get().Debuff_Type_Frozen;
 	
 }
 
@@ -35,6 +43,13 @@ void ACaveCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ACaveCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACaveCharacterBase, bIsStunned);
 }
 
 UAbilitySystemComponent* ACaveCharacterBase::GetAbilitySystemComponent() const
@@ -98,6 +113,11 @@ void ACaveCharacterBase::InitAbilityActorInfo()
 {
 }
 
+void ACaveCharacterBase::ReactGameplayTagChanged()
+{
+	check(AbilitySystemComponent);
+}
+
 void ACaveCharacterBase::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
 {
 }
@@ -159,4 +179,10 @@ void ACaveCharacterBase::FrozenTagChanged(const FGameplayTag CallbackTag, int32 
 {
 	const bool bFrozen = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bFrozen ? BaseWalkSpeed / 3 : BaseWalkSpeed;
+}
+
+void ACaveCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	const bool bStun = NewCount > 0;
+	bIsStunned = bStun;
 }

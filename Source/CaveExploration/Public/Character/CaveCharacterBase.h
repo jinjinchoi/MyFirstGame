@@ -45,15 +45,23 @@ public:
 	
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
+	// TODO: 클라이언트에서 나이아가라 컴포넌트 전부 활성화 되는지 확인할 필요가 있음.
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsStunned = false;
+
+
 protected:
 	/* Engine */
 	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	/* Engine */
 
 	virtual void InitAbilityActorInfo();
+	virtual void ReactGameplayTagChanged();
 	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
 	void FrozenTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -121,6 +129,11 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> FrozenDebuffComponent;
 	
 	
 };

@@ -152,6 +152,11 @@ void UCaveAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 {
+	if (Props.TargetASC->HasMatchingGameplayTag(FCaveGameplayTags::Get().Abilities_Common_Invincible))
+	{
+		return;
+	}
+	
 	const float LocalIncomingDamage = GetIncomingDamage();
 	SetIncomingDamage(0.f);
 
@@ -231,6 +236,7 @@ void UCaveAttributeSet::Debuff(const FEffectProperties& Props)
 		TagContainer.AddTag(GameplayTags.Player_Block_Released);
 		TagContainer.AddTag(GameplayTags.Player_Block_InputHeld);
 		TagContainer.AddTag(GameplayTags.Player_Block_InputPressed);
+		TagContainer.AddTag(GameplayTags.Player_Block_Move);
 	}
 
 	Component.SetAndApplyTargetTagChanges(TagContainer);

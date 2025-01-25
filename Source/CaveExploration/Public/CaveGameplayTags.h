@@ -87,6 +87,7 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Common_Down;
 	FGameplayTag Abilities_Common_HitReact;
 	FGameplayTag Abilities_Common_Death;
+	FGameplayTag Abilities_Common_Invincible;
 
 	FGameplayTag Abilities_Status;
 	FGameplayTag Abilities_Status_Locked;
@@ -150,6 +151,7 @@ struct FCaveGameplayTags
 	FGameplayTag Player_Block_InputPressed;
 	FGameplayTag Player_Block_Released;
 	FGameplayTag Player_Block_InputHeld;
+	FGameplayTag Player_Block_Move;
 	
 #pragma endregion
 	
