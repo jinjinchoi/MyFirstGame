@@ -56,7 +56,7 @@ public:
 	
 
 private:
-	static void ShouldEnableButton(const FGameplayTag& AbilityStatus, int32 SpellPoints, bool& bShouldEnableSpellPointsButton);
+	void ShouldEnableButton(const FGameplayTag& AbilityTag, const FGameplayTag& AbilityStatus, int32 SpellPoints, bool& bShouldEnableSpellPointsButton);
 	FSelectedAbility SelectedAbility = { FCaveGameplayTags::Get().Abilities_None, FCaveGameplayTags::Get().Abilities_Status_Locked };
 	int32 CurrentSpellPoints = 0;
 	bool bWaitingForEquipSelection = false;

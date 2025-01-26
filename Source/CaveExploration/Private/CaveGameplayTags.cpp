@@ -183,6 +183,9 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Spell_Physical_Strike = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Spell.Physical.Strike"));
 
+	GameplayTags.Abilities_Spell_Physical_Roll = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Spell.Physical.Roll"));
+
 	GameplayTags.Abilities_Spell_Ice_FrozenShard = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Spell.Ice.FrozenShard"));
 

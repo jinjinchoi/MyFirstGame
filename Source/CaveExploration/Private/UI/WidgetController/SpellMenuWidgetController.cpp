@@ -37,7 +37,7 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		{
 			SelectedAbility.StatusTag = StatusTag;
 			bool bEnableSpendPoints = false;
-			ShouldEnableButton(StatusTag, CurrentSpellPoints, bEnableSpendPoints);
+			ShouldEnableButton(AbilityTag, StatusTag, CurrentSpellPoints, bEnableSpendPoints);
 			
 			SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoints, Description, NextLevelDescription);
 		}
@@ -48,7 +48,7 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		SpellPointsChangedDelegate.Broadcast(SpellPoints);
 		CurrentSpellPoints = SpellPoints;
 		bool bEnableSpendPoints = false;
-		ShouldEnableButton(SelectedAbility.StatusTag, CurrentSpellPoints, bEnableSpendPoints);
+		ShouldEnableButton(SelectedAbility.AbilityTag, SelectedAbility.StatusTag, CurrentSpellPoints, bEnableSpendPoints);
 
 		// 스킬 설명 불러오기
 		FString Description;
@@ -95,7 +95,7 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	SelectedAbility.StatusTag = AbilityStatus;
 
 	bool bEnableSpendPoints = false;
-	ShouldEnableButton(AbilityStatus, SpellPoints, bEnableSpendPoints);
+	ShouldEnableButton(AbilityTag, AbilityStatus, SpellPoints, bEnableSpendPoints);
 
 	// 스킬 설명 불러오기
 	FString Description;
@@ -117,7 +117,14 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 
 void USpellMenuWidgetController::PrepareEquipping()
 {
+	if (SelectedAbility.AbilityTag == FCaveGameplayTags::Get().Abilities_Spell_Physical_MeleeAttack)
+	{
+		bWaitingForEquipSelection = false;
+		return;
+	}
+	
 	bWaitingForEquipSelection = true;
+
 	const FGameplayTag& SelectedStatus = GetCaveAbilitySystemComponent()->GetStatusFromAbilityTag(SelectedAbility.AbilityTag);
 	if (SelectedStatus.MatchesTagExact(FCaveGameplayTags::Get().Abilities_Status_Equipped))
 	{
@@ -135,6 +142,7 @@ void USpellMenuWidgetController::SpellRowGlobePressed(const FGameplayTag& InputT
 
 void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot)
 {
+
 	const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get();
 	
 	bWaitingForEquipSelection = false;
@@ -154,11 +162,18 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
 }
 
 
-void USpellMenuWidgetController::ShouldEnableButton(const FGameplayTag& AbilityStatus, int32 SpellPoints, bool& bShouldEnableSpellPointsButton)
+void USpellMenuWidgetController::ShouldEnableButton(const FGameplayTag& AbilityTag, const FGameplayTag& AbilityStatus, const int32 SpellPoints, bool& bShouldEnableSpellPointsButton)
 {
 	const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get();
 
 	if (!AbilityStatus.MatchesTag(GameplayTags.Abilities_Status))
+	{
+		bShouldEnableSpellPointsButton = false;
+		return;
+	}
+
+	const int32 AbilityLevel = GetCaveAbilitySystemComponent()->GetAbilityLevelFromAbilityTag(AbilityTag);
+	if (AbilityLevel >= 10)
 	{
 		bShouldEnableSpellPointsButton = false;
 		return;

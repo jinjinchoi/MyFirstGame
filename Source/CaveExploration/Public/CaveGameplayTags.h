@@ -103,6 +103,7 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Spell_Physical_MeleeAttack;
 	FGameplayTag Abilities_Spell_Physical_Thrust;
 	FGameplayTag Abilities_Spell_Physical_Strike;
+	FGameplayTag Abilities_Spell_Physical_Roll;
 	FGameplayTag Abilities_Spell_Ice_FrozenShard;
 
 #pragma endregion
