@@ -40,6 +40,23 @@ int32 ACaveEnemy::GetCharacterLevel_Implementation() const
 	return EnemyLevel;
 }
 
+UAnimMontage* ACaveEnemy::GetAttackMontage_Implementation() const
+{
+	if (AttackMontages.Num() == 0) return nullptr;
+
+	return AttackMontages[FMath::RandRange(0, AttackMontages.Num() - 1)];
+}
+
+AActor* ACaveEnemy::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
+}
+
+void ACaveEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
 void ACaveEnemy::BeginPlay()
 {
 	Super::BeginPlay();
@@ -49,7 +66,7 @@ void ACaveEnemy::BeginPlay()
 
 	if (HasAuthority())
 	{
-		UCaveFunctionLibrary::GiveStartupAbilities(this , AbilitySystemComponent);
+		UCaveFunctionLibrary::GiveStartupAbilities(this , AbilitySystemComponent, CharacterClass);
 	}
 
 	if (UCaveUserWidget* CaveUserWidget = Cast<UCaveUserWidget>(HealthBar->GetUserWidgetObject()))
@@ -141,7 +158,10 @@ void ACaveEnemy::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCoun
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
-	CaveAIController->GetBlackboardComponent()->SetValueAsBool("Bool_HitReacting", bHitReacting);
+	if (HasAuthority())
+	{
+		CaveAIController->GetBlackboardComponent()->SetValueAsBool("Bool_HitReacting", bHitReacting);
+	}
 
 }
 

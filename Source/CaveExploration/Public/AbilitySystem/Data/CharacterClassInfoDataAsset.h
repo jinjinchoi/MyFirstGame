@@ -32,7 +32,7 @@ struct FCharacterClassDefaultInfo
 	TSubclassOf<UGameplayEffect> ResistanceAttributes;
 
 	UPROPERTY(EditDefaultsOnly, Category="Class Defaults")
-	TArray<TSubclassOf<UGameplayEffect>> StartupAbilities;
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
 	UPROPERTY(EditDefaultsOnly, Category="Class Defaults")
 	FScalableFloat XPReward = FScalableFloat();

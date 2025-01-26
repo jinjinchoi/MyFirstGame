@@ -27,6 +27,13 @@ public:
 	virtual int32 GetCharacterLevel_Implementation() const override;
 	/* end Combat Interface */
 
+	/* Enemy Interface */
+	virtual UAnimMontage* GetAttackMontage_Implementation() const override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	/* end Enemy Interface */
+
+	
 	/* Overlay Widget Controller */
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedDelegate OnHealthChangedDelegate;
@@ -35,6 +42,7 @@ public:
 	FOnAttributeChangedDelegate OnMaxHealthChangedDelegate;
 	/* end Overlay Widget Controller */
 
+	
 protected:
 	/* Engine */
 	virtual void BeginPlay() override;
@@ -57,11 +65,19 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
 	float LifeSpan = 5.f;
-
+	
 	UPROPERTY(EditDefaultsOnly, Category=AI)
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
 	UPROPERTY()
 	TObjectPtr<ACaveAIController> CaveAIController;
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category="Combat")
+	TArray<UAnimMontage*> AttackMontages;
+
+	UPROPERTY()
+	TObjectPtr<AActor> CombatTarget;
+
 	
 };

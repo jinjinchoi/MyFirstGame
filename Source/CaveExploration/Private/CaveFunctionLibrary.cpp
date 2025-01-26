@@ -440,7 +440,7 @@ void UCaveFunctionLibrary::InitializeDefaultAttribute(const UObject* WorldContex
 	
 }
 
-void UCaveFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+void UCaveFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass)
 {
 	const UCharacterClassInfoDataAsset* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
 	if (!CharacterClassInfo) return;
@@ -451,7 +451,15 @@ void UCaveFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObjec
 		ASC->GiveAbility(AbilitySpec);
 	}
 
-	//TODO : 추가해야함
+	const FCharacterClassDefaultInfo& DefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+	for (TSubclassOf<UGameplayAbility> Ability : DefaultInfo.StartupAbilities)
+	{
+		if (ASC->GetAvatarActor()->Implements<UCombatInterface>())
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, ICombatInterface::Execute_GetCharacterLevel(ASC->GetAvatarActor()));
+			ASC->GiveAbility(AbilitySpec);
+		}
+	}
 }
 
 int32 UCaveFunctionLibrary::GetXPRewardForClassAndLevel(const UObject* WorldContextObject, const ECharacterClass CharacterClass, const int32 CharacterLevel)
