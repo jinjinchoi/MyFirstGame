@@ -8,6 +8,8 @@
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "CaveEnemy.generated.h"
 
+class ACaveAIController;
+class UBehaviorTree;
 class UWidgetComponent;
 /**
  * 
@@ -19,6 +21,7 @@ class CAVEEXPLORATION_API ACaveEnemy : public ACaveCharacterBase, public IEnemyI
 
 public:
 	ACaveEnemy();
+	virtual void PossessedBy(AController* NewController) override;
 	
 	/* Combat Interface */
 	virtual int32 GetCharacterLevel_Implementation() const override;
@@ -54,5 +57,11 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
 	float LifeSpan = 5.f;
+
+	UPROPERTY(EditDefaultsOnly, Category=AI)
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<ACaveAIController> CaveAIController;
 	
 };

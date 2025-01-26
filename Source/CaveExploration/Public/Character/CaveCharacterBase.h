@@ -75,8 +75,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Information")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
-	UPROPERTY(BlueprintReadOnly, Category="Combat")
-	float BaseWalkSpeed = 250.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	float BaseWalkSpeed = 350.f;
 
 	
 #pragma region Attribute And Ability

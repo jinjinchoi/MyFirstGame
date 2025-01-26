@@ -7,6 +7,9 @@
 #include "CaveGameplayTags.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "AbilitySystem/CaveAttributeSet.h"
+#include "AI/CaveAIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/CaveUserWidget.h"
@@ -25,7 +28,11 @@ ACaveEnemy::ACaveEnemy()
 	HealthBar->SetupAttachment(GetRootComponent());
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-	BaseWalkSpeed = 250.f;
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 int32 ACaveEnemy::GetCharacterLevel_Implementation() const
@@ -72,6 +79,28 @@ void ACaveEnemy::BeginPlay()
 
 }
 
+void ACaveEnemy::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (!HasAuthority()) return;
+	
+	CaveAIController = Cast<ACaveAIController>(NewController);
+	CaveAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	CaveAIController->RunBehaviorTree(BehaviorTree);
+	CaveAIController->GetBlackboardComponent()->SetValueAsBool("Bool_HitReacting", false);
+	
+	if (CharacterClass == ECharacterClass::Ranger || CharacterClass == ECharacterClass::Wizard)
+	{
+		CaveAIController->GetBlackboardComponent()->SetValueAsBool("Bool_RangedAttacker", true);
+	}
+	else
+	{
+		CaveAIController->GetBlackboardComponent()->SetValueAsBool("Bool_RangedAttacker", false);
+	}
+	
+}
+
 void ACaveEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
@@ -112,6 +141,8 @@ void ACaveEnemy::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCoun
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+	CaveAIController->GetBlackboardComponent()->SetValueAsBool("Bool_HitReacting", bHitReacting);
+
 }
 
 void ACaveEnemy::DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
