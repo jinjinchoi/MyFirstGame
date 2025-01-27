@@ -19,10 +19,13 @@ protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
 	UFUNCTION(BlueprintCallable, Category=Projectile)
-	void SpawnProjectiles(const FVector& ProjectileTargetLocation, bool bOverridePitch = false, AActor* HomingTarget = nullptr);
+	void SpawnProjectiles(const FVector& ProjectileTargetLocation, const bool bOverridePitch = false, const float PitchOverride = 0, AActor* HomingTarget = nullptr);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=Projectile)
 	TSubclassOf<ACaveProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ProjectileSpeed = 400.f;
 	
 private:
 

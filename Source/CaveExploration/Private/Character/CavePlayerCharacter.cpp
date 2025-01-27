@@ -197,10 +197,10 @@ void ACavePlayerCharacter::MulticastLevelUpParticles_Implementation() const
 {
 	if (IsValid(LevelUpNiagaraComponent))
 	{
-		const FVector CameraLocation = FollowCamera->GetComponentLocation();
-		const FVector NiagaraSystemLocation = LevelUpNiagaraComponent->GetComponentLocation();
-		const FRotator ToCameraRotation = (CameraLocation - NiagaraSystemLocation).Rotation();
-		LevelUpNiagaraComponent->SetWorldRotation(ToCameraRotation);
+		// const FVector CameraLocation = FollowCamera->GetComponentLocation();
+		// const FVector NiagaraSystemLocation = LevelUpNiagaraComponent->GetComponentLocation();
+		// const FRotator ToCameraRotation = (CameraLocation - NiagaraSystemLocation).Rotation();
+		// LevelUpNiagaraComponent->SetWorldRotation(ToCameraRotation);
 		LevelUpNiagaraComponent->Activate(true);
 	}
 }

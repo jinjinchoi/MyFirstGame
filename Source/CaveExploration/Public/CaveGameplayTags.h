@@ -83,6 +83,7 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_None;
 
 	FGameplayTag Abilities_Common_Attack;
+	FGameplayTag Abilities_Common_RangedAttack;
 	FGameplayTag Abilities_Common_Summon;
 	FGameplayTag Abilities_Common_Down;
 	FGameplayTag Abilities_Common_HitReact;

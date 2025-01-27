@@ -18,7 +18,7 @@ void UCaveProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 }
 
 void UCaveProjectileSpell::SpawnProjectiles(const FVector& ProjectileTargetLocation,
-	bool bOverridePitch, AActor* HomingTarget)
+                                            const bool bOverridePitch, const float PitchOverride, AActor* HomingTarget)
 {
 	if (!GetAvatarActorFromActorInfo()->HasAuthority() || !GetAvatarActorFromActorInfo()->Implements<UCombatInterface>()) return;
 
@@ -36,18 +36,18 @@ void UCaveProjectileSpell::SpawnProjectiles(const FVector& ProjectileTargetLocat
 		Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 	}
 	
+
 	if (bOverridePitch)
 	{
-		// TODO: 거리와 속도 계산해서 각도 계산해야함
-		// Rotation.Pitch = ??
+		Rotation.Pitch = PitchOverride;
 	}
+
 
 	const int32 NumProjectiles = FMath::Min(MaxNumProjectiles, GetAbilityLevel());
 	const FVector Forward = Rotation.Vector();
 
 	TArray<FRotator> Rotations =  UCaveFunctionLibrary::EvenlySpaceRotators(Forward, ProjectileSpread, NumProjectiles);
 	
-
 	for (const FRotator& Rot : Rotations)
 	{
 		FTransform SpawnTransform;
@@ -76,7 +76,9 @@ void UCaveProjectileSpell::SpawnProjectiles(const FVector& ProjectileTargetLocat
 		Projectile->DamageEffectParams = MakeDamageEffectParams();
 		Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
 		Projectile->ProjectileMovement->bIsHomingProjectile = HomingTarget ? true : false;
-
+		Projectile->ProjectileMovement->InitialSpeed = ProjectileSpeed;
+		Projectile->ProjectileMovement->MaxSpeed = ProjectileSpeed;
+		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 	

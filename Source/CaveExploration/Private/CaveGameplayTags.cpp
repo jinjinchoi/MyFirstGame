@@ -128,6 +128,9 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Abilities_Common_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.Attack"));
+	
+	GameplayTags.Abilities_Common_RangedAttack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Common.RangedAttack"));
 
 	GameplayTags.Abilities_Common_Summon = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.Summon"));

@@ -11,7 +11,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h" 
 #include "CaveExploration/CaveExploration.h"
-#include "Components/BoxComponent.h"
 
 
 ACaveProjectile::ACaveProjectile()
@@ -20,19 +19,22 @@ ACaveProjectile::ACaveProjectile()
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
 	
-	BoxCollision = CreateDefaultSubobject<UBoxComponent>("CollisionBox");
-	SetRootComponent(BoxCollision);
-	BoxCollision->SetCollisionObjectType(ECC_Projectile);
-	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	BoxCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
-	BoxCollision->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
-	BoxCollision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
-	BoxCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	SphereCollision = CreateDefaultSubobject<USphereComponent>("CollisionBox");
+	SetRootComponent(SphereCollision);
+	SphereCollision->SetCollisionObjectType(ECC_Projectile);
+	SphereCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SphereCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
+	SphereCollision->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	SphereCollision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
+	SphereCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovement");
-	ProjectileMovement->InitialSpeed = 550.f;
-	ProjectileMovement->MaxSpeed = 550.f;
-	ProjectileMovement->ProjectileGravityScale = 0.f;
+	if (ProjectileMovement->InitialSpeed == 0.f || ProjectileMovement->MaxSpeed == 0.f)
+	{
+		ProjectileMovement->InitialSpeed = 400.f;
+		ProjectileMovement->MaxSpeed = 400.f;
+		ProjectileMovement->ProjectileGravityScale = 0.f;
+	}
 
 }
 
@@ -44,7 +46,7 @@ void ACaveProjectile::BeginPlay()
 	SetLifeSpan(LifeSpan);
 	SetReplicateMovement(true);
 
-	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &ACaveProjectile::OnSphereOverlap);
+	SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &ACaveProjectile::OnSphereOverlap);
 	
 }
 
@@ -101,6 +103,8 @@ bool ACaveProjectile::IsValidOverlap(AActor* OtherActor) const
 
 	return true;
 }
+
+
 
 
 
