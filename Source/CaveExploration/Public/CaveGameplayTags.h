@@ -89,7 +89,9 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Common_HitReact;
 	FGameplayTag Abilities_Common_Death;
 	FGameplayTag Abilities_Common_Invincible;
-
+	FGameplayTag Abilities_Common_Immunity;
+	FGameplayTag Abilities_Common_SuperArmor;
+	
 	FGameplayTag Abilities_Status;
 	FGameplayTag Abilities_Status_Locked;
 	FGameplayTag Abilities_Status_Eligible;
@@ -106,6 +108,8 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Spell_Physical_Strike;
 	FGameplayTag Abilities_Spell_Physical_Roll;
 	FGameplayTag Abilities_Spell_Ice_FrozenShard;
+	FGameplayTag Abilities_Spell_Buff_Immunity;
+	FGameplayTag Abilities_Spell_Buff_SuperArmor;
 
 #pragma endregion
 

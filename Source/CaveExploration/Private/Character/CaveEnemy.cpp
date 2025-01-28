@@ -184,4 +184,8 @@ void ACaveEnemy::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 	Super::StunTagChanged(CallbackTag, NewCount);
 
 	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.f : BaseWalkSpeed;
+	if (HasAuthority())
+	{
+		CaveAIController->GetBlackboardComponent()->SetValueAsBool("Bool_Stunned", bIsStunned);
+	}
 }

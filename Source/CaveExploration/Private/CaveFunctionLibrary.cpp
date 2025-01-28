@@ -460,6 +460,14 @@ void UCaveFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObjec
 			ASC->GiveAbility(AbilitySpec);
 		}
 	}
+	for (TSubclassOf<UGameplayAbility> Ability : DefaultInfo.StartupPassiveAbilities)
+	{
+		if (ASC->GetAvatarActor()->Implements<UCombatInterface>())
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, ICombatInterface::Execute_GetCharacterLevel(ASC->GetAvatarActor()));
+			ASC->GiveAbilityAndActivateOnce(AbilitySpec);
+		}
+	}
 }
 
 int32 UCaveFunctionLibrary::GetXPRewardForClassAndLevel(const UObject* WorldContextObject, const ECharacterClass CharacterClass, const int32 CharacterLevel)

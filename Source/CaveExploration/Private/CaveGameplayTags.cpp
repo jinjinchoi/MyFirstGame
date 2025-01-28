@@ -147,6 +147,12 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Common_Invincible = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.Invincible"));
 
+	GameplayTags.Abilities_Common_Immunity = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Common.Immunity"));
+
+	GameplayTags.Abilities_Common_SuperArmor = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Common.SuperArmor"));
+
 	
 	GameplayTags.Abilities_Status = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Abilities.Status"));
@@ -191,6 +197,12 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Abilities_Spell_Ice_FrozenShard = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Spell.Ice.FrozenShard"));
+
+	GameplayTags.Abilities_Spell_Buff_Immunity = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Spell.Buff.Immunity"));
+
+	GameplayTags.Abilities_Spell_Buff_SuperArmor = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Spell.Buff.SuperArmor"));
 
 #pragma endregion
 

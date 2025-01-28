@@ -176,7 +176,7 @@ void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			}
 			SendXPEvent(Props);
 		}
-		else
+		else if (!Props.TargetASC->HasMatchingGameplayTag(FCaveGameplayTags::Get().Abilities_Common_SuperArmor))
 		{
 			if (Props.TargetCharacter->Implements<UCombatInterface>())
 			{
@@ -198,7 +198,8 @@ void UCaveAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		
 		ShowFloatDamage(Props, LocalIncomingDamage, bCriticalHit, DamageType);
 
-		if (UCaveFunctionLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
+		const bool IsSuccessfulDebuff = UCaveFunctionLibrary::IsSuccessfulDebuff(Props.EffectContextHandle);
+		if (IsSuccessfulDebuff && !Props.TargetASC->HasMatchingGameplayTag(FCaveGameplayTags::Get().Abilities_Common_Immunity))
 		{
 			Debuff(Props);
 		}
