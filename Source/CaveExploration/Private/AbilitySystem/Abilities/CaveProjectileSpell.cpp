@@ -43,10 +43,22 @@ void UCaveProjectileSpell::SpawnProjectiles(const FVector& ProjectileTargetLocat
 	}
 
 
-	const int32 NumProjectiles = FMath::Min(MaxNumProjectiles, GetAbilityLevel());
+	int32 EfficientNumProjectiles = 1;
+	if (MaxNumProjectiles <= MinNumProjectiles)
+	{
+		EfficientNumProjectiles = MinNumProjectiles;
+	}
+	else
+	{
+		EfficientNumProjectiles = FMath::RandRange(MinNumProjectiles, MaxNumProjectiles);
+		if (EfficientNumProjectiles % 2 == 0)
+		{
+			EfficientNumProjectiles -= 1;
+		}
+	}
 	const FVector Forward = Rotation.Vector();
 
-	TArray<FRotator> Rotations =  UCaveFunctionLibrary::EvenlySpaceRotators(Forward, ProjectileSpread, NumProjectiles);
+	TArray<FRotator> Rotations =  UCaveFunctionLibrary::EvenlySpaceRotators(Forward, ProjectileSpread, EfficientNumProjectiles);
 	
 	for (const FRotator& Rot : Rotations)
 	{

@@ -39,6 +39,9 @@ private:
 	float HomingAccelerationMax = 4200.f;
 
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
+	int32 MinNumProjectiles = 1;
+
+	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	int32 MaxNumProjectiles = 5;
 	
 	

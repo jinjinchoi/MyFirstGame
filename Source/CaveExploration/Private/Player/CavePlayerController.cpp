@@ -88,6 +88,8 @@ void ACavePlayerController::Move(const FInputActionValue& InputValue)
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
+	MoveDirection = ForwardDirection * InputAxisVector.Y + RightDirection * InputAxisVector.X;
+
 	if (IsValid(MagicCircle))
 	{
 		MagicCircle->Move(InputAxisVector);

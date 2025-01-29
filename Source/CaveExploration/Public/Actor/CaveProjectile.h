@@ -38,12 +38,11 @@ protected:
 	UFUNCTION()
 	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<USphereComponent> SphereCollision;
+	
 private:
 	bool bHit = false;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> SphereCollision;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Projectile Properties")
 	float KnockbackPitch = 0.f;
