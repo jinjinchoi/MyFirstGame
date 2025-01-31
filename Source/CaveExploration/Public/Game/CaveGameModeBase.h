@@ -6,6 +6,9 @@
 #include "GameFramework/GameModeBase.h"
 #include "CaveGameModeBase.generated.h"
 
+class UCaveSaveGame;
+class USaveGame;
+class UMVVM_LoadSlot;
 class UAbilityInfo;
 class UCharacterClassInfoDataAsset;
 /**
@@ -22,5 +25,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="Ability Info")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
+
+	// Save Logic
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<USaveGame> CaveSaveGameClass;
+
+	void SaveSlotData(const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex) const;
+	UCaveSaveGame* GetSaveSlotData(const FString& SlotName, const int32 SlotIndex) const;
 	
 };
