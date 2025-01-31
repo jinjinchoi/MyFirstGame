@@ -172,6 +172,7 @@ void ACaveCharacterBase::AddCharacterAbilities() const
 	UCaveAbilitySystemComponent* CaveASC = Cast<UCaveAbilitySystemComponent>(AbilitySystemComponent);
 	CaveASC->AddCharacterAbilities(StartupAbilities);
 	CaveASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
+	CaveASC->AddCharacterInteractionAbilities(StartupInteractionAbilities);
 	
 }
 

@@ -153,6 +153,13 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Common_SuperArmor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.SuperArmor"));
 
+	GameplayTags.Abilities_Common_VitalRegeneration = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Common.VitalRegeneration"));
+	
+
+	GameplayTags.Abilities_Enemy_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Enemy.Lightning"));
+
 	
 	GameplayTags.Abilities_Status = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Abilities.Status"));

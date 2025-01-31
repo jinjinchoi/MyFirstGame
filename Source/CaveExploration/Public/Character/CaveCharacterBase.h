@@ -111,6 +111,9 @@ private:
 	UPROPERTY(EditAnywhere, Category=Abilities)
 	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
 
+	UPROPERTY(EditAnywhere, Category=Abilities)
+	TArray<TSubclassOf<UGameplayAbility>> StartupInteractionAbilities;
+
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMeshComponent> Weapon;
 

@@ -35,6 +35,14 @@ void UCaveAbilitySystemComponent::AddCharacterPassiveAbilities(const TArray<TSub
 	}
 }
 
+void UCaveAbilitySystemComponent::AddCharacterInteractionAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupInteractionAbilities)
+{
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupInteractionAbilities)
+	{
+		GiveAbility(AbilityClass);
+	}
+}
+
 void UCaveAbilitySystemComponent::AbilityInputPressed(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;

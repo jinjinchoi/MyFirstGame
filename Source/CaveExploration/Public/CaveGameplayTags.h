@@ -91,6 +91,9 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Common_Invincible;
 	FGameplayTag Abilities_Common_Immunity;
 	FGameplayTag Abilities_Common_SuperArmor;
+	FGameplayTag Abilities_Common_VitalRegeneration;
+
+	FGameplayTag Abilities_Enemy_Lightning;
 	
 	FGameplayTag Abilities_Status;
 	FGameplayTag Abilities_Status_Locked;
