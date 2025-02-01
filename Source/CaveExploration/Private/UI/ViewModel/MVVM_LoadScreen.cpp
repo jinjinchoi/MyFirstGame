@@ -32,36 +32,75 @@ UMVVM_LoadSlot* UMVVM_LoadScreen::GetLoadSlotViewModelByIndex(const int32 Index)
 
 void UMVVM_LoadScreen::CreateSlotButtonPressed(const int32 Slot)
 {
+	const ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this));
+
 	LoadSlots[Slot]->SetWidgetSwitcherIndexDelegate.Broadcast(1);
 
 	// 날짜 저장
 	const FDateTime Now = FDateTime::Now();
 	const FString CurrentDate = FString::Printf(
 		TEXT("%04d/%02d/%02d  %02d:%02d:%02d"), Now.GetYear(), Now.GetMonth(),  Now.GetDay(),Now.GetHour(), Now.GetMinute(), Now.GetSecond());
-
+	
 	LoadSlots[Slot]->SetSavedDate(CurrentDate);
 	LoadSlots[Slot]->SlotStatus = Taken;
+	LoadSlots[Slot]->SetMapName(CaveGameMode->DefaultMapName);
 
-	const ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this));
 	CaveGameMode->SaveSlotData(LoadSlots[Slot], Slot);
-	
 	LoadSlots[Slot]->InitializeSlot();
 	
 }
 
 void UMVVM_LoadScreen::TakenSlotPressed(int32 Slot)
 {
-	
+	for (const TTuple<int, UMVVM_LoadSlot*>& LoadSlot : LoadSlots)
+	{
+		LoadSlot.Value->SetbTakenSlotClickEnabled(LoadSlot.Key != Slot);
+	}
+
+	SetbPlayButtonEnabled(true);
+	SetbDeleteButtonEnabled(true);
+	SelectedSlot = LoadSlots[Slot];
+}
+
+void UMVVM_LoadScreen::DeleteSavedSlot() const
+{
+	if (IsValid(SelectedSlot))
+	{
+		ACaveGameModeBase::DeleteSlot(SelectedSlot->GetLoadSlotName(), SelectedSlot->GetLoadSlotIndex());
+		SelectedSlot->SlotStatus = Vacant;
+		SelectedSlot->InitializeSlot();
+		SelectedSlot->SetbTakenSlotClickEnabled(true);
+	}
+}
+
+void UMVVM_LoadScreen::PlayButtonPressed()
+{
+	ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (IsValid(SelectedSlot))
+	{
+		CaveGameMode->TravelMap(SelectedSlot);
+	}
 }
 
 void UMVVM_LoadScreen::LoadData()
 {
 	ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this));
-	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
+	for (const TTuple<int32, UMVVM_LoadSlot*>& LoadSlot : LoadSlots)
 	{
 		const UCaveSaveGame* SaveObject = CaveGameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
 		LoadSlot.Value->SlotStatus = SaveObject->SlotStatus;
 		LoadSlot.Value->SetSavedDate(SaveObject->SavedDate);
 		LoadSlot.Value->InitializeSlot();
+		LoadSlot.Value->SetMapName(SaveObject->MapName);
 	}
+}
+
+void UMVVM_LoadScreen::SetbPlayButtonEnabled(const bool IsEnabled)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(bPlayButtonEnabled, IsEnabled);
+}
+
+void UMVVM_LoadScreen::SetbDeleteButtonEnabled(const bool IsEnabled)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(bDeleteButtonEnabled, IsEnabled);
 }

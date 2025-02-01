@@ -33,6 +33,9 @@ public:
 
 	UPROPERTY()
 	FString SavedDate = FString();
+
+	UPROPERTY()
+	FString MapName = FString("Default Map Name");
 	
 	
 };

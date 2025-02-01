@@ -23,3 +23,13 @@ void UMVVM_LoadSlot::SetSavedDate(const FString& InSavedDate)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(SavedDate, InSavedDate);
 }
+
+void UMVVM_LoadSlot::SetbTakenSlotClickEnabled(const bool InbEnabled)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(bTakenSlotClickEnabled, InbEnabled);
+}
+
+void UMVVM_LoadSlot::SetMapName(const FString& InMapName)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(MapName, InMapName);
+}
