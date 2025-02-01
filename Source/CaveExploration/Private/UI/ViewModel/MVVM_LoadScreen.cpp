@@ -3,6 +3,7 @@
 
 #include "UI/ViewModel/MVVM_LoadScreen.h"
 
+#include "Game/CaveGameInstance.h"
 #include "Game/CaveGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
@@ -44,9 +45,15 @@ void UMVVM_LoadScreen::CreateSlotButtonPressed(const int32 Slot)
 	LoadSlots[Slot]->SetSavedDate(CurrentDate);
 	LoadSlots[Slot]->SlotStatus = Taken;
 	LoadSlots[Slot]->SetMapName(CaveGameMode->DefaultMapName);
+	LoadSlots[Slot]->PlayerStartTag = CaveGameMode->DefaultPlayerStartTag;
 
 	CaveGameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitializeSlot();
+
+	UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(CaveGameMode->GetGameInstance());
+	CaveGameInstance->LoadSlotName = LoadSlots[Slot]->GetLoadSlotName();
+	CaveGameInstance->LoadSlotIndex = LoadSlots[Slot]->GetLoadSlotIndex();
+	CaveGameInstance->PlayerStartTag = CaveGameMode->DefaultPlayerStartTag;
 	
 }
 
@@ -76,8 +83,13 @@ void UMVVM_LoadScreen::DeleteSavedSlot() const
 void UMVVM_LoadScreen::PlayButtonPressed()
 {
 	ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this));
+	UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(CaveGameMode->GetGameInstance());
+	
 	if (IsValid(SelectedSlot))
 	{
+		CaveGameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
+		CaveGameInstance->bIsMultiplayer = false;
+		
 		CaveGameMode->TravelMap(SelectedSlot);
 	}
 }
@@ -92,6 +104,7 @@ void UMVVM_LoadScreen::LoadData()
 		LoadSlot.Value->SetSavedDate(SaveObject->SavedDate);
 		LoadSlot.Value->InitializeSlot();
 		LoadSlot.Value->SetMapName(SaveObject->MapName);
+		LoadSlot.Value->PlayerStartTag = SaveObject->PlayerStartTag;
 	}
 }
 

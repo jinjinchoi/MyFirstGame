@@ -3,7 +3,9 @@
 
 #include "Game/CaveGameModeBase.h"
 
+#include "Game/CaveGameInstance.h"
 #include "Game/CaveSaveGame.h"
+#include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 
@@ -20,6 +22,7 @@ void ACaveGameModeBase::SaveSlotData(const UMVVM_LoadSlot* LoadSlot, const int32
 	CaveSaveGame->SavedDate = LoadSlot->GetSavedDate();
 	CaveSaveGame->SlotStatus = Taken;
 	CaveSaveGame->MapName = LoadSlot->GetMapName();
+	CaveSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 
 	UGameplayStatics::SaveGameToSlot(CaveSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 }
@@ -54,6 +57,33 @@ void ACaveGameModeBase::TravelMap(UMVVM_LoadSlot* Slot)
 	const int32 SlotIndex = Slot->GetLoadSlotIndex();
 	
 	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));
+}
+
+AActor* ACaveGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
+{
+	const UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(GetGameInstance());
+	TArray<AActor*> PlayerStartActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), PlayerStartActors);
+
+	if (PlayerStartActors.Num() > 0)
+	{
+		AActor* SelectedPlayerStart = PlayerStartActors[0];
+		for (AActor* Actor : PlayerStartActors)
+		{
+			if (const APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
+			{
+				if (PlayerStart->PlayerStartTag == CaveGameInstance->PlayerStartTag)
+				{
+					SelectedPlayerStart = Actor;
+					break;
+				}
+			}
+		}
+
+		return SelectedPlayerStart;
+	}
+
+	return nullptr;
 }
 
 void ACaveGameModeBase::BeginPlay()
