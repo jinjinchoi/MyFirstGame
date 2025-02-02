@@ -96,9 +96,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=Attributes)
 	TSubclassOf<UGameplayEffect> ResistanceClass;
 
+	UPROPERTY(EditAnywhere, Category=Abilities)
+	TArray<TSubclassOf<UGameplayAbility>> StartupInteractionAbilities;
+
+	UPROPERTY(EditAnywhere, Category=Abilities)
+	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
+
 	virtual void InitializeDefaultAttributes() const;
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClass, const float Level) const;
-	
 	void AddCharacterAbilities() const;
 
 #pragma endregion
@@ -107,12 +112,7 @@ protected:
 private:
 	UPROPERTY(EditAnywhere, Category=Abilities)
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
-
-	UPROPERTY(EditAnywhere, Category=Abilities)
-	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
-
-	UPROPERTY(EditAnywhere, Category=Abilities)
-	TArray<TSubclassOf<UGameplayAbility>> StartupInteractionAbilities;
+	
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMeshComponent> Weapon;

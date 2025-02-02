@@ -156,6 +156,9 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Common_VitalRegeneration = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Common.VitalRegeneration"));
 	
+	GameplayTags.Abilities_Common_ListenForEvent = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Common.ListenForEvent"));
+	
 
 	GameplayTags.Abilities_Enemy_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Enemy.Lightning"));
@@ -182,9 +185,13 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Type.Offensive"));
+	
 
-	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Type.Passive"));
+	GameplayTags.Abilities_Startup_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Startup.Passive"));
+
+	GameplayTags.Abilities_Startup_Interaction = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Startup.Interaction"));
 
 	
 	GameplayTags.Abilities_Spell_Fire_FireSlash = UGameplayTagsManager::Get().AddNativeGameplayTag(

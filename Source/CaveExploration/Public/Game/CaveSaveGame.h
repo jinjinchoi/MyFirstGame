@@ -17,10 +17,10 @@ enum ESaveSlotStatus
 };
 
 USTRUCT(BlueprintType)
-struct FSavedAbilty
+struct FSavedAbility
 {
 	GENERATED_BODY()
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Class Default")
 	TSubclassOf<UGameplayAbility> GameplayAbility;
 
@@ -33,12 +33,15 @@ struct FSavedAbilty
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Class Default", meta=(Categories = "InputTag"))
 	FGameplayTag AbilityInputTag = FGameplayTag();
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Class Default", meta=(Categories = "Abilities.Type"))
+	FGameplayTag AbilityType = FGameplayTag();
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Class Default")
 	int32 AbilityLevel = 0;
 	
 };
 
-inline bool operator==(const FSavedAbilty& lhs, const FSavedAbilty& rhs)
+inline bool operator==(const FSavedAbility& lhs, const FSavedAbility& rhs)
 {
 	return lhs.AbilityTag.MatchesTagExact(rhs.AbilityTag);
 }
@@ -100,7 +103,7 @@ public:
 	float Vigor = 0;
 
 	UPROPERTY()
-	TArray<FSavedAbilty> SaveAbilities;
+	TArray<FSavedAbility> SaveAbilities;
 	
 	
 };

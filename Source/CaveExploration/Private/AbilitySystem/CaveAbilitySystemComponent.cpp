@@ -8,6 +8,7 @@
 #include "CaveGameplayTags.h"
 #include "AbilitySystem/Abilities/CaveGameplayAbility.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "Game/CaveSaveGame.h"
 #include "Interaction/PlayerInterface.h"
 
 void UCaveAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
@@ -26,21 +27,46 @@ void UCaveAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 	AbilitiesGivenDelegate.Broadcast();
 }
 
-void UCaveAbilitySystemComponent::AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities)
+void UCaveAbilitySystemComponent::AddCharacterStartupPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities)
 {
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupPassiveAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		AbilitySpec.DynamicAbilityTags.AddTag(FCaveGameplayTags::Get().Abilities_Startup_Passive);
 		GiveAbilityAndActivateOnce(AbilitySpec);
 	}
 }
 
-void UCaveAbilitySystemComponent::AddCharacterInteractionAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupInteractionAbilities)
+void UCaveAbilitySystemComponent::AddCharacterStartupInteractionAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupInteractionAbilities)
 {
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupInteractionAbilities)
 	{
-		GiveAbility(AbilityClass);
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		AbilitySpec.DynamicAbilityTags.AddTag(FCaveGameplayTags::Get().Abilities_Startup_Interaction);
+		GiveAbility(AbilitySpec);
 	}
+}
+
+void UCaveAbilitySystemComponent::AddCharacterAbilitiesFromSaveData(UCaveSaveGame* SaveGame)
+{
+	FCaveGameplayTags GameplayTags = FCaveGameplayTags::Get();
+	for (const FSavedAbility& Data : SaveGame->SaveAbilities)
+	{
+		const TSubclassOf<UGameplayAbility> LoadedAbilityClass = Data.GameplayAbility;
+
+		FGameplayAbilitySpec LoadedAbilitySpec = FGameplayAbilitySpec(LoadedAbilityClass, Data.AbilityLevel);
+
+		if (Data.AbilityType.MatchesTagExact(GameplayTags.Abilities_Type_Offensive))
+		{
+			LoadedAbilitySpec.DynamicAbilityTags.AddTag(Data.AbilityInputTag);
+			LoadedAbilitySpec.DynamicAbilityTags.AddTag(Data.AbilityStatus);
+			LoadedAbilitySpec.DynamicAbilityTags.AddTag(GameplayTags.Abilities_Type_Offensive);
+			GiveAbility(LoadedAbilitySpec);
+		}
+	}
+
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast();
 }
 
 void UCaveAbilitySystemComponent::AbilityInputPressed(const FGameplayTag& InputTag)
@@ -172,6 +198,20 @@ FGameplayTag UCaveAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbili
 	return FGameplayTag();
 }
 
+FGameplayTag UCaveAbilitySystemComponent::GetTypeTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (const FGameplayTag& Tag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities.Type"))))
+		{
+			return Tag;
+		}
+	}
+
+	return FGameplayTag();
+}
+
+
 int32 UCaveAbilitySystemComponent::GetAbilityLevelFromAbilityTag(const FGameplayTag& AbilityTag)
 {
 	if (const FGameplayAbilitySpec* Spec = GetSpecFromAbilityTag(AbilityTag))
@@ -216,6 +256,16 @@ FGameplayTag UCaveAbilitySystemComponent::GetInputTagFromAbilityTag(const FGamep
 	if (const FGameplayAbilitySpec* Spec = GetSpecFromAbilityTag(AbilityTag))
 	{
 		return GetInputTagFromSpec(*Spec);
+	}
+
+	return FGameplayTag();
+}
+
+FGameplayTag UCaveAbilitySystemComponent::GetTypeTagFromAbilityTag(const FGameplayTag& AbilityTag)
+{
+	if (const FGameplayAbilitySpec* Spec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		return GetTypeTagFromSpec(*Spec);
 	}
 
 	return FGameplayTag();

@@ -92,6 +92,7 @@ struct FCaveGameplayTags
 	FGameplayTag Abilities_Common_Immunity;
 	FGameplayTag Abilities_Common_SuperArmor;
 	FGameplayTag Abilities_Common_VitalRegeneration;
+	FGameplayTag Abilities_Common_ListenForEvent;
 
 	FGameplayTag Abilities_Enemy_Lightning;
 	
@@ -103,7 +104,8 @@ struct FCaveGameplayTags
 	
 	FGameplayTag Abilities_Type_None;
 	FGameplayTag Abilities_Type_Offensive;
-	FGameplayTag Abilities_Type_Passive;
+	FGameplayTag Abilities_Startup_Passive;
+	FGameplayTag Abilities_Startup_Interaction;
 
 	FGameplayTag Abilities_Spell_Fire_FireSlash;
 	FGameplayTag Abilities_Spell_Physical_MeleeAttack;

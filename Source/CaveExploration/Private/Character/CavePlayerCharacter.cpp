@@ -16,6 +16,7 @@
 #include "NiagaraComponent.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "AbilitySystem/CaveAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "Game/CaveGameInstance.h"
 #include "Game/CaveGameModeBase.h"
 #include "Game/CaveSaveGame.h"
@@ -94,6 +95,14 @@ void ACavePlayerCharacter::LoadProgrss()
 		}
 		else
 		{
+			if (UCaveAbilitySystemComponent* CaveASC = Cast<UCaveAbilitySystemComponent>(AbilitySystemComponent))
+			{
+				CaveASC->AddCharacterAbilitiesFromSaveData(SaveData);
+				CaveASC->AddCharacterStartupPassiveAbilities(StartupPassiveAbilities);
+				CaveASC->AddCharacterStartupInteractionAbilities(StartupInteractionAbilities);
+				CaveASC->UpdateAbilityStatuses(SaveData->PlayerLevel);
+			}
+			
 			if (ACavePlayerState* CavePlayerState = Cast<ACavePlayerState>(GetPlayerState()))
 			{
 				CavePlayerState->SetPlayerLevel(SaveData->PlayerLevel);
@@ -113,6 +122,8 @@ void ACavePlayerCharacter::LoadProgrss()
 
 void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTag)
 {
+	if (!HasAuthority()) return;
+	
 	if (ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this)))
 	{
 		UCaveSaveGame* SaveData = CaveGameMode->RetrieveSaveGameData();
@@ -135,6 +146,33 @@ void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTa
 			SaveData->Dexterity = CaveAttributeSet->GetDexterity();
 			SaveData->Vigor = CaveAttributeSet->GetVigor();
 		}
+
+		SaveData->SaveAbilities.Empty();
+		FForEachAbilityDelegate SaveAbilityDelegate;
+		UCaveAbilitySystemComponent* CaveASC = Cast<UCaveAbilitySystemComponent>(AbilitySystemComponent);
+		SaveAbilityDelegate.BindLambda([this, CaveASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
+		{
+			if (AbilitySpec.DynamicAbilityTags.HasTagExact(FCaveGameplayTags::Get().Abilities_Startup_Interaction)) return;
+			if (AbilitySpec.DynamicAbilityTags.HasTagExact(FCaveGameplayTags::Get().Abilities_Startup_Passive)) return;
+			
+			const FGameplayTag AbilityTag = CaveASC->GetAbilityTagFromSpec(AbilitySpec);
+			UAbilityInfo* AbilityInfo = UCaveFunctionLibrary::GetAbilityInfo(this);
+			FCaveAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+			
+			FSavedAbility SavedAbility;
+			SavedAbility.GameplayAbility = Info.AbilityClass;
+			SavedAbility.AbilityLevel = AbilitySpec.Level;
+			SavedAbility.AbilityInputTag = CaveASC->GetInputTagFromAbilityTag(AbilityTag);
+			SavedAbility.AbilityStatus = CaveASC->GetStatusFromAbilityTag(AbilityTag);
+			SavedAbility.AbilityTag = AbilityTag;
+			SavedAbility.AbilityType = FCaveGameplayTags::Get().Abilities_Type_Offensive;
+
+			SaveData->SaveAbilities.AddUnique(SavedAbility);
+			
+			
+		});
+		CaveASC->ForEachAbility(SaveAbilityDelegate);
+		
 
 		SaveData->bFirstTimeLoadIn = false;
 		CaveGameMode->SaveInGameProgressData(SaveData);
@@ -281,10 +319,6 @@ void ACavePlayerCharacter::MulticastLevelUpParticles_Implementation() const
 {
 	if (IsValid(LevelUpNiagaraComponent))
 	{
-		// const FVector CameraLocation = FollowCamera->GetComponentLocation();
-		// const FVector NiagaraSystemLocation = LevelUpNiagaraComponent->GetComponentLocation();
-		// const FRotator ToCameraRotation = (CameraLocation - NiagaraSystemLocation).Rotation();
-		// LevelUpNiagaraComponent->SetWorldRotation(ToCameraRotation);
 		LevelUpNiagaraComponent->Activate(true);
 	}
 }

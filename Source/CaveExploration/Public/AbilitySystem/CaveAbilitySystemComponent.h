@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "CaveAbilitySystemComponent.generated.h"
 
+class UCaveSaveGame;
 DECLARE_MULTICAST_DELEGATE(FAbilitiesGivenDelegate);
 DECLARE_DELEGATE_OneParam(FForEachAbilityDelegate, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChangedDelegate, const FGameplayTag& /* Ability Tag */, const FGameplayTag& /* StatusTag */, const int32 /* Ability Level */)
@@ -26,8 +27,10 @@ public:
 	FAbilityEquippedDelegate AbilityEquippedDelegate;
 	
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
-	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
-	void AddCharacterInteractionAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupInteractionAbilities);
+	void AddCharacterStartupPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
+	void AddCharacterStartupInteractionAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupInteractionAbilities);
+	void AddCharacterAbilitiesFromSaveData(UCaveSaveGame* SaveGame);
+	
 	void AbilityInputPressed(const FGameplayTag& InputTag);
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
@@ -36,11 +39,13 @@ public:
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	static FGameplayTag GetTypeTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 
 	int32 GetAbilityLevelFromAbilityTag(const FGameplayTag& AbilityTag);
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
 	FGameplayTag GetStatusFromAbilityTag(const FGameplayTag& AbilityTag);
 	FGameplayTag GetInputTagFromAbilityTag(const FGameplayTag& AbilityTag);
+	FGameplayTag GetTypeTagFromAbilityTag(const FGameplayTag& AbilityTag);
 	bool SlotIsEmpty(const FGameplayTag& Slot);
 	FGameplayAbilitySpec* GetSpecWithSlot(const FGameplayTag& Slot);
 	static void AssignSlotToAbility(FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);

@@ -61,6 +61,6 @@ private:
 	FString MapName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = true))
-	int32 PlayerLevel = 1;
+	int32 PlayerLevel;
 	
 };
