@@ -7,6 +7,7 @@
 #include "Interaction/PlayerInterface.h"
 #include "CavePlayerCharacter.generated.h"
 
+class UCaveAttributeSet;
 class UNiagaraComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -47,6 +48,7 @@ public:
 	virtual void ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial = nullptr) override;
 	virtual void HideMagicCircle_Implementation() override;
 	virtual FVector GetMagicCircleLocation_Implementation() override;
+	virtual void SaveProgress_Implementation(const FName& CheckPointTag) override;
 	/* end Player Interface */
 
 protected:
@@ -57,6 +59,7 @@ protected:
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	/* end CaveCharacterBase */
 	
+	void LoadProgrss();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
@@ -70,6 +73,8 @@ private:
 	float BaseMaxWalkSpeed = 600.f;
 
 	FRotator BaseRotationRate = FRotator(0, 540, 0);
+
+	UCaveAttributeSet* GetCaveAttributeSet() const; 
 
 
 

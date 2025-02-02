@@ -34,12 +34,14 @@ public:
 	void SetSavedDate(const FString& InSavedDate);
 	void SetbTakenSlotClickEnabled(const bool InbEnabled);
 	void SetMapName(const FString& InMapName);
+	void SetPlayerLevel(const int32 InPlayerLevel);
 
 	FString GetLoadSlotName() const { return LoadSlotName; }
 	int32 GetLoadSlotIndex() const { return  LoadSlotIndex; }
 	FString GetSavedDate() const { return SavedDate; }
 	bool GetbTakenSlotClickEnabled() const { return bTakenSlotClickEnabled; }
 	FString GetMapName() const { return MapName; }
+	int32 GetPlayerLevel() const { return PlayerLevel; }
 
 
 private:
@@ -57,5 +59,8 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = true))
 	FString MapName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = true))
+	int32 PlayerLevel = 1;
 	
 };

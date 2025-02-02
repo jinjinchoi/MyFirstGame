@@ -46,6 +46,7 @@ void UMVVM_LoadScreen::CreateSlotButtonPressed(const int32 Slot)
 	LoadSlots[Slot]->SlotStatus = Taken;
 	LoadSlots[Slot]->SetMapName(CaveGameMode->DefaultMapName);
 	LoadSlots[Slot]->PlayerStartTag = CaveGameMode->DefaultPlayerStartTag;
+	LoadSlots[Slot]->SetPlayerLevel(1);
 
 	CaveGameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitializeSlot();
@@ -88,7 +89,9 @@ void UMVVM_LoadScreen::PlayButtonPressed()
 	if (IsValid(SelectedSlot))
 	{
 		CaveGameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
-		CaveGameInstance->bIsMultiplayer = false;
+		CaveGameInstance->bIsSinglePlay = true;
+		CaveGameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
+		CaveGameInstance->LoadSlotIndex = SelectedSlot->GetLoadSlotIndex();
 		
 		CaveGameMode->TravelMap(SelectedSlot);
 	}
@@ -105,6 +108,7 @@ void UMVVM_LoadScreen::LoadData()
 		LoadSlot.Value->InitializeSlot();
 		LoadSlot.Value->SetMapName(SaveObject->MapName);
 		LoadSlot.Value->PlayerStartTag = SaveObject->PlayerStartTag;
+		LoadSlot.Value->SetPlayerLevel(SaveObject->PlayerLevel);
 	}
 }
 

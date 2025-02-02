@@ -34,6 +34,8 @@ public:
 	UCaveSaveGame* GetSaveSlotData(const FString& SlotName, const int32 SlotIndex) const;
 	static void DeleteSlot(const FString& SlotName, const int32 SlotIndex);
 	void TravelMap(UMVVM_LoadSlot* Slot);
+	UCaveSaveGame* RetrieveSaveGameData() const;
+	void SaveInGameProgressData(UCaveSaveGame* SaveObject);
 
 	UPROPERTY(EditDefaultsOnly)
 	FString DefaultMapName;

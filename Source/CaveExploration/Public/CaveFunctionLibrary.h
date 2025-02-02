@@ -8,6 +8,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CaveFunctionLibrary.generated.h"
 
+class UCaveSaveGame;
 class UCaveGameplayAbility;
 struct FCaveAbilityInfo;
 class UAbilityInfo;
@@ -148,6 +149,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttribute(const UObject* WorldContextObject, const ECharacterClass& CharacterClass, const float Level, UAbilitySystemComponent* ASC);
 
+	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
+	static void InitializeDefaultAttributeFromSaveData(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, UCaveSaveGame* SaveGame);
+	
 	UFUNCTION(BlueprintCallable, Category="CaveFunctionLibrary|CharacterClassDefaults")
 	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass);
 

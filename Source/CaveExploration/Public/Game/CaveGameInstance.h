@@ -25,5 +25,5 @@ public:
 	int32 LoadSlotIndex = 0;
 
 	UPROPERTY()
-	bool bIsMultiplayer = false;
+	bool bIsSinglePlay = false;
 };

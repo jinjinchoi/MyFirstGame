@@ -12,6 +12,7 @@
 #include "AbilitySystem/Data/CharacterClassInfoDataAsset.h"
 #include "Engine/OverlapResult.h"
 #include "Game/CaveGameModeBase.h"
+#include "Game/CaveSaveGame.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/CavePlayerState.h"
@@ -437,6 +438,28 @@ void UCaveFunctionLibrary::InitializeDefaultAttribute(const UObject* WorldContex
 
 	const FGameplayEffectSpecHandle ResistanceSpecHandle = ASC->MakeOutgoingSpec(ClassDefaultInfo.ResistanceAttributes, Level, ContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*ResistanceSpecHandle.Data.Get());
+	
+}
+
+void UCaveFunctionLibrary::InitializeDefaultAttributeFromSaveData(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, UCaveSaveGame* SaveGame)
+{
+	const UCharacterClassInfoDataAsset* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if (CharacterClassInfo == nullptr) return;
+
+	const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get();
+	const AActor* SourceAvatarActor = ASC->GetAvatarActor();
+
+	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+	ContextHandle.AddSourceObject(SourceAvatarActor);
+
+	const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(CharacterClassInfo->PrimaryAttributes_SetByCaller, 1.f, ContextHandle);
+
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attribute_Primary_Strength, SaveGame->Strength);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attribute_Primary_Dexterity, SaveGame->Dexterity);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attribute_Primary_Intelligence, SaveGame->Intelligence);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attribute_Primary_Vigor, SaveGame->Vigor);
+
+	ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 	
 }
 

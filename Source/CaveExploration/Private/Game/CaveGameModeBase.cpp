@@ -59,9 +59,29 @@ void ACaveGameModeBase::TravelMap(UMVVM_LoadSlot* Slot)
 	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));
 }
 
-AActor* ACaveGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
+UCaveSaveGame* ACaveGameModeBase::RetrieveSaveGameData() const
 {
 	const UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = CaveGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = CaveGameInstance->LoadSlotIndex;
+
+	return GetSaveSlotData(InGameLoadSlotName, InGameLoadSlotIndex);
+}
+
+void ACaveGameModeBase::SaveInGameProgressData(UCaveSaveGame* SaveObject)
+{
+	UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(GetGameInstance());
+	const FString InGameLoadSlotName = CaveGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = CaveGameInstance->LoadSlotIndex;
+	CaveGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
+
+	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
+}
+
+AActor* ACaveGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
+{
+	UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(GetGameInstance());
 	TArray<AActor*> PlayerStartActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), PlayerStartActors);
 

@@ -4,6 +4,7 @@
 #include "Character//CavePlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "CaveFunctionLibrary.h"
 #include "CaveGameplayTags.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
@@ -14,7 +15,11 @@
 #include "UI/HUD/CaveHUD.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
-#include "Net/UnrealNetwork.h"
+#include "AbilitySystem/CaveAttributeSet.h"
+#include "Game/CaveGameInstance.h"
+#include "Game/CaveGameModeBase.h"
+#include "Game/CaveSaveGame.h"
+#include "Kismet/GameplayStatics.h"
 
 ACavePlayerCharacter::ACavePlayerCharacter()
 {
@@ -55,8 +60,86 @@ void ACavePlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
-	AddCharacterAbilities();
 
+	/* 멀티 플레이와 싱글플레이 구분하기 위한 부분으로 서버가 존재할 경우 변경해야함 */
+	if (HasAuthority())
+	{
+		ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this));
+		UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(CaveGameMode->GetGameInstance());
+		if (CaveGameInstance->bIsSinglePlay)
+		{
+			LoadProgrss();
+		}
+		else
+		{
+			// 서버가 없기 때문에 임시로
+			AddCharacterAbilities();
+		}
+	}
+	
+
+}
+
+void ACavePlayerCharacter::LoadProgrss()
+{
+	if (ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		UCaveSaveGame* SaveData = CaveGameMode->RetrieveSaveGameData();
+		if (SaveData == nullptr) return;
+		
+		if (SaveData->bFirstTimeLoadIn)
+		{
+			InitializeDefaultAttributes();
+			AddCharacterAbilities();
+		}
+		else
+		{
+			if (ACavePlayerState* CavePlayerState = Cast<ACavePlayerState>(GetPlayerState()))
+			{
+				CavePlayerState->SetPlayerLevel(SaveData->PlayerLevel);
+				CavePlayerState->SetXP(SaveData->XP);
+				CavePlayerState->SetAttributePoints(SaveData->AttributePoints);
+				CavePlayerState->SetSpellPoints(SaveData->SpellPoints);
+			}
+			
+			UCaveFunctionLibrary::InitializeDefaultAttributeFromSaveData(this, AbilitySystemComponent, SaveData);
+			ApplyEffectToSelf(SecondaryAttributesClass, 1.f);
+			ApplyEffectToSelf(VitalAttributesClass, 1.f);
+			ApplyEffectToSelf(ResistanceClass, 1.f);
+		}
+		
+	}
+}
+
+void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTag)
+{
+	if (ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		UCaveSaveGame* SaveData = CaveGameMode->RetrieveSaveGameData();
+		if (SaveData == nullptr) return;
+
+		SaveData->PlayerStartTag = CheckPointTag;
+
+		if (ACavePlayerState* CavePlayerState = Cast<ACavePlayerState>(GetPlayerState()))
+		{
+			SaveData->PlayerLevel = CavePlayerState->GetPlayerLevel();
+			SaveData->XP = CavePlayerState->GetXP();
+			SaveData->SpellPoints = CavePlayerState->GetSpellPoints();
+			SaveData->AttributePoints = CavePlayerState->GetAttributePoints();
+		}
+
+		if (UCaveAttributeSet* CaveAttributeSet = GetCaveAttributeSet())
+		{
+			SaveData->Strength = CaveAttributeSet->GetStrength();
+			SaveData->Intelligence = CaveAttributeSet->GetIntelligence();
+			SaveData->Dexterity = CaveAttributeSet->GetDexterity();
+			SaveData->Vigor = CaveAttributeSet->GetVigor();
+		}
+
+		SaveData->bFirstTimeLoadIn = false;
+		CaveGameMode->SaveInGameProgressData(SaveData);
+		
+	}
 }
 
 void ACavePlayerCharacter::OnRep_PlayerState()
@@ -193,6 +276,7 @@ FVector ACavePlayerCharacter::GetMagicCircleLocation_Implementation()
 
 }
 
+
 void ACavePlayerCharacter::MulticastLevelUpParticles_Implementation() const
 {
 	if (IsValid(LevelUpNiagaraComponent))
@@ -225,7 +309,22 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 	}
 
 	ReactGameplayTagChanged();
-	InitializeDefaultAttributes();
+
+	/* 멀티 플레이와 싱글플레이 구분하기 위한 부분으로 서버가 존재할 경우 변경해야함 */
+	if (!HasAuthority())
+	{
+		InitializeDefaultAttributes();
+	}
+	else
+	{
+		ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this));
+		UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(CaveGameMode->GetGameInstance());
+		if (!CaveGameInstance->bIsSinglePlay)
+		{
+			InitializeDefaultAttributes();
+		}
+	}
+	
 	
 }
 
@@ -257,4 +356,9 @@ void ACavePlayerCharacter::DeathReactTagChange(const FGameplayTag CallbackTag, i
 {
 	Super::DeathReactTagChange(CallbackTag, NewCount);
 	
+}
+
+UCaveAttributeSet* ACavePlayerCharacter::GetCaveAttributeSet() const
+{
+	return Cast<UCaveAttributeSet>(AttributeSet);
 }

@@ -27,6 +27,9 @@ protected:
 
 	UFUNCTION()
 	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UPROPERTY(EditAnywhere, Category="Sound")
+	TObjectPtr<USoundBase> LoopingSound;
 	
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -37,4 +40,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
+	
+	UPROPERTY()
+	TObjectPtr<UAudioComponent> SoundComponent;
+	
 };
