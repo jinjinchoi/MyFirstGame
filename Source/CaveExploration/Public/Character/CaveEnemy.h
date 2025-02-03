@@ -42,6 +42,9 @@ public:
 	FOnAttributeChangedDelegate OnMaxHealthChangedDelegate;
 	/* end Overlay Widget Controller */
 
+	void SetEnemyLevel(const int32 InLevel);
+	void SetEnemyClass(const ECharacterClass InCharacterClass);
+
 	
 protected:
 	/* Engine */

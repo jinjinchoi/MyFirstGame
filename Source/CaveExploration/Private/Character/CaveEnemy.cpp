@@ -57,6 +57,16 @@ void ACaveEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
 	CombatTarget = InCombatTarget;
 }
 
+void ACaveEnemy::SetEnemyLevel(const int32 InLevel)
+{
+	EnemyLevel = InLevel;
+}
+
+void ACaveEnemy::SetEnemyClass(const ECharacterClass InCharacterClass)
+{
+	CharacterClass = InCharacterClass;
+}
+
 void ACaveEnemy::BeginPlay()
 {
 	Super::BeginPlay();
