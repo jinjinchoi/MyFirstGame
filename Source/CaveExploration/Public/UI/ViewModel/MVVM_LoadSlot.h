@@ -27,6 +27,9 @@ public:
 
 	UPROPERTY()
 	FName PlayerStartTag;
+
+	void SetMapAssetName(const FString& InMapAssetName);
+	FString GetMapAssetName() const { return MapAssetName ;}
 	
 	/* Field Notifies */
 	void SetLoadSlotName(const FString& InLoadSlotName);
@@ -62,5 +65,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = true))
 	int32 PlayerLevel;
-	
+
+	UPROPERTY(Setter, Getter)
+	FString MapAssetName;
 };

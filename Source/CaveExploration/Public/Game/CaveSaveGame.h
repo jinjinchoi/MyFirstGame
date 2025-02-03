@@ -67,8 +67,13 @@ public:
 	UPROPERTY()
 	FString SavedDate = FString();
 
+	/* 로드 슬롯에서 보이는 이름 */
 	UPROPERTY()
 	FString MapName = FString("Default Map Name");
+
+	/* 실제 캐릭터가 존재하는 월드(레벨)의 경로 */
+	UPROPERTY()
+	FString MapPath = FString();
 	
 	UPROPERTY()
 	FName PlayerStartTag = FName();

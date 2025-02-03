@@ -22,6 +22,7 @@ void ACaveGameModeBase::SaveSlotData(const UMVVM_LoadSlot* LoadSlot, const int32
 	CaveSaveGame->SavedDate = LoadSlot->GetSavedDate();
 	CaveSaveGame->SlotStatus = Taken;
 	CaveSaveGame->MapName = LoadSlot->GetMapName();
+	CaveSaveGame->MapPath = DefaultMap.ToSoftObjectPath().GetAssetName();
 	CaveSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 
 	UGameplayStatics::SaveGameToSlot(CaveSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
@@ -53,10 +54,13 @@ void ACaveGameModeBase::DeleteSlot(const FString& SlotName, const int32 SlotInde
 
 void ACaveGameModeBase::TravelMap(UMVVM_LoadSlot* Slot)
 {
-	const FString SlotName = Slot->GetLoadSlotName();
-	const int32 SlotIndex = Slot->GetLoadSlotIndex();
-	
-	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));
+	for (TSoftObjectPtr<UWorld> Map : Maps)
+	{
+		if (Map.ToSoftObjectPath().GetAssetName() == Slot->GetMapAssetName())
+		{
+			UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Map);
+		}
+	}
 }
 
 UCaveSaveGame* ACaveGameModeBase::RetrieveSaveGameData() const
@@ -109,7 +113,6 @@ AActor* ACaveGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 void ACaveGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Maps.Add(DefaultMapName, DefaultMap);
+	
 }
 

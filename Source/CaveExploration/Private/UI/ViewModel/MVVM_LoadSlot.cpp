@@ -9,6 +9,11 @@ void UMVVM_LoadSlot::InitializeSlot() const
 	SetWidgetSwitcherIndexDelegate.Broadcast(WidgetSwitcherIndex);
 }
 
+void UMVVM_LoadSlot::SetMapAssetName(const FString& InMapAssetName)
+{
+	MapAssetName = InMapAssetName;
+}
+
 void UMVVM_LoadSlot::SetLoadSlotName(const FString& InLoadSlotName)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(LoadSlotName, InLoadSlotName);

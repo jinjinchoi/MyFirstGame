@@ -44,7 +44,7 @@ public:
 	TSoftObjectPtr<UWorld> DefaultMap;
 
 	UPROPERTY(EditDefaultsOnly)
-	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
+	TArray<TSoftObjectPtr<UWorld>> Maps;
 
 	UPROPERTY(EditDefaultsOnly)
 	FName DefaultPlayerStartTag;

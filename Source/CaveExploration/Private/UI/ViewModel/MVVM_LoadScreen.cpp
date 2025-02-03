@@ -45,6 +45,7 @@ void UMVVM_LoadScreen::CreateSlotButtonPressed(const int32 Slot)
 	LoadSlots[Slot]->SetSavedDate(CurrentDate);
 	LoadSlots[Slot]->SlotStatus = Taken;
 	LoadSlots[Slot]->SetMapName(CaveGameMode->DefaultMapName);
+	LoadSlots[Slot]->SetMapAssetName(CaveGameMode->DefaultMap.ToSoftObjectPath().GetAssetName());
 	LoadSlots[Slot]->PlayerStartTag = CaveGameMode->DefaultPlayerStartTag;
 	LoadSlots[Slot]->SetPlayerLevel(1);
 
@@ -109,6 +110,7 @@ void UMVVM_LoadScreen::LoadData()
 		LoadSlot.Value->SetMapName(SaveObject->MapName);
 		LoadSlot.Value->PlayerStartTag = SaveObject->PlayerStartTag;
 		LoadSlot.Value->SetPlayerLevel(SaveObject->PlayerLevel);
+		LoadSlot.Value->SetMapAssetName(SaveObject->MapPath);
 	}
 }
 

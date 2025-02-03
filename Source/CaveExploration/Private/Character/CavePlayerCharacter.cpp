@@ -172,8 +172,15 @@ void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTa
 			
 		});
 		CaveASC->ForEachAbility(SaveAbilityDelegate);
-		
 
+		if (const UWorld* World = GetWorld())
+		{
+			FString MapName = World->GetMapName();
+			MapName.RemoveFromStart(World->StreamingLevelsPrefix);
+			SaveData->MapPath = MapName;
+		}
+
+		
 		SaveData->bFirstTimeLoadIn = false;
 		CaveGameMode->SaveInGameProgressData(SaveData);
 		
