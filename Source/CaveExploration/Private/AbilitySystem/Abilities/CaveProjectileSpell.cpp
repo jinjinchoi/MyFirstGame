@@ -34,6 +34,7 @@ void UCaveProjectileSpell::SpawnProjectiles(const FVector& ProjectileTargetLocat
 	{
 		// 타겟이 있으면 (에너미 또는 유도 공격) 해당 방향으로 발사체 발사
 		Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+		Rotation.Pitch = 0.f;
 	}
 	
 

@@ -60,7 +60,7 @@ UAbilitySystemComponent* ACaveCharacterBase::GetAbilitySystemComponent() const
 
 FVector ACaveCharacterBase::GetWeaponSocketLocation_Implementation()
 {
-	if (IsValid(Weapon))
+	if (IsValid(Weapon) && Weapon->GetStaticMesh())
 	{
 		return Weapon->GetSocketLocation(WeaponTipSocketName);
 	}
