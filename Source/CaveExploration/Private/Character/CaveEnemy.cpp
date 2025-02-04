@@ -12,6 +12,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/Widget/CaveUserWidget.h"
 
 ACaveEnemy::ACaveEnemy()
@@ -79,7 +80,23 @@ void ACaveEnemy::BeginPlay()
 		UCaveFunctionLibrary::GiveStartupAbilities(this , AbilitySystemComponent, CharacterClass);
 	}
 
-	if (UCaveUserWidget* CaveUserWidget = Cast<UCaveUserWidget>(HealthBar->GetUserWidgetObject()))
+	if (CharacterClass == ECharacterClass::Boss)
+	{
+		check(BossHealthBarClass);
+		if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			BossHealthBar = CreateWidget<UCaveUserWidget>(PlayerController, BossHealthBarClass);
+			BossHealthBar->AddToViewport();
+			
+			// 체력바 위치 설정 (X = 0.5 -> 중앙, Y = 0 -> 상단 끝)
+			const FAnchors Anchors = FAnchors(0.5f, 0.f);
+			BossHealthBar->SetAnchorsInViewport(Anchors);
+			BossHealthBar->SetAlignmentInViewport(FVector2D(0.5f, -0.2f));
+			
+			BossHealthBar->SetWidgetController(this);
+		}
+	}
+	else if (UCaveUserWidget* CaveUserWidget = Cast<UCaveUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
 		CaveUserWidget->SetWidgetController(this);
 	}
@@ -104,6 +121,16 @@ void ACaveEnemy::BeginPlay()
 
 	ReactGameplayTagChanged();
 
+}
+
+void ACaveEnemy::Destroyed()
+{
+	if (IsValid(BossHealthBar))
+	{
+		BossHealthBar->RemoveFromParent();
+		BossHealthBar = nullptr;
+	}
+	Super::Destroyed();
 }
 
 void ACaveEnemy::PossessedBy(AController* NewController)
