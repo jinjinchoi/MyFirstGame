@@ -15,7 +15,7 @@ class CAVEEXPLORATION_API UCaveGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FName PlayerStartTag = FName();
 
 	UPROPERTY()

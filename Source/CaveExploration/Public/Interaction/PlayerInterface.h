@@ -71,6 +71,12 @@ public:
 	FVector GetMagicCircleLocation();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void SaveProgress(const FName& CheckPointTag);
+	void SaveProgress(const FName& CheckPointTag, const FString& CheckPointName);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void AddClearedDungeon(const FName& DungeonID);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsDungeonCleared(const FName& DungeonID) const;
 	
 };

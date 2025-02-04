@@ -109,6 +109,7 @@ void ACavePlayerCharacter::LoadProgrss()
 				CavePlayerState->SetXP(SaveData->XP);
 				CavePlayerState->SetAttributePoints(SaveData->AttributePoints);
 				CavePlayerState->SetSpellPoints(SaveData->SpellPoints);
+				CavePlayerState->SetClearedDungeonList(SaveData->ClearedDungeons);
 			}
 			
 			UCaveFunctionLibrary::InitializeDefaultAttributeFromSaveData(this, AbilitySystemComponent, SaveData);
@@ -120,7 +121,7 @@ void ACavePlayerCharacter::LoadProgrss()
 	}
 }
 
-void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTag)
+void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTag, const FString& CheckPointName)
 {
 	if (!HasAuthority()) return;
 	
@@ -137,6 +138,7 @@ void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTa
 			SaveData->XP = CavePlayerState->GetXP();
 			SaveData->SpellPoints = CavePlayerState->GetSpellPoints();
 			SaveData->AttributePoints = CavePlayerState->GetAttributePoints();
+			SaveData->ClearedDungeons = CavePlayerState->GetClearedDungeonsList();
 		}
 
 		if (UCaveAttributeSet* CaveAttributeSet = GetCaveAttributeSet())
@@ -175,16 +177,32 @@ void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTa
 
 		if (const UWorld* World = GetWorld())
 		{
-			FString MapName = World->GetMapName();
-			MapName.RemoveFromStart(World->StreamingLevelsPrefix);
-			SaveData->MapPath = MapName;
+			FString MapAssetName = World->GetMapName();
+			MapAssetName.RemoveFromStart(World->StreamingLevelsPrefix);
+			SaveData->MapAssetName = MapAssetName;
 		}
 
 		
 		SaveData->bFirstTimeLoadIn = false;
+		SaveData->MapName = CheckPointName;
 		CaveGameMode->SaveInGameProgressData(SaveData);
 		
 	}
+}
+
+void ACavePlayerCharacter::AddClearedDungeon_Implementation(const FName& DungeonID)
+{
+	ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+	CavePlayerState->AddClearedDungeon(DungeonID);
+}
+
+bool ACavePlayerCharacter::IsDungeonCleared_Implementation(const FName& DungeonID) const
+{
+	const ACavePlayerState* CavePlayerState = GetPlayerState<ACavePlayerState>();
+	check(CavePlayerState);
+
+	return CavePlayerState->IsDungeonCleared(DungeonID);
 }
 
 void ACavePlayerCharacter::OnRep_PlayerState()

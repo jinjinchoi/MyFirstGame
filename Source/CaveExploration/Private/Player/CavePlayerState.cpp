@@ -26,12 +26,33 @@ void ACavePlayerState::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty
 	DOREPLIFETIME(ACavePlayerState, XP);
 	DOREPLIFETIME(ACavePlayerState, AttributePoints);
 	DOREPLIFETIME(ACavePlayerState, SpellPoints);
+	DOREPLIFETIME(ACavePlayerState, ClearedDungeons);
 	
 }
 
 UAbilitySystemComponent* ACavePlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void ACavePlayerState::AddClearedDungeon_Implementation(const FName& DungeonID)
+{
+	ClearedDungeons.AddUnique(DungeonID);
+}
+
+void ACavePlayerState::SetClearedDungeonList(const TArray<FName>& InClearedDungeons)
+{
+	ClearedDungeons = InClearedDungeons;
+}
+
+bool ACavePlayerState::IsDungeonCleared(const FName& DungeonID) const
+{
+	if (DungeonID == FName())
+	{
+		return true;
+	}
+	
+	return ClearedDungeons.Contains(DungeonID);
 }
 
 void ACavePlayerState::SetPlayerLevel(const int32 NewLevel)

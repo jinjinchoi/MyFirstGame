@@ -73,7 +73,7 @@ public:
 
 	/* 실제 캐릭터가 존재하는 월드(레벨)의 경로 */
 	UPROPERTY()
-	FString MapPath = FString();
+	FString MapAssetName = FString();
 	
 	UPROPERTY()
 	FName PlayerStartTag = FName();
@@ -109,6 +109,9 @@ public:
 
 	UPROPERTY()
 	TArray<FSavedAbility> SaveAbilities;
+
+	UPROPERTY()
+	TArray<FName> ClearedDungeons;
 	
 	
 };

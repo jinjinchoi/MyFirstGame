@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerStart.h"
 #include "CheckPoint.generated.h"
 
+class UGameplayEffect;
 class UNiagaraComponent;
 class USphereComponent;
 /**
@@ -28,8 +29,8 @@ protected:
 	UFUNCTION()
 	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	UPROPERTY(EditAnywhere, Category="Sound")
-	TObjectPtr<USoundBase> LoopingSound;
+	UPROPERTY(EditAnywhere, Category="CheckPoint Properties")
+	FString CheckPointName;
 	
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -43,5 +44,13 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UAudioComponent> SoundComponent;
+
+	UPROPERTY(EditAnywhere, Category="CheckPoint Properties")
+	TObjectPtr<USoundBase> LoopingSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="CheckPoint Properties")
+	TSubclassOf<UGameplayEffect> GameplayEffectClass;
+	
+	void ApplyEffectToTarget(AActor* TargetActor);
 	
 };

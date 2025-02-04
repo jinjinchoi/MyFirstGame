@@ -7,6 +7,7 @@
 #include "Actor/PathBlocker.h"
 #include "Components/BoxComponent.h"
 #include "Interaction/CombatInterface.h"
+#include "Interaction/PlayerInterface.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -28,6 +29,7 @@ ACaveEnemySpawnVolume::ACaveEnemySpawnVolume()
 void ACaveEnemySpawnVolume::BeginPlay()
 {
 	Super::BeginPlay();
+
 	Box->OnComponentBeginOverlap.AddDynamic(this, &ACaveEnemySpawnVolume::OnSphereOverlap);
 	
 }
@@ -76,13 +78,37 @@ void ACaveEnemySpawnVolume::OnSpawnedEnemyDeath(AActor* DeathEnemy)
 		}
 		if (IsBossSpawner)
 		{
+			HandleDungeonClear();
 			FTimerHandle TimerHandle_LevelTransition;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle_LevelTransition, this, &ACaveEnemySpawnVolume::ChangeLevel, 5.0f, false);
-	
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle_LevelTransition, this, &ACaveEnemySpawnVolume::ChangeLevel, 10.0f, false);
 		}
 		else
 		{
 			Destroy();
+		}
+	}
+}
+
+void ACaveEnemySpawnVolume::HandleDungeonClear() const
+{
+	if (DungeonID == FName())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DungeonID is Empty"));
+		return;
+	}
+	
+	TArray<AActor*> ExistingPlayers;
+	UGameplayStatics::GetAllActorsWithTag(this, FName("Player"), ExistingPlayers);
+
+	for (AActor* Player : ExistingPlayers)
+	{
+		if (!Player->HasAuthority()) continue;
+		
+		if (Player->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddClearedDungeon(Player, DungeonID);
+			IPlayerInterface::Execute_SaveProgress(Player, CheckPointNameToGo, FString(""));
+
 		}
 	}
 }

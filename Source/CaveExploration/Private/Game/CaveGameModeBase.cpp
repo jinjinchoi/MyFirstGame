@@ -22,7 +22,7 @@ void ACaveGameModeBase::SaveSlotData(const UMVVM_LoadSlot* LoadSlot, const int32
 	CaveSaveGame->SavedDate = LoadSlot->GetSavedDate();
 	CaveSaveGame->SlotStatus = Taken;
 	CaveSaveGame->MapName = LoadSlot->GetMapName();
-	CaveSaveGame->MapPath = DefaultMap.ToSoftObjectPath().GetAssetName();
+	CaveSaveGame->MapAssetName = DefaultMap.ToSoftObjectPath().GetAssetName();
 	CaveSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 
 	UGameplayStatics::SaveGameToSlot(CaveSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
@@ -80,6 +80,11 @@ void ACaveGameModeBase::SaveInGameProgressData(UCaveSaveGame* SaveObject)
 	const int32 InGameLoadSlotIndex = CaveGameInstance->LoadSlotIndex;
 	CaveGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
 
+	const FDateTime Now = FDateTime::Now();
+	const FString CurrentDate = FString::Printf(
+		TEXT("%04d/%02d/%02d  %02d:%02d:%02d"), Now.GetYear(), Now.GetMonth(),  Now.GetDay(),Now.GetHour(), Now.GetMinute(), Now.GetSecond());
+	SaveObject->SavedDate = CurrentDate;
+	
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
 }
 

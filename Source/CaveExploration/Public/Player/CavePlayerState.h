@@ -37,6 +37,17 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
+	UFUNCTION(Server, Reliable)
+	void AddClearedDungeon(const FName& DungeonID);
+	
+	TArray<FName> GetClearedDungeonsList() const { return ClearedDungeons; };
+	void SetClearedDungeonList(const TArray<FName>& InClearedDungeons);
+	
+	bool IsDungeonCleared(const FName& DungeonID) const;
+	
+
+#pragma region Character Attribute
+
 	FOnLevelChangedDelegate OnLevelChangeDelegate;
 	FOnPlayerStatChangedDelegate OnXPChangeDelegate;
 	FOnPlayerStatChangedDelegate OnAttributePointsChangedDelegate;
@@ -57,12 +68,17 @@ public:
 	void AddToAttributePoints(const int32 InAttributePoints);
 	void AddToSpellPoints(const int32 InSpellPoints);
 
+#pragma endregion
+
 private:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	UPROPERTY(Replicated)
+	TArray<FName> ClearedDungeons;
 
 
 #pragma region Character Attribute

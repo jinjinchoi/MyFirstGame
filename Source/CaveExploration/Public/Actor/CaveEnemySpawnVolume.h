@@ -24,6 +24,12 @@ protected:
 	UFUNCTION()
 	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UPROPERTY(EditAnywhere, Category="Spawn Properties")
+	FName DungeonID;
+
+	UPROPERTY(EditAnywhere, Category="Spawn Properties")
+	FName CheckPointNameToGo;
+	
 
 private:
 	UPROPERTY(EditAnywhere, Category="Spawn Properties")
@@ -40,6 +46,8 @@ private:
 
 	UFUNCTION()
 	void OnSpawnedEnemyDeath(AActor* DeathActor);
+	
+	void HandleDungeonClear() const;
 
 	
 	/* Handle Level Change*/

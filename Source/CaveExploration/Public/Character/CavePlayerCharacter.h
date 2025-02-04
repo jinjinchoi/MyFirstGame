@@ -48,7 +48,9 @@ public:
 	virtual void ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial = nullptr) override;
 	virtual void HideMagicCircle_Implementation() override;
 	virtual FVector GetMagicCircleLocation_Implementation() override;
-	virtual void SaveProgress_Implementation(const FName& CheckPointTag) override;
+	virtual void SaveProgress_Implementation(const FName& CheckPointTag, const FString& CheckPointName) override;
+	virtual void AddClearedDungeon_Implementation(const FName& DungeonID) override;
+	virtual bool IsDungeonCleared_Implementation(const FName& DungeonID) const override;
 	/* end Player Interface */
 
 protected:
