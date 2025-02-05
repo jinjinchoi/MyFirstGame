@@ -79,7 +79,7 @@ void ACaveEnemySpawnVolume::OnSpawnedEnemyDeath(AActor* DeathEnemy)
 		if (IsBossSpawner)
 		{
 			FTimerHandle TimerHandle_LevelTransition;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle_LevelTransition, this, &ACaveEnemySpawnVolume::ChangeLevel, 10.0f, false);
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle_LevelTransition, this, &ACaveEnemySpawnVolume::ChangeLevel, TimeForLevelChange, false);
 		}
 		else
 		{

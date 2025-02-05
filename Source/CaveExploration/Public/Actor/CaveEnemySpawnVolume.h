@@ -29,6 +29,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Spawn Properties")
 	FName CheckPointNameToGo;
+
+	UPROPERTY(EditAnywhere, Category="Spawn Properties")
+	float TimeForLevelChange = 8.f;
 	
 
 private:

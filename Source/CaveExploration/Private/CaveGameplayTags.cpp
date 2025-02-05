@@ -315,6 +315,9 @@ void FCaveGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Player_Block_Move = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Player.Block.Move"));
 
+	GameplayTags.Common_Block_HealthRegeneration = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Common.Block.HealthRegeneration"));
+
 	
 #pragma endregion
 }

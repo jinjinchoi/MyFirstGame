@@ -69,7 +69,7 @@ void ACavePlayerCharacter::PossessedBy(AController* NewController)
 		UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(CaveGameMode->GetGameInstance());
 		if (CaveGameInstance->bIsSinglePlay)
 		{
-			LoadProgrss();
+			LoadProgress();
 		}
 		else
 		{
@@ -81,7 +81,7 @@ void ACavePlayerCharacter::PossessedBy(AController* NewController)
 
 }
 
-void ACavePlayerCharacter::LoadProgrss()
+void ACavePlayerCharacter::LoadProgress()
 {
 	if (ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this)))
 	{
@@ -369,7 +369,7 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 
 	ReactGameplayTagChanged();
 
-	/* 멀티 플레이와 싱글플레이 구분하기 위한 부분으로 서버가 존재할 경우 변경해야함 */
+	/* 이 아래 부분은 멀티 플레이를 위한 부분으로 서버가 존재할 경우 다른 방법으로 구현해야 함 */
 	if (!HasAuthority())
 	{
 		InitializeDefaultAttributes();
@@ -414,6 +414,25 @@ void ACavePlayerCharacter::HitReactTagChange(const FGameplayTag CallbackTag, int
 void ACavePlayerCharacter::DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	Super::DeathReactTagChange(CallbackTag, NewCount);
+
+	FTimerDelegate DeathTimerDelegate;
+	DeathTimerDelegate.BindLambda([this]()
+	{
+		if (ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this)))
+		{
+			UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(CaveGameMode->GetGameInstance());
+			if (CaveGameInstance->bIsSinglePlay)
+			{
+				CaveGameMode->PlayerDied(this);
+				return;
+			}
+		}
+		
+		UGameplayStatics::OpenLevel(this, RespawnWorldNameForMultiPlay);
+	});
+
+	GetWorldTimerManager().SetTimer(DeathTimer, DeathTimerDelegate, DeathTime, false);
+
 	
 }
 

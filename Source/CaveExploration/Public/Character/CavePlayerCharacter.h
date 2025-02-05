@@ -60,8 +60,16 @@ protected:
 	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	/* end CaveCharacterBase */
+
+	UPROPERTY(EditDefaultsOnly, Category= "Combat")
+	FName RespawnWorldNameForMultiPlay = FName("MainMenu");
 	
-	void LoadProgrss();
+	UPROPERTY(EditDefaultsOnly, Category= "Combat")
+	float DeathTime = 5.f;
+
+	FTimerHandle DeathTimer;
+	
+	void LoadProgress();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;

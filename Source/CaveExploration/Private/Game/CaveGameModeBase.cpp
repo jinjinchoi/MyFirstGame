@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
+#include "GameFramework/Character.h"
 
 
 void ACaveGameModeBase::SaveSlotData(const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex) const
@@ -113,6 +114,14 @@ AActor* ACaveGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 	}
 
 	return nullptr;
+}
+
+void ACaveGameModeBase::PlayerDied(ACharacter* DeadCharacter)
+{
+	UCaveSaveGame* SaveGame = RetrieveSaveGameData();
+	if (!IsValid(SaveGame)) return;
+
+	UGameplayStatics::OpenLevel(DeadCharacter, FName(SaveGame->MapAssetName));
 }
 
 void ACaveGameModeBase::BeginPlay()

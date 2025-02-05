@@ -163,6 +163,7 @@ struct FCaveGameplayTags
 	FGameplayTag Player_Block_Released;
 	FGameplayTag Player_Block_InputHeld;
 	FGameplayTag Player_Block_Move;
+	FGameplayTag Common_Block_HealthRegeneration;
 	
 #pragma endregion
 	
