@@ -189,6 +189,9 @@ void ACaveEnemy::ReactGameplayTagChanged()
 
 	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Debuff_Type_Stun, EGameplayTagEventType::NewOrRemoved)
 		.AddUObject(this, &ACaveEnemy::StunTagChanged);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Debuff_Type_Burn, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ACaveEnemy::BurnedTagChanged);
 }
 
 void ACaveEnemy::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)

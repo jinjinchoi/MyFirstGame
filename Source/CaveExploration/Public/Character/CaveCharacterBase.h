@@ -46,8 +46,14 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	// TODO: 클라이언트에서 나이아가라 컴포넌트 전부 활성화 되는지 확인할 필요가 있음.
-	UPROPERTY(Replicated, BlueprintReadOnly)
+	UPROPERTY(ReplicatedUsing="OnRep_Stunned", BlueprintReadOnly)
 	bool bIsStunned = false;
+
+	UPROPERTY(ReplicatedUsing="OnRep_Burned", BlueprintReadOnly)
+	bool bIsBurned = false;
+
+	UPROPERTY(ReplicatedUsing="OnRep_Frozen", BlueprintReadOnly)
+	bool bIsFrozen = false;
 
 
 protected:
@@ -62,6 +68,16 @@ protected:
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount);
 	void FrozenTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+	void BurnedTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UFUNCTION()
+	virtual void OnRep_Stunned();
+
+	UFUNCTION()
+	virtual void OnRep_Burned();
+
+	UFUNCTION()
+	virtual void OnRep_Frozen();
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -77,6 +93,15 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
 	float BaseWalkSpeed = 350.f;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> FrozenDebuffComponent;
 
 	
 #pragma region Attribute And Ability
@@ -128,15 +153,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Combat)
 	TObjectPtr<USoundBase> HitImpactSound;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
-	
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UDebuffNiagaraComponent> FrozenDebuffComponent;
-	
 	
 };
+

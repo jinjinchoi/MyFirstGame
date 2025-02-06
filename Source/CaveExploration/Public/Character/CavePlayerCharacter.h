@@ -51,14 +51,23 @@ public:
 	virtual void SaveProgress_Implementation(const FName& CheckPointTag, const FString& CheckPointName) override;
 	virtual void AddClearedDungeon_Implementation(const FName& DungeonID) override;
 	virtual bool IsDungeonCleared_Implementation(const FName& DungeonID) const override;
+	virtual FVector GetCharacterMoveDirection_Implementation() const override;
+	virtual void SetCharacterMoveDirection_Implementation(const FVector& NewDirection) override;
 	/* end Player Interface */
 
 protected:
+	/* Engine */
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	/* Engine */
+	
 	/* Cave Character Base */
 	virtual void InitAbilityActorInfo() override;
 	virtual void ReactGameplayTagChanged() override;
 	virtual void HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
 	virtual void DeathReactTagChange(const FGameplayTag CallbackTag, int32 NewCount) override;
+	virtual void OnRep_Stunned() override;
+	virtual void OnRep_Burned() override;
+	virtual void OnRep_Frozen() override;
 	/* end CaveCharacterBase */
 
 	UPROPERTY(EditDefaultsOnly, Category= "Combat")
@@ -84,8 +93,13 @@ private:
 
 	FRotator BaseRotationRate = FRotator(0, 540, 0);
 
-	UCaveAttributeSet* GetCaveAttributeSet() const; 
+	UPROPERTY(Replicated)
+	FVector MoveDirection;
+	
+	UCaveAttributeSet* GetCaveAttributeSet() const;
 
+	UFUNCTION(Server, Reliable)
+	void ServerSetMoveDirection(const FVector& NewMoveDirection);
 
 
 # pragma region Components

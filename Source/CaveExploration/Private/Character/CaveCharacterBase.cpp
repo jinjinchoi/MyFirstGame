@@ -50,6 +50,8 @@ void ACaveCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ACaveCharacterBase, bIsStunned);
+	DOREPLIFETIME(ACaveCharacterBase, bIsBurned);
+	DOREPLIFETIME(ACaveCharacterBase, bIsFrozen);
 }
 
 UAbilitySystemComponent* ACaveCharacterBase::GetAbilitySystemComponent() const
@@ -180,10 +182,30 @@ void ACaveCharacterBase::FrozenTagChanged(const FGameplayTag CallbackTag, int32 
 {
 	const bool bFrozen = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bFrozen ? BaseWalkSpeed / 3 : BaseWalkSpeed;
+	bIsFrozen = bFrozen;
 }
 
 void ACaveCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	const bool bStun = NewCount > 0;
 	bIsStunned = bStun;
+}
+
+void ACaveCharacterBase::BurnedTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	const bool bBurned = NewCount > 0;
+	bIsBurned = bBurned;
+}
+
+
+void ACaveCharacterBase::OnRep_Stunned()
+{
+}
+
+void ACaveCharacterBase::OnRep_Burned()
+{
+}
+
+void ACaveCharacterBase::OnRep_Frozen()
+{
 }

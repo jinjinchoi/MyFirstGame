@@ -17,10 +17,12 @@
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "AbilitySystem/CaveAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "AbilitySystem/Niagara/DebuffNiagaraComponent.h"
 #include "Game/CaveGameInstance.h"
 #include "Game/CaveGameModeBase.h"
 #include "Game/CaveSaveGame.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 ACavePlayerCharacter::ACavePlayerCharacter()
 {
@@ -203,6 +205,23 @@ bool ACavePlayerCharacter::IsDungeonCleared_Implementation(const FName& DungeonI
 	check(CavePlayerState);
 
 	return CavePlayerState->IsDungeonCleared(DungeonID);
+}
+
+FVector ACavePlayerCharacter::GetCharacterMoveDirection_Implementation() const
+{
+	return MoveDirection;
+}
+
+void ACavePlayerCharacter::SetCharacterMoveDirection_Implementation(const FVector& NewDirection)
+{
+	ServerSetMoveDirection(NewDirection);
+}
+
+void ACavePlayerCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACavePlayerCharacter, MoveDirection);
 }
 
 void ACavePlayerCharacter::OnRep_PlayerState()
@@ -404,6 +423,10 @@ void ACavePlayerCharacter::ReactGameplayTagChanged()
 
 	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Debuff_Type_Stun)
 		.AddUObject(this, &ACavePlayerCharacter::StunTagChanged);
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Debuff_Type_Burn)
+		.AddUObject(this, &ACavePlayerCharacter::BurnedTagChanged);
+	
 }
 
 void ACavePlayerCharacter::HitReactTagChange(const FGameplayTag CallbackTag, int32 NewCount)
@@ -436,7 +459,48 @@ void ACavePlayerCharacter::DeathReactTagChange(const FGameplayTag CallbackTag, i
 	
 }
 
+void ACavePlayerCharacter::OnRep_Stunned()
+{
+	if (bIsStunned)
+	{
+		StunDebuffComponent->Activate();
+	}
+	else
+	{
+		StunDebuffComponent->Deactivate();
+	}
+}
+
+void ACavePlayerCharacter::OnRep_Burned()
+{
+	if (bIsBurned)
+	{
+		BurnDebuffComponent->Activate();
+	}
+	else
+	{
+		BurnDebuffComponent->Deactivate();
+	}
+}
+
+void ACavePlayerCharacter::OnRep_Frozen()
+{
+	if (bIsFrozen)
+	{
+		FrozenDebuffComponent->Activate();
+	}
+	else
+	{
+		FrozenDebuffComponent->Deactivate();
+	}
+}
+
 UCaveAttributeSet* ACavePlayerCharacter::GetCaveAttributeSet() const
 {
 	return Cast<UCaveAttributeSet>(AttributeSet);
+}
+
+void ACavePlayerCharacter::ServerSetMoveDirection_Implementation(const FVector& NewMoveDirection)
+{
+	MoveDirection = NewMoveDirection;
 }

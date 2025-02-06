@@ -13,6 +13,7 @@
 #include "Components/DecalComponent.h"
 #include "Input/CaveInputComponent.h"
 #include "GameFramework/Character.h"
+#include "Interaction/PlayerInterface.h"
 #include "Net/UnrealNetwork.h"
 #include "UI/Widget/DamageTextWidgetComponent.h"
 
@@ -87,15 +88,19 @@ void ACavePlayerController::Move(const FInputActionValue& InputValue)
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-	MoveDirection = ForwardDirection * InputAxisVector.Y + RightDirection * InputAxisVector.X;
-
+	
 	if (IsValid(MagicCircle))
 	{
 		MagicCircle->Move(InputAxisVector);
 	}
 	else if (APawn* ControlledPawn  = GetPawn<APawn>())
 	{
+		if (ControlledPawn->Implements<UPlayerInterface>())
+		{
+			const FVector NewMoveDirection = ForwardDirection * InputAxisVector.Y + RightDirection * InputAxisVector.X;
+			IPlayerInterface::Execute_SetCharacterMoveDirection(ControlledPawn, NewMoveDirection);
+		}
+		
 		if (!GetASC() || GetASC()->HasMatchingGameplayTag(FCaveGameplayTags::Get().Player_Block_Move)) return;
 
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
@@ -134,6 +139,7 @@ UCaveAbilitySystemComponent* ACavePlayerController::GetASC()
 
 	return CaveAbilitySystemComponent;
 }
+
 
 
 

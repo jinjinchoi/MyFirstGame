@@ -36,10 +36,6 @@ public:
 	void HideMagicCircle();
 	
 	FVector GetValidMagicCircleLocation() const;
-
-	UFUNCTION(BlueprintCallable)
-	FVector GetMoveDirection() const { return MoveDirection; }
-
 	
 protected:
 	/* Engine */
@@ -78,9 +74,5 @@ private:
 
 	UPROPERTY(Replicated)
 	TObjectPtr<AMagicCircle> MagicCircle;
-	
-	FVector MoveDirection = FVector::ZeroVector;
-	
-	
 	
 };

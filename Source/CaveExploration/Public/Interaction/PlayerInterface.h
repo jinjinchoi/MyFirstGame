@@ -78,5 +78,11 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool IsDungeonCleared(const FName& DungeonID) const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	FVector GetCharacterMoveDirection() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetCharacterMoveDirection(const FVector& NewDirection);
 	
 };
