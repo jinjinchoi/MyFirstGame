@@ -17,8 +17,8 @@ class CAVEEXPLORATION_API APathBlocker : public AActor
 public:	
 	APathBlocker();
 
-	void ActivateEffect() const;
-	void DeactivateEffect() const;
+	void ActivateBlocker() const;
+	void DeactivateBlocker() const;
 
 protected:
 	virtual void BeginPlay() override;

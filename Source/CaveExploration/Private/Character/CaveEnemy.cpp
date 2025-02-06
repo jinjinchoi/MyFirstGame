@@ -91,7 +91,7 @@ void ACaveEnemy::BeginPlay()
 			// 체력바 위치 설정 (X = 0.5 -> 중앙, Y = 0 -> 상단 끝)
 			const FAnchors Anchors = FAnchors(0.5f, 0.f);
 			BossHealthBar->SetAnchorsInViewport(Anchors);
-			BossHealthBar->SetAlignmentInViewport(FVector2D(0.5f, -0.2f));
+			BossHealthBar->SetAlignmentInViewport(FVector2D(0.5f, -0.25f));
 			
 			BossHealthBar->SetWidgetController(this);
 		}
