@@ -16,18 +16,23 @@ class CAVEEXPLORATION_API APathBlocker : public AActor
 	
 public:	
 	APathBlocker();
-
+	
 	void ActivateBlocker() const;
 	void DeactivateBlocker() const;
 
+
 protected:
 	virtual void BeginPlay() override;
-
-private:
-	UPROPERTY(EditAnywhere)
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> BoxComponent;
+
+private:
+	
+	
+
 	
 };

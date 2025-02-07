@@ -54,6 +54,7 @@ public:
 protected:
 	/* Engine */
 	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	/* end Engine */
 
 	/* Cave Character Base */
@@ -65,7 +66,7 @@ protected:
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 	/* end Cave Character Base */
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Information")
+	UPROPERTY(EditAnywhere, Replicated, BlueprintReadOnly, Category="Character Information")
 	int32 EnemyLevel = 1;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

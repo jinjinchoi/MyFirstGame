@@ -19,7 +19,9 @@ public:
 	ACaveEnemySpawnVolume();
 
 protected:
+	/* Engine */
 	virtual void BeginPlay() override;
+	/* end Engine */
 
 	UFUNCTION()
 	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -45,11 +47,12 @@ protected:
 	
 
 private:
+	
 	UPROPERTY(EditAnywhere, Category="Spawn Properties")
 	TArray<ACaveEnemySpawnPoint*> SpawnPoints;
 
 	UPROPERTY(EditAnywhere, Category="Spawn Properties")
-	TArray<APathBlocker*> BlockingWall;
+	TArray<TObjectPtr<APathBlocker>> BlockingWall;
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBoxComponent> Box;
@@ -60,14 +63,14 @@ private:
 	UPROPERTY(EditAnywhere, Category="Spawn Properties")
 	TSubclassOf<UUserWidget> ClearMessageWidgetClass;
 	
-	int32 NumOfSpawnedEnemy = 0;
+	int32 NumOfSpawnedEnemies = 0;
+	
 	bool HasSpawned = false;
 
 	UFUNCTION()
 	void OnSpawnedEnemyDeath(AActor* DeathActor);
 	
 	void HandleDungeonClear() const;
-
 	
 	/* Handle Level Change*/
 
@@ -85,9 +88,10 @@ private:
 
 	void ResetGameSpeed();
 
+	/* Network*/
+	
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_UpdateTimeDilation(float NewTimeDilation);
-
 	
-
+	
 };

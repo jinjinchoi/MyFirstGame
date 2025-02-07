@@ -12,7 +12,6 @@
 #include "Kismet/GameplayStatics.h"
 
 
-
 ACaveEnemySpawnVolume::ACaveEnemySpawnVolume()
 {
 
@@ -31,19 +30,21 @@ ACaveEnemySpawnVolume::ACaveEnemySpawnVolume()
 void ACaveEnemySpawnVolume::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	Box->OnComponentBeginOverlap.AddDynamic(this, &ACaveEnemySpawnVolume::OnSphereOverlap);
-
 	
 }
 
-void ACaveEnemySpawnVolume::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (!OtherActor->HasAuthority()) return;
-	
-	if (!OtherActor->ActorHasTag("Player") || HasSpawned) return;
 
+void ACaveEnemySpawnVolume::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (!OtherActor->ActorHasTag("Player") || HasSpawned) return;
+	HasSpawned = true;
+	Box->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	if (!HasAuthority()) return;
+	
 	for (const APathBlocker* Blocker : BlockingWall)
 	{
 		if (IsValid(Blocker))
@@ -51,29 +52,32 @@ void ACaveEnemySpawnVolume::OnSphereOverlap(UPrimitiveComponent* OverlappedCompo
 			Blocker->ActivateBlocker();
 		}
 	}
-
+	
 	for (ACaveEnemySpawnPoint* Point : SpawnPoints)
 	{
 		if (IsValid(Point))
 		{
+			++NumOfSpawnedEnemies;
 			AActor* SpawnedEnemy = Point->SpawnEnemy();
 			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(SpawnedEnemy))
 			{
-				++NumOfSpawnedEnemy;
 				CombatInterface->GetOnDeathDelegate().AddDynamic(this, &ACaveEnemySpawnVolume::OnSpawnedEnemyDeath);
 			}
 		}
+
 	}
-	HasSpawned = true;
-	Box->OnComponentBeginOverlap.RemoveDynamic(this, &ACaveEnemySpawnVolume::OnSphereOverlap);
+	
 }
 
 void ACaveEnemySpawnVolume::OnSpawnedEnemyDeath(AActor* DeathEnemy)
 {
-	--NumOfSpawnedEnemy;
-	if (NumOfSpawnedEnemy <= 0)
+	if (!HasAuthority()) return;
+	
+	--NumOfSpawnedEnemies;
+
+	if (NumOfSpawnedEnemies <= 0)
 	{
-		for (APathBlocker* Blocker : BlockingWall)
+		for (const APathBlocker* Blocker : BlockingWall)
 		{
 			if (IsValid(Blocker))
 			{
@@ -135,7 +139,6 @@ void ACaveEnemySpawnVolume::CreateDungeonClearMessageWidget()
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
 		ClearMessageWidget = CreateWidget<UUserWidget>(PlayerController, ClearMessageWidgetClass);
-	
 		ClearMessageWidget->AddToViewport();
 
 		const FAnchors Anchors = FAnchors(0.5f, 0.f);
@@ -143,8 +146,6 @@ void ACaveEnemySpawnVolume::CreateDungeonClearMessageWidget()
 		ClearMessageWidget->SetAlignmentInViewport(FVector2D(0.5f, -0.4f));
 	}
 }
-
-
 
 void ACaveEnemySpawnVolume::SlowDownGame_Implementation()
 {
@@ -160,6 +161,8 @@ void ACaveEnemySpawnVolume::ResetGameSpeed()
 	GetWorld()->GetWorldSettings()->SetTimeDilation(1.f);
 	Multicast_UpdateTimeDilation(1.f);
 }
+
+
 
 void ACaveEnemySpawnVolume::Multicast_UpdateTimeDilation_Implementation(float NewTimeDilation)
 {

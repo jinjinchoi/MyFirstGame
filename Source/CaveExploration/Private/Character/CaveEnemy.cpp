@@ -13,6 +13,7 @@
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 #include "UI/Widget/CaveUserWidget.h"
 
 ACaveEnemy::ACaveEnemy()
@@ -121,6 +122,13 @@ void ACaveEnemy::BeginPlay()
 
 	ReactGameplayTagChanged();
 
+}
+
+void ACaveEnemy::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACaveEnemy, EnemyLevel);
 }
 
 void ACaveEnemy::Destroyed()
