@@ -84,17 +84,22 @@ void ACaveEnemy::BeginPlay()
 	if (CharacterClass == ECharacterClass::Boss)
 	{
 		check(BossHealthBarClass);
-		if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		if (PlayerController && PlayerController->IsLocalController())
 		{
 			BossHealthBar = CreateWidget<UCaveUserWidget>(PlayerController, BossHealthBarClass);
-			BossHealthBar->AddToViewport();
-			
-			// 체력바 위치 설정 (X = 0.5 -> 중앙, Y = 0 -> 상단 끝)
-			const FAnchors Anchors = FAnchors(0.5f, 0.f);
-			BossHealthBar->SetAnchorsInViewport(Anchors);
-			BossHealthBar->SetAlignmentInViewport(FVector2D(0.5f, -0.25f));
-			
-			BossHealthBar->SetWidgetController(this);
+			if (BossHealthBar)
+			{
+				BossHealthBar->AddToViewport();
+				
+				// 체력바 위치 설정 (X = 0.5 -> 중앙, Y = 0 -> 상단 끝)
+				const FAnchors Anchors = FAnchors(0.5f, 0.f);
+				BossHealthBar->SetAnchorsInViewport(Anchors);
+				BossHealthBar->SetAlignmentInViewport(FVector2D(0.5f, -0.25f));
+				
+				BossHealthBar->SetWidgetController(this);
+			}
 		}
 	}
 	else if (UCaveUserWidget* CaveUserWidget = Cast<UCaveUserWidget>(HealthBar->GetUserWidgetObject()))

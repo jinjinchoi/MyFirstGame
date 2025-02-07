@@ -129,6 +129,10 @@ void ACavePlayerCharacter::SaveProgress_Implementation(const FName& CheckPointTa
 	
 	if (ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this)))
 	{
+		const UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(CaveGameMode->GetGameInstance());
+		if (!IsValid(CaveGameInstance) || !CaveGameInstance->bIsSinglePlay) return;
+
+		
 		UCaveSaveGame* SaveData = CaveGameMode->RetrieveSaveGameData();
 		if (SaveData == nullptr) return;
 

@@ -69,8 +69,7 @@ private:
 
 	UFUNCTION()
 	void OnSpawnedEnemyDeath(AActor* DeathActor);
-	
-	void HandleDungeonClear() const;
+
 	
 	/* Handle Level Change*/
 
@@ -81,6 +80,7 @@ private:
 	TSoftObjectPtr<UWorld> NextLevel;
 	
 	void ChangeLevel() const;
+	void HandleDungeonClear() const;
 	void CreateDungeonClearMessageWidget();
 
 	UFUNCTION(Server, Reliable)
@@ -92,6 +92,5 @@ private:
 	
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_UpdateTimeDilation(float NewTimeDilation);
-	
 	
 };

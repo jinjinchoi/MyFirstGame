@@ -10,10 +10,14 @@
 #include "GameplayTagContainer.h"
 #include "AbilitySystem/CaveAbilitySystemComponent.h"
 #include "Actor/MagicCircle.h"
+#include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/DecalComponent.h"
 #include "Input/CaveInputComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Interaction/PlayerInterface.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "UI/Widget/DamageTextWidgetComponent.h"
 
@@ -41,6 +45,13 @@ void ACavePlayerController::BeginPlay()
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	InputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(InputModeData);
+
+	if (IsValid(GetPawn()))
+	{
+		ActiveSpringArm = Cast<USpringArmComponent>(GetPawn()->GetComponentByClass(USpringArmComponent::StaticClass()));
+		ActiveCameraComponent = Cast<UCameraComponent>(GetPawn()->GetComponentByClass(UCameraComponent::StaticClass()));
+		ActiveCapsuleComponent = Cast<UCapsuleComponent>(GetPawn()->GetComponentByClass(UCapsuleComponent::StaticClass()));
+	}
 
 }
 
@@ -140,9 +151,6 @@ UCaveAbilitySystemComponent* ACavePlayerController::GetASC()
 	return CaveAbilitySystemComponent;
 }
 
-
-
-
 void ACavePlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
 	if (IsValid(MagicCircle)) return;
@@ -202,4 +210,167 @@ FVector ACavePlayerController::GetValidMagicCircleLocation() const
 	}
 	
 	return FVector::ZeroVector;
+}
+
+
+
+/////////////////////////////////////////////////////////
+///////* To make actor translucent */////////////////////
+/////////////////////////////////////////////////////////
+
+void ACavePlayerController::SyncOccludedActors()
+{
+	if (!ShouldCheckCameraOcclusion()) return;
+
+	/**
+	 *  bDoCollisionTest가 ture면 카메라와 캐릭터 사이에 장애물이 존재할 수 없음.
+	 *  그렇기 때문에 조기 종료
+	 */  
+	if (ActiveSpringArm->bDoCollisionTest)
+	{
+		ForceShowOccludedActor();
+		return;
+	}
+
+	const FVector Start = ActiveCameraComponent->GetComponentLocation();
+	const FVector End = GetPawn()->GetActorLocation();
+
+	/**
+	 * 충돌을 감지할 객체의 타입을 배열에 저장
+	 */
+	TArray<TEnumAsByte<EObjectTypeQuery>> CollisionObjectTypes;
+	CollisionObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldStatic));
+
+	TArray<AActor*> ActorsToIgnore;
+	TArray<FHitResult> OutHits;
+
+	const EDrawDebugTrace::Type ShouldDebug = DebugLineTraces ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
+
+	const bool bGoHits = UKismetSystemLibrary::CapsuleTraceMultiForObjects(
+		GetWorld(),
+		Start,
+		End,
+		ActiveCapsuleComponent->GetScaledCapsuleRadius() * CapsulePercentageForTrace,
+		ActiveCapsuleComponent->GetScaledCapsuleHalfHeight() * CapsulePercentageForTrace,
+		CollisionObjectTypes,
+		false,
+		ActorsToIgnore,
+		ShouldDebug,
+		OutHits,
+		true
+	);
+
+	if (bGoHits)
+	{
+		TSet<const AActor*> ActorsJustOccluded;
+
+		for (FHitResult HitResult : OutHits)
+		{
+			const AActor* HitActor = HitResult.GetActor();
+			HideOccludedActor(HitActor);
+			ActorsJustOccluded.Add(HitActor);
+		}
+
+		/**
+		 * 숨겨진 액터를 순회 하면서 방금 저장된 액터가 아니면 다시 표시
+		 */
+		for (TTuple<const AActor*, FCameraOccludedActor>& Elem : OccludedActors)
+		{
+			if (!ActorsJustOccluded.Contains(Elem.Value.Actor) && Elem.Value.IsOccluded)
+			{
+				ShowOccludedActor(Elem.Value);
+			}
+
+			if (DebugLineTraces)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Actor %s was occluded, but it's not occluded anymore with the new hits."), *Elem.Value.Actor->GetName());
+			}
+		}
+	}
+	else
+	{
+		ForceShowOccludedActor();
+	}
+	
+}
+
+void ACavePlayerController::HideOccludedActor(const AActor* Actor)
+{
+	FCameraOccludedActor* ExistingOccludedActor = OccludedActors.Find(Actor);
+
+	if (ExistingOccludedActor && ExistingOccludedActor->IsOccluded)
+	{
+		if (DebugLineTraces) UE_LOG(LogTemp, Warning, TEXT("Actor %s was already occluded. Ignoring."), *Actor->GetName());
+		return;
+	}
+
+	if (ExistingOccludedActor && IsValid(ExistingOccludedActor->Actor))
+	{
+		ExistingOccludedActor->IsOccluded = true;
+		OnHideOccludedActor(*ExistingOccludedActor);
+
+		if (DebugLineTraces)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Actor %s exists, but was not occluded. Occluding it now."), *Actor->GetName());
+		}
+	}
+	else
+	{
+		UStaticMeshComponent* StaticMesh = Cast<UStaticMeshComponent>(Actor->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+
+		FCameraOccludedActor OccludedActor;
+		OccludedActor.Actor = Actor;
+		OccludedActor.StaticMesh = StaticMesh;
+		OccludedActor.Materials = StaticMesh->GetMaterials();
+		OccludedActor.IsOccluded = true;
+		OccludedActors.Add(Actor, OccludedActor);
+		OnHideOccludedActor(OccludedActor);
+
+		if (DebugLineTraces)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Actor %s does not exist, creating and occluding it now."), *Actor->GetName());
+		}
+	}
+}
+
+void ACavePlayerController::OnHideOccludedActor(const FCameraOccludedActor& OccludedActor) const
+{
+	for (int i = 0; i < OccludedActor.StaticMesh->GetNumMaterials(); ++i)
+	{
+		OccludedActor.StaticMesh->SetMaterial(i, FadeMaterial);
+	}
+}
+
+void ACavePlayerController::ShowOccludedActor(FCameraOccludedActor& OccludedActor)
+{
+	if (!IsValid(OccludedActor.Actor))
+	{
+		OccludedActors.Remove(OccludedActor.Actor);
+	}
+
+	OccludedActor.IsOccluded = false;
+	OnShowOccludedActor(OccludedActor);
+}
+
+void ACavePlayerController::OnShowOccludedActor(const FCameraOccludedActor& OccludedActor) const
+{
+	for (int MatIndex = 0; MatIndex < OccludedActor.Materials.Num(); ++MatIndex)
+	{
+		OccludedActor.StaticMesh->SetMaterial(MatIndex, OccludedActor.Materials[MatIndex]);
+	}
+}
+
+void ACavePlayerController::ForceShowOccludedActor()
+{
+	for (auto& Elem : OccludedActors)
+	{
+		if (Elem.Value.IsOccluded)
+		{
+			ShowOccludedActor(Elem.Value);
+			if (DebugLineTraces)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Actor %s was occluded, force to show again."), *Elem.Value.Actor->GetName());
+			}
+		}
+	}
 }

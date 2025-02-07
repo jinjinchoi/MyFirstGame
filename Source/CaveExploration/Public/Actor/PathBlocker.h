@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "PathBlocker.generated.h"
 
+
 class UBoxComponent;
 class UNiagaraComponent;
 
@@ -29,9 +30,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> BoxComponent;
-
-private:
-	
 	
 
 	

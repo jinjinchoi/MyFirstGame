@@ -98,6 +98,12 @@ void ACaveEnemySpawnVolume::OnSpawnedEnemyDeath(AActor* DeathEnemy)
 	}
 }
 
+void ACaveEnemySpawnVolume::ChangeLevel() const
+{
+	HandleDungeonClear();
+	UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
+}
+
 void ACaveEnemySpawnVolume::HandleDungeonClear() const
 {
 	if (DungeonID == FName())
@@ -122,11 +128,6 @@ void ACaveEnemySpawnVolume::HandleDungeonClear() const
 	}
 }
 
-void ACaveEnemySpawnVolume::ChangeLevel() const
-{
-	HandleDungeonClear();
-	UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
-}
 
 void ACaveEnemySpawnVolume::CreateDungeonClearMessageWidget()
 {
@@ -136,20 +137,22 @@ void ACaveEnemySpawnVolume::CreateDungeonClearMessageWidget()
 		return;
 	}
 	
-	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (PlayerController && PlayerController->IsLocalController())
 	{
 		ClearMessageWidget = CreateWidget<UUserWidget>(PlayerController, ClearMessageWidgetClass);
+		if (!IsValid(ClearMessageWidget)) return;
+		
 		ClearMessageWidget->AddToViewport();
 
 		const FAnchors Anchors = FAnchors(0.5f, 0.f);
 		ClearMessageWidget->SetAnchorsInViewport(Anchors);
-		ClearMessageWidget->SetAlignmentInViewport(FVector2D(0.5f, -0.4f));
+		ClearMessageWidget->SetAlignmentInViewport(FVector2D(0.5f, -0.5f));
 	}
 }
 
 void ACaveEnemySpawnVolume::SlowDownGame_Implementation()
 {
-	GetWorld()->GetWorldSettings()->SetTimeDilation(0.5f);
 	Multicast_UpdateTimeDilation(0.5f);
 	
 	FTimerHandle SpeedResetTimerHandle;
@@ -158,10 +161,8 @@ void ACaveEnemySpawnVolume::SlowDownGame_Implementation()
 
 void ACaveEnemySpawnVolume::ResetGameSpeed()
 {
-	GetWorld()->GetWorldSettings()->SetTimeDilation(1.f);
 	Multicast_UpdateTimeDilation(1.f);
 }
-
 
 
 void ACaveEnemySpawnVolume::Multicast_UpdateTimeDilation_Implementation(float NewTimeDilation)

@@ -32,7 +32,7 @@ void APathBlocker::ActivateBlocker() const
 	{
 		BoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		BoxComponent->SetCollisionResponseToAllChannels(ECR_Block);
-		BoxComponent->SetCollisionObjectType(ECC_WorldStatic);
+		BoxComponent->SetCollisionObjectType(ECC_WorldDynamic);
 	}
 
 	if (NiagaraComponent)
