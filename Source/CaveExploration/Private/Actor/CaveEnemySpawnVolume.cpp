@@ -20,7 +20,7 @@ ACaveEnemySpawnVolume::ACaveEnemySpawnVolume()
 	Box = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	SetRootComponent(Box);
 	Box->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	Box->SetCollisionObjectType(ECC_WorldStatic);
+	Box->SetCollisionObjectType(ECC_WorldDynamic);
 	Box->SetCollisionResponseToAllChannels(ECR_Ignore);
 	Box->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 

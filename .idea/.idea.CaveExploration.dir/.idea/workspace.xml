@@ -8,24 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59e04396-5efe-46be-bea4-946524d7eaf8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Build/Windows.7z" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Build/Windows/CaveExploration.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Build/Windows/Engine/Extras/GPUDumpViewer/GPUDumpViewer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Build/Windows/Engine/Extras/GPUDumpViewer/OpenGPUDumpViewer.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Build/Windows/Engine/Extras/GPUDumpViewer/OpenGPUDumpViewer.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Build/Windows/Engine/Extras/Redist/en-us/UEPrereqSetup_x64.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Build/Windows/Manifest_DebugFiles_Win64.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Build/Windows/Manifest_NonUFSFiles_Win64.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Build/Windows/Manifest_UFSFiles_Win64.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CaveExploration.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/CaveExploration.uproject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Private/MultiplayerSessionSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Private/MultiplayerSessionSubsystem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Public/MultiplayerSessionSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Public/MultiplayerSessionSubsystem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Actor/MagicCircle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Actor/MagicCircle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/Actor/MagicCircle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/Actor/MagicCircle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Public/Player/CavePlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Public/Player/CavePlayerController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Actor/CaveEnemySpawnVolume.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Actor/CaveEnemySpawnVolume.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +23,19 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://4" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://3" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/memory" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Intermediate/Build/Win64/UnrealEditor/Inc/GameplayTags/UHT/GameplayTagsManager.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Plugins/FX/Niagara/Source/Niagara/Private/NiagaraFunctionLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -122,14 +118,9 @@
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Public/Blueprint/GameViewportSubsystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Public/Blueprint/UserWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Public/Components/WidgetComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/CaveExploration.uproject" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/CaveExploration/UHT/LoadScreenWidget.gen.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Private/MultiplayerSessionSubsystem.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Public/MultiplayerSessionSubsystem.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/CaveExploration/CaveExploration.Build.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Private/Actor/MagicCircle.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Public/Actor/MagicCircle.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Public/Player/CavePlayerController.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Private/Actor/CaveEnemySpawnVolume.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -358,6 +349,9 @@
       <workItem from="1738932439496" duration="661000" />
       <workItem from="1738974931240" duration="1381000" />
       <workItem from="1739016820733" duration="402000" />
+      <workItem from="1739017311780" duration="251000" />
+      <workItem from="1739017632760" duration="1449000" />
+      <workItem from="1739021048881" duration="1927000" />
     </task>
     <servers />
   </component>
