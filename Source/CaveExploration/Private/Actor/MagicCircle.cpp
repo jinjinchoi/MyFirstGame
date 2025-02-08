@@ -34,6 +34,13 @@ void AMagicCircle::Move(const FVector2D& Value)
 	const FVector Movement = (ForwardDirection * Value.Y + RightDirection * Value.X).GetClampedToMaxSize(1.0f);  // 정규화 (속도 보정)
 
 	const FVector NewLocation = GetActorLocation() + (Movement * MoveSpeed * GetWorld()->GetDeltaSeconds());
+
+	// 부드러운 움직임을 위하여 로컬에서 먼저 이동
+	if (!HasAuthority()) 
+	{
+		SetActorLocation(NewLocation);
+	}
+	
 	ServerMove(NewLocation);
 	
 }
@@ -42,16 +49,5 @@ void AMagicCircle::Move(const FVector2D& Value)
 void AMagicCircle::ServerMove_Implementation(const FVector& InMovement)
 {
 	SetActorLocation(InMovement);
-	MulticastMove(InMovement);
-
 }
-
-void AMagicCircle::MulticastMove_Implementation(FVector NewLocation)
-{
-	if (!HasAuthority())
-	{
-		SetActorLocation(NewLocation);
-	}
-}
-
 

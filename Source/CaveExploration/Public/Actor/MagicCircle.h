@@ -32,10 +32,6 @@ private:
 	UFUNCTION(Server, Reliable)
 	void ServerMove(const FVector& InMovement);
 
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastMove(FVector NewLocation);
-
-
 	
 };
 

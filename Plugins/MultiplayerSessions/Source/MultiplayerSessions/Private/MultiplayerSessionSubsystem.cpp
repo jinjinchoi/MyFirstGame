@@ -94,7 +94,7 @@ void UMultiplayerSessionSubsystem::FindSession(int32 MaxSearchResults)
 	
 }
 
-void UMultiplayerSessionSubsystem::JoinSession(const FOnlineSessionSearchResult& SessionResult)
+void UMultiplayerSessionSubsystem::JoinSession(FOnlineSessionSearchResult& SessionResult)
 {
 	if (!OnlineSessionInterface.IsValid())
 	{
@@ -103,6 +103,9 @@ void UMultiplayerSessionSubsystem::JoinSession(const FOnlineSessionSearchResult&
 	}
 	const TSharedPtr<IOnlineSession> SessionInterface = OnlineSessionInterface.Pin();
 	if (!SessionInterface.IsValid()) return;
+	
+	SessionResult.Session.SessionSettings.bUsesPresence = true;
+	SessionResult.Session.SessionSettings.bUseLobbiesIfAvailable = true;
 
 	JoinSessionCompleteDelegateHandle = SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegate);
 
