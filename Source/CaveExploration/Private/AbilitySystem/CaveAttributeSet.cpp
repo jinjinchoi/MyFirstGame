@@ -234,11 +234,12 @@ void UCaveAttributeSet::Debuff(const FEffectProperties& Props)
 
 	if (DebuffTag.MatchesTagExact(GameplayTags.Debuff_Type_Stun))
 	{
-		TagContainer.AddTag(GameplayTags.Player_Block_Released);
-		TagContainer.AddTag(GameplayTags.Player_Block_InputHeld);
-		TagContainer.AddTag(GameplayTags.Player_Block_InputPressed);
-		TagContainer.AddTag(GameplayTags.Player_Block_Move);
+		TagContainer.Added.AddTag(GameplayTags.Player_Block_Released);
+		TagContainer.Added.AddTag(GameplayTags.Player_Block_InputHeld);
+		TagContainer.Added.AddTag(GameplayTags.Player_Block_InputPressed);
+		TagContainer.Added.AddTag(GameplayTags.Player_Block_Move);
 	}
+
 
 	Component.SetAndApplyTargetTagChanges(TagContainer);
 

@@ -9,7 +9,11 @@
   <component name="ChangeListManager">
     <list default="true" id="59e04396-5efe-46be-bea4-946524d7eaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Actor/CaveEnemySpawnVolume.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Actor/CaveEnemySpawnVolume.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CaveExploration.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/CaveExploration.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAttributeSet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CavePlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CavePlayerCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Player/CavePlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Player/CavePlayerController.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,19 +27,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="cidr-memory-view://3" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/memory" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Intermediate/Build/Win64/UnrealEditor/Inc/GameplayTags/UHT/GameplayTagsManager.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Plugins/FX/Niagara/Source/Niagara/Private/NiagaraFunctionLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -119,8 +111,10 @@
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Public/Blueprint/UserWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Public/Components/WidgetComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/CaveExploration/UHT/LoadScreenWidget.gen.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Plugins/MultiplayerSessions/MultiplayerSessions.uplugin" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/CaveExploration/CaveExploration.Build.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Private/Actor/CaveEnemySpawnVolume.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Private/Character/CavePlayerCharacter.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Private/Player/CavePlayerController.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -135,21 +129,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Uproject.CaveExploration.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Uproject.CaveExploration.executor": "Debug",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="CaveExploration" type="Uproject" factoryName="rider.uproject">
       <configuration_1 setup="1">
@@ -351,7 +345,11 @@
       <workItem from="1739016820733" duration="402000" />
       <workItem from="1739017311780" duration="251000" />
       <workItem from="1739017632760" duration="1449000" />
-      <workItem from="1739021048881" duration="1927000" />
+      <workItem from="1739021048881" duration="6121000" />
+      <workItem from="1739029125368" duration="1147000" />
+      <workItem from="1739064709767" duration="1514000" />
+      <workItem from="1739066341807" duration="955000" />
+      <workItem from="1739068979162" duration="1400000" />
     </task>
     <servers />
   </component>
@@ -387,6 +385,11 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Uproject">
+        <watch expression="gameplaytag" language="C++" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

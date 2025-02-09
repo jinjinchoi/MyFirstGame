@@ -390,7 +390,6 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 		}
 	}
 
-	ReactGameplayTagChanged();
 
 	/* 이 아래 부분은 멀티 플레이를 위한 부분으로 서버가 존재할 경우 다른 방법으로 구현해야 함 */
 	if (!HasAuthority())
@@ -399,6 +398,8 @@ void ACavePlayerCharacter::InitAbilityActorInfo()
 	}
 	else
 	{
+		ReactGameplayTagChanged();
+		
 		ACaveGameModeBase* CaveGameMode = Cast<ACaveGameModeBase>(UGameplayStatics::GetGameMode(this));
 		UCaveGameInstance* CaveGameInstance = Cast<UCaveGameInstance>(CaveGameMode->GetGameInstance());
 		if (!CaveGameInstance->bIsSinglePlay)
@@ -473,6 +474,25 @@ void ACavePlayerCharacter::OnRep_Stunned()
 	{
 		StunDebuffComponent->Deactivate();
 	}
+	
+	if (UCaveAbilitySystemComponent* CaveASC = Cast<UCaveAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		const FCaveGameplayTags& GameplayTags = FCaveGameplayTags::Get(); 
+		FGameplayTagContainer BlockedTags;
+		BlockedTags.AddTag(GameplayTags.Player_Block_Move);
+		BlockedTags.AddTag(GameplayTags.Player_Block_Released);
+		BlockedTags.AddTag(GameplayTags.Player_Block_InputHeld);
+		BlockedTags.AddTag(GameplayTags.Player_Block_InputPressed);
+
+		if (bIsStunned)
+		{
+			CaveASC->AddLooseGameplayTags(BlockedTags);
+		}
+		else
+		{
+			CaveASC->RemoveLooseGameplayTags(BlockedTags);
+		}
+	}
 }
 
 void ACavePlayerCharacter::OnRep_Burned()
@@ -497,6 +517,9 @@ void ACavePlayerCharacter::OnRep_Frozen()
 	{
 		FrozenDebuffComponent->Deactivate();
 	}
+
+	GetCharacterMovement()->MaxWalkSpeed = bIsFrozen ? BaseWalkSpeed / 3 : BaseWalkSpeed;
+
 }
 
 UCaveAttributeSet* ACavePlayerCharacter::GetCaveAttributeSet() const
