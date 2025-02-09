@@ -275,6 +275,7 @@ void UCaveAttributeSet::HandleIncomingDebuffDamage(const FEffectProperties& Prop
 
 		const bool bFatal = NewHealth <= 0.f;
 		if (bFatal)
+		if (bFatal)
 		{
 			if (Props.TargetCharacter->Implements<UCombatInterface>())
 			{
@@ -304,8 +305,21 @@ void UCaveAttributeSet::SendXPEvent(const FEffectProperties& Props) const
 		FGameplayEventData Payload;
 		Payload.EventTag = GameplayTag.Attribute_Meta_InComingXP;
 		Payload.EventMagnitude = XPReward;
-		
+
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTag.Attribute_Meta_InComingXP, Payload);
+		
+		for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+		{
+			const ACavePlayerController* PC = Cast<ACavePlayerController>(It->Get());
+			if (!PC) continue;
+
+			ACharacter* PlayerCharacter = PC->GetCharacter();
+			if (!PlayerCharacter || PlayerCharacter == Props.SourceCharacter) continue;
+
+			Payload.EventMagnitude = XPReward / 4;
+			UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(PlayerCharacter, GameplayTag.Attribute_Meta_InComingXP, Payload);
+		}
+		
 	}
 }
 

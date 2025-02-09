@@ -9,11 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="59e04396-5efe-46be-bea4-946524d7eaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CaveExploration.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CaveExploration.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/CaveExploration.uproject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/AbilitySystem/CaveAttributeSet.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CavePlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Character/CavePlayerCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CaveExploration/Private/Player/CavePlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CaveExploration/Private/Player/CavePlayerController.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +23,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://1" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/memory" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Intermediate/Build/Win64/UnrealEditor/Inc/GameplayTags/UHT/GameplayTagsManager.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Plugins/FX/Niagara/Source/Niagara/Private/NiagaraFunctionLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -111,10 +107,7 @@
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Public/Blueprint/UserWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.4/Engine/Source/Runtime/UMG/Public/Components/WidgetComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/CaveExploration/UHT/LoadScreenWidget.gen.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Plugins/MultiplayerSessions/MultiplayerSessions.uplugin" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/CaveExploration/CaveExploration.Build.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Private/Character/CavePlayerCharacter.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/unrealengine/Epic Games/Unreal Projects/CaveExploration/Source/CaveExploration/Private/Player/CavePlayerController.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -349,7 +342,9 @@
       <workItem from="1739029125368" duration="1147000" />
       <workItem from="1739064709767" duration="1514000" />
       <workItem from="1739066341807" duration="955000" />
-      <workItem from="1739068979162" duration="1400000" />
+      <workItem from="1739068979162" duration="1658000" />
+      <workItem from="1739074581954" duration="339000" />
+      <workItem from="1739076411289" duration="1308000" />
     </task>
     <servers />
   </component>
